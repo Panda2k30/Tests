@@ -1,0 +1,28 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="15">
+            <item index="0" class="java.lang.String" itemvalue="pyrest" />
+            <item index="1" class="java.lang.String" itemvalue="pytest-base-url" />
+            <item index="2" class="java.lang.String" itemvalue="pytest-metadata" />
+            <item index="3" class="java.lang.String" itemvalue="decorator" />
+            <item index="4" class="java.lang.String" itemvalue="pyperclip" />
+            <item index="5" class="java.lang.String" itemvalue="six" />
+            <item index="6" class="java.lang.String" itemvalue="data" />
+            <item index="7" class="java.lang.String" itemvalue="pytest-variables" />
+            <item index="8" class="java.lang.String" itemvalue="funcsigs" />
+            <item index="9" class="java.lang.String" itemvalue="MarkupSafe" />
+            <item index="10" class="java.lang.String" itemvalue="Jinja2" />
+            <item index="11" class="java.lang.String" itemvalue="pytest-selenium" />
+            <item index="12" class="java.lang.String" itemvalue="by" />
+            <item index="13" class="java.lang.String" itemvalue="tenacity" />
+            <item index="14" class="java.lang.String" itemvalue="pytest-html" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
