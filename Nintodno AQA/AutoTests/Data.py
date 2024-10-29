@@ -1,4 +1,4 @@
-цфвclass Data:
+class Data:
     # ID Расширения
     EX_ID = "akkmagafhjjjjclaejjomkeccmjhdkpa"
 
