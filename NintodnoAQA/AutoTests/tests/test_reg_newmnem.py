@@ -1,8 +1,8 @@
-# import time
+#import time
 import allure
 import pytest
-from Pages.Registration_page import CreateMnemonic
-from .Data import Data
+from NintodnoAQA.AutoTests.Pages.Registration_page import CreateMnemonic
+from NintodnoAQA.AutoTests.Data import Data
 
 @allure.feature("Create wallet with new Mnemonic")
 @pytest.mark.usefixtures("driver")
@@ -12,7 +12,7 @@ def test_create_mnemonic(driver):
     test_create_mnemonic.enter_password(Data.PASS) # Ввод пароля
     test_create_mnemonic.conf_password(Data.CONFPASS) # Подтверждение пароля
     test_create_mnemonic.click_reg_button() # Жмем на кнопку продолжения
-    test_create_mnemonic.type_reg_new_mnem() # Выбираем тип авторизации - Новая мнемоника
+    test_create_mnemonic.type_reg_new_mnem() # Выбираем тип авторизации: Новая мнемоника
     test_create_mnemonic.copy_mnem() # Копируем фразы
     test_create_mnemonic.paste_mnen() # Выводим фразы
     test_create_mnemonic.conf_save() # Подтверждаем сохранение мнемоники
