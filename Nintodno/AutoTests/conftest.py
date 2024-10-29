@@ -1,13 +1,13 @@
 import pytest
 from selenium import webdriver
-from NintodnoAQA.AutoTests.Data import Data
+from .Data import Data
 
 @pytest.fixture(autouse=True, scope="function")
 def driver(request):
     options = webdriver.ChromeOptions()
     # options.add_argument("--headless")
     # options.add_argument('--disable-extensions')
-    extension_path = '/home/dev/PycharmProjects/Nintodno AQA/NintondoWallet.crx'
+    extension_path = 'Nintodno/NintondoWallet.crx'
     options.add_extension(extension_path)
 
     # Инициализируем драйвер

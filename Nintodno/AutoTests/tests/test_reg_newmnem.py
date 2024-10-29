@@ -1,8 +1,8 @@
 #import time
 import allure
 import pytest
-from NintodnoAQA.AutoTests.Pages.Registration_page import CreateMnemonic
-from NintodnoAQA.AutoTests.Data import Data
+from Nintodno.AutoTests.Pages.Registration_page import CreateMnemonic
+from Nintodno.AutoTests.Data import Data
 
 @allure.feature("Create wallet with new Mnemonic")
 @pytest.mark.usefixtures("driver")
