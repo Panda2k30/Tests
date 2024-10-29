@@ -1,6 +1,6 @@
 import pytest
 from selenium import webdriver
-from .Data import Data
+from NintodnoAQA.AutoTests.Data import Data
 
 @pytest.fixture(autouse=True, scope="function")
 def driver(request):
