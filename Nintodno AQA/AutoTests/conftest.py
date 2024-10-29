@@ -1,12 +1,11 @@
-import time
 import pytest
 from selenium import webdriver
-from Testv01.Data import Data
-import allure
+from .Data import Data
 
 @pytest.fixture(autouse=True, scope="function")
 def driver(request):
     options = webdriver.ChromeOptions()
+    # options.add_argument("--headless")
     # options.add_argument('--disable-extensions')
     extension_path = '/home/dev/PycharmProjects/Nintodno AQA/NintondoWallet.crx'
     options.add_extension(extension_path)

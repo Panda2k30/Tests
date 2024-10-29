@@ -1,4 +1,4 @@
-class Data:
+цфвclass Data:
     # ID Расширения
     EX_ID = "akkmagafhjjjjclaejjomkeccmjhdkpa"
 
@@ -12,4 +12,16 @@ class Data:
     # тестовый приватник
     PRIV_KEY = "PihWthEm68TGZ2iWoDRWYJLmXPr5itHvKnhmYBz6vseVV6dN1rdU"
 
-
+    MNEMONIC_DATA = [
+        "father",
+        "wing",
+        "predict",
+        "type",
+        "click",
+        "sunset",
+        "legal",
+        "garden",
+        "current",
+        "blood",
+        "mushroom",
+        "baby"]
