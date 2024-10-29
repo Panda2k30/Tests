@@ -17,7 +17,7 @@ def test_create_mnemonic(driver):
     test_create_mnemonic.paste_mnen() # Выводим фразы
     test_create_mnemonic.conf_save() # Подтверждаем сохранение мнемоники
     test_create_mnemonic.conf_create_wallet() # Подтверждаем создание кошелька
-    test_create_mnemonic.choose_type_legacy() # Выбираем: Legacy Type"
+    test_create_mnemonic.choose_type_legacy() # Выбираем:Legacy Type"
     test_create_mnemonic.conf_create_wallet() # Подтверждаем создание кошелька
 
 @allure.feature("Restore wallet by private key")
