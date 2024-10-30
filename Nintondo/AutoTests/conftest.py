@@ -5,9 +5,8 @@ from .Data import Data
 @pytest.fixture(autouse=True, scope="function")
 def driver(request):
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")
-    # options.add_argument('--disable-extensions')
-    extension_path = 'Nintondo/NintondoWallet.crx'
+    # options.add_argument("--headless")
+    extension_path = "/home/dev/Autotests_wallet/Nintondo/NintondoWallet.crx"
     options.add_extension(extension_path)
 
     # Инициализируем драйвер
