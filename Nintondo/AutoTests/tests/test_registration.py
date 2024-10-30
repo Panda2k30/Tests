@@ -3,7 +3,6 @@ import allure
 import pytest
 from Nintondo.AutoTests.Pages.Registration_page import CreateMnemonic
 from Nintondo.AutoTests.Data import Data
-from Nintondo.AutoTests.Pages.Mane_page import ManePage
 
 @allure.feature("Create wallet with new Mnemonic")
 @pytest.mark.usefixtures("driver")
@@ -24,7 +23,7 @@ def test_create_mnemonic(driver):
 @allure.feature("Restore wallet by private key")
 def test_restore_by_private_key(driver):
     test_restore_by_private_key = CreateMnemonic(driver)
-    # test_mane_page = ManePage(driver)
+
     test_restore_by_private_key.enter_password(Data.PASS) # Ввод пароля
     test_restore_by_private_key.conf_password(Data.CONFPASS) # Подтверждение пароля
     test_restore_by_private_key.click_reg_button() # Жмем на кнопку продолжения
