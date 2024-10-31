@@ -4,6 +4,7 @@ import pytest
 from Nintondo.AutoTests.Pages.Registration_page import CreateMnemonic
 from Nintondo.AutoTests.Data import Data
 from Nintondo.AutoTests.Pages.Mane_page import ManePage
+from Nintondo.AutoTests.Pages.Send_page import SendPage
 from .test_registration import test_restore_by_private_key
 
 @allure.feature("Send money and verify balance")
@@ -19,7 +20,13 @@ def test_sendmoney(driver):
     test_restore_by_private_key.conf_create_wallet()  # Подтверждаем создание кошелька
     test_restore_by_private_key.choose_type_legacy()  # Выбираем:Legacy Type"
     test_restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
-    test_sendmoney = ManePage(driver)
-    test_sendmoney.get_balance()
-    test_sendmoney.change_network()
-    test_sendmoney.get_balance()
+
+    change_network = ManePage(driver)
+    change_network.get_balance()
+    change_network.change_network()
+    change_network.get_balance()
+
+    test_sendmoney = SendPage(driver)
+    te
+    test_sendmoney.enter_address(Data.VALID_RECEIVE_ADDRESS)
+    time.sleep(5)
