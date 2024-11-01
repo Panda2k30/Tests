@@ -38,7 +38,7 @@ class SendPage(BasePage):
         enter_amount = wait(self.driver, 10).until(
             EC.element_to_be_clickable(SendPageSelector.AMOUNT_INPUT))
         enter_amount.send_keys(valid_amount)
-        print("- Ввели валидную сумму")
+        print("- Ввели сумму")
 
     def include_fee(self):
         # Включаем комиссию в сумму
