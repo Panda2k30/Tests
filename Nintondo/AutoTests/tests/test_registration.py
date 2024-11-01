@@ -10,6 +10,7 @@ from selenium.common.exceptions import TimeoutException
 @allure.feature("Create valid wallet password")
 @pytest.mark.parametrize("password, conf_password", [
     ("333111Aa", "333111Aa") ])
+# Проверяем создание валидного пароля для кошелька
 def test_create_valid_password(driver, password, conf_password):
 
     test_create_valid_password = CreateMnemonic(driver)
@@ -33,6 +34,7 @@ def test_create_valid_password(driver, password, conf_password):
     ("a1234567", "", None),
     ("", "", None),
 ])
+# Проверяем негативные сценарии ввода пароля
 def test_create_invalid_password(driver, password, conf_password, expected_error):
     test_create_invalid_password = CreateMnemonic(driver)
 

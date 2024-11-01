@@ -12,6 +12,7 @@ from Nintondo.AutoTests.conftest import driver
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Send money and verify balance")
+# Проверяем отправку с валидным балансом
 def test_valid_sendmoney(driver):
     # Вспомогательная функция для проверки отличий в TXID
     def are_txids_different(txid1, txid2):
@@ -73,7 +74,7 @@ def test_valid_sendmoney(driver):
     ("0.1", "", "Insert receiver's address"),
     ("", "", "Insert receiver's address"),
 ])
-# Проверяем отправку с невалидным балансом, и пустыми полями
+# Проверяем отправку с невалидным балансом и негативные сценарии
 def test_invalid_sendmoney(driver, amount, blank, expected_error):
 
     restore_by_private_key = CreateMnemonic(driver)

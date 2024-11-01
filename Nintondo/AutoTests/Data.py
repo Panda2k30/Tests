@@ -1,4 +1,5 @@
 class Data:
+
     # ID Расширения
     EX_ID = "akkmagafhjjjjclaejjomkeccmjhdkpa"
 
@@ -9,7 +10,7 @@ class Data:
     NOTVALID_PASS = ""
     NOTVALID_CONFPASS = ""
 
-    # тестовый приватник
+    # Тестовый приватник
     KEY_MONEY_WALLET = "PihWthEm68TGZ2iWoDRWYJLmXPr5itHvKnhmYBz6vseVV6dN1rdU"
 
     MNEMONIC_DATA = [

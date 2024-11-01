@@ -18,18 +18,15 @@ def driver(request):
     driver.implicitly_wait(5)
     print("Драйвер инициализирован")  # Для отладки
 
-    # Создаем папку для скриншотов, если она не существует
     screenshot_dir = "screenshots"
     if not os.path.exists(screenshot_dir):
         os.makedirs(screenshot_dir)
 
     yield driver
 
-    # Делаем скриншот перед закрытием драйвера
     screenshot_path = f"{screenshot_dir}/{request.node.name}.png"
     driver.save_screenshot(screenshot_path)
 
-    # Добавляем скриншот в Allure
     allure.attach.file(screenshot_path, name="Screenshot", attachment_type=allure.attachment_type.PNG)
 
-    driver.quit()  # Закрываем драйвер после теста
+    driver.quit()
