@@ -8,32 +8,43 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from Nintondo.AutoTests.Pages.Send_page import SendPage
 from selenium.webdriver.common.by import By
-
+from Nintondo.AutoTests.conftest import driver
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Send money and verify balance")
-
 def test_valid_sendmoney(driver):
+    # Вспомогательная функция для проверки отличий в TXID
+    def are_txids_different(txid1, txid2):
+        # Проверяем, отличаются ли TXID хотя бы одним символом
+        return any(char1 != char2 for char1, char2 in zip(txid1, txid2)) or len(txid1) != len(txid2)
 
     restore_by_private_key = CreateMnemonic(driver)
     sendmoney = SendPage(driver)
     change_network = ManePage(driver)
 
-    restore_by_private_key.enter_password(Data.PASS)  # Ввод пароля
-    restore_by_private_key.conf_password(Data.CONFPASS)  # Подтверждение пароля
-    restore_by_private_key.click_reg_button()  # Жмем на кнопку продолжения
+    # Ввод пароля и восстановление кошелька
+    restore_by_private_key.enter_password(Data.PASS)
+    restore_by_private_key.conf_password(Data.CONFPASS)
+    restore_by_private_key.click_reg_button()
 
-    restore_by_private_key.type_reg_privacy_key()  # Выбираем восстановление через приватник
-    restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)  # Вводим приватник
-    restore_by_private_key.conf_create_wallet()  # Подтверждаем создание кошелька
-    restore_by_private_key.choose_type_legacy()  # Выбираем:Legacy Type"
-    restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
+    restore_by_private_key.type_reg_privacy_key()
+    restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)
+    restore_by_private_key.conf_create_wallet()
+    restore_by_private_key.choose_type_legacy()
+    restore_by_private_key.conf_recover_wallet()
     time.sleep(0.5)
+
+    # Смена сети и получение старого баланса
     change_network.change_network()
     time.sleep(0.5)
     old_balance = change_network.get_balance()
+
+    # Получение старого TXID
+    old_transaction_verify = change_network.verify_transaction()
+
     change_network.send_page_btn()
 
+    # Отправка средств
     sendmoney.enter_address(Data.VALID_RECEIVE_ADDRESS)
     sendmoney.enter_amount(valid_amount=0.1)
     sendmoney.include_fee()
@@ -42,23 +53,28 @@ def test_valid_sendmoney(driver):
     sendmoney.conf_send_money()
     sendmoney.back_to_home()
     time.sleep(0.5)
+
+    # Получение нового баланса и TXID
     new_balance = change_network.get_balance()
+    new_transaction_verify = change_network.verify_transaction()
 
-    # Проверка уменьшения баланса после перевода
-    assert old_balance > new_balance, (
-        f"Ошибка: баланс не уменьшился после перевода. "
-        f"Начальный баланс: {old_balance}, новый баланс: {new_balance}"
+    # Проверка, что TXID изменился
+    assert are_txids_different(new_transaction_verify, old_transaction_verify), (
+        f"TXID не изменился! Старое значение: {old_transaction_verify}, "
+        f"Новое значение: {new_transaction_verify}"
     )
-
     time.sleep(0.2)
-
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Sending money with an invalid balance")
-@pytest.mark.parametrize("amount, expected_error", [
-    ("555555555", "There's not enough money in your account")])
-
-def test_invalid_sendmoney(driver, amount, expected_error):
+@pytest.mark.parametrize("amount, blank, expected_error", [
+    ("555555555", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
+    ("", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
+    ("0.1", "", "Insert receiver's address"),
+    ("", "", "Insert receiver's address"),
+])
+# Проверяем отправку с невалидным балансом, и пустыми полями
+def test_invalid_sendmoney(driver, amount, blank, expected_error):
 
     restore_by_private_key = CreateMnemonic(driver)
     send_invalid_amount = SendPage(driver)
@@ -78,7 +94,7 @@ def test_invalid_sendmoney(driver, amount, expected_error):
     change_network.get_balance()
     change_network.send_page_btn()
 
-    send_invalid_amount.enter_address(Data.VALID_RECEIVE_ADDRESS)
+    send_invalid_amount.enter_address(blank)
     send_invalid_amount.enter_amount(amount)
     send_invalid_amount.cont_send_money()
 

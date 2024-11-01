@@ -1,4 +1,3 @@
-import pyperclip
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -23,7 +22,7 @@ class ManePageSelector:
     BALANCE_WALLET_MANE = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/div/div/span[1]")
     BALANCE_WALLET_SECOND = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/div/div/span[2]")
     INSCRIPRION_ALLERT = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[1]/div/a[1]")
-
+    TRANSACTION_LIST = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[3]/div[1]/a[1]/div[1]/div[2]")
     TESTNET_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]")
 
 class ManePage(BasePage):
@@ -89,24 +88,6 @@ class ManePage(BasePage):
         return total_balance  # Возвращаем итоговый баланс
 
 
-    # def verify_balance(self, get_balance, transfer_amount):
-    #     get_balance = wait(self.driver, 10).until(
-    #         EC.element_to_be_clickable(ManePageSelector.BALANCE_WALLET_MANE))
-    #         EC.element_to_be_clickable(ManePageSelector.BALANCE_WALLET_SECOND))
-
-    # def verify_balance_change(driver, initial_balance, transfer_amount):
-    #
-    #     # Проверяет, что баланс изменился на ожидаемую величину после отправки средств
-    #     WebDriverWait(driver, 10).until(
-    #         lambda d: float(d.find_element(By.XPATH, "//span[@class='balance']").text) != initial_balance
-    #     )
-    #
-    #     # Получаем обновленный баланс и проверяем
-    #     updated_balance = get_balance(driver)
-    #     expected_balance = initial_balance - transfer_amount
-    #     assert updated_balance == expected_balance, f"Ожидаемый баланс: {expected_balance}, но получен {updated_balance}"
-    #     print("Баланс успешно обновился после отправки средств.")
-
     def change_network(self):
 
         self.driver.get(f"chrome-extension://{Data.EX_ID}/index.html#/pages/network-settings")
@@ -114,6 +95,14 @@ class ManePage(BasePage):
         print("- Перешли на страницу изменения типа сети")
 
         change_network = wait(self.driver, 10).until(
-            EC.presence_of_element_located(ManePageSelector.TESTNET_BTN))
+            EC.element_to_be_clickable(ManePageSelector.TESTNET_BTN))
         change_network.click()
         print("- Поменяли сеть на TESTNET")
+
+    def verify_transaction(self):
+        get_transaction = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(ManePageSelector.TRANSACTION_LIST))
+
+        txid = get_transaction.text
+        print("TXID:", txid)
+        return txid

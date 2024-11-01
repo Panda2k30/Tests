@@ -1,8 +1,6 @@
-import time
 import allure
 import pytest
 from Nintondo.AutoTests.Pages.Registration_page import CreateMnemonic
-from Nintondo.AutoTests.Data import Data
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -21,7 +19,7 @@ def test_create_valid_password(driver, password, conf_password):
     test_create_valid_password.click_reg_button() # Жмем на кнопку продолжения
 
     try:
-        dashboard_element = WebDriverWait(driver, 3).until(
+        dashboard_element = WebDriverWait(driver, 2).until(
             EC.visibility_of_element_located((By.LINK_TEXT, "New mnemonic")))
         assert dashboard_element.is_displayed(), "Элемент на странице не отображается"
     except TimeoutException:
@@ -44,7 +42,7 @@ def test_create_invalid_password(driver, password, conf_password, expected_error
     if password and conf_password:  # Проверяем, что оба поля не пустые
         try:
             # Ожидание появления сообщения об ошибке
-            error_message = WebDriverWait(driver, 2).until(
+            error_message = WebDriverWait(driver, 1.2).until(
                 EC.visibility_of_element_located((By.CLASS_NAME, "error"))
             )
             assert error_message.is_displayed(), "Сообщение об ошибке не отображается"
