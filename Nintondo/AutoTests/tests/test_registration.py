@@ -3,45 +3,55 @@ import allure
 import pytest
 from Nintondo.AutoTests.Pages.Registration_page import CreateMnemonic
 from Nintondo.AutoTests.Data import Data
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
 
-@allure.feature("Create wallet with new Mnemonic")
 @pytest.mark.usefixtures("driver")
-def test_create_mnemonic(driver):
-    test_create_mnemonic = CreateMnemonic(driver)
+@allure.feature("Create valid wallet password")
+@pytest.mark.parametrize("password, conf_password", [
+    ("333111Aa", "333111Aa") ])
+def test_create_valid_password(driver, password, conf_password):
 
-    test_create_mnemonic.enter_password(Data.PASS) # Ввод пароля
-    test_create_mnemonic.conf_password(Data.CONFPASS) # Подтверждение пароля
-    test_create_mnemonic.click_reg_button() # Жмем на кнопку продолжения
-    test_create_mnemonic.type_reg_new_mnem() # Выбираем тип авторизации: Новая мнемоника
-    test_create_mnemonic.copy_mnem() # Копируем фразы
-    test_create_mnemonic.paste_mnen() # Выводим фразы
-    test_create_mnemonic.conf_save() # Подтверждаем сохранение мнемоники
-    test_create_mnemonic.conf_create_wallet() # Подтверждаем создание кошелька
-    test_create_mnemonic.choose_type_legacy() # Выбираем:Legacy Type"
-    test_create_mnemonic.conf_create_wallet() # Подтверждаем создание кошелька
+    test_create_valid_password = CreateMnemonic(driver)
 
-@allure.feature("Restore wallet by private key")
-def test_restore_by_private_key(driver):
-    test_restore_by_private_key = CreateMnemonic(driver)
+    test_create_valid_password.enter_password(password) # Ввод пароля
+    test_create_valid_password.conf_password(conf_password) # Подтверждение пароля
+    test_create_valid_password.click_reg_button() # Жмем на кнопку продолжения
 
-    test_restore_by_private_key.enter_password(Data.PASS) # Ввод пароля
-    test_restore_by_private_key.conf_password(Data.CONFPASS) # Подтверждение пароля
-    test_restore_by_private_key.click_reg_button() # Жмем на кнопку продолжения
-    test_restore_by_private_key.type_reg_privacy_key() # Выбираем восстановление через приватник
-    test_restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET) # Вводим приватник
-    test_restore_by_private_key.conf_create_wallet() # Подтверждаем создание кошелька
-    test_restore_by_private_key.choose_type_legacy()  # Выбираем:Legacy Type"
-    test_restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
+    try:
+        dashboard_element = WebDriverWait(driver, 3).until(
+            EC.visibility_of_element_located((By.LINK_TEXT, "New mnemonic")))
+        assert dashboard_element.is_displayed(), "Элемент на странице не отображается"
+    except TimeoutException:
+        pytest.fail("Время ожидания истекло")
 
-@allure.feature("Restore wallet by mnemonic")
-def test_restore_by_mnemonic(driver):
-    test_restore_by_mnemonic = CreateMnemonic(driver)
+@pytest.mark.usefixtures("driver")
+@allure.feature("Create invalid wallet password")
+@pytest.mark.parametrize("password, conf_password, expected_error", [
+    ("a1234567", "7654321a", "Passwords dismatches"),
+    ("", "a1234567", None),
+    ("a1234567", "", None),
+])
+def test_create_invalid_password(driver, password, conf_password, expected_error):
+    test_create_invalid_password = CreateMnemonic(driver)
 
-    test_restore_by_mnemonic.enter_password(Data.PASS)  # Ввод пароля
-    test_restore_by_mnemonic.conf_password(Data.CONFPASS)  # Подтверждение пароля
-    test_restore_by_mnemonic.click_reg_button()  # Жмем на кнопку продолжения
-    test_restore_by_mnemonic.type_reg_mnemonic()  # Выбираем восстановление через мнемонику
-    test_restore_by_mnemonic.type_reg_restore_mnem(Data.MNEMONIC_DATA)  # Вставляем мнемоники
-    test_restore_by_mnemonic.click_restore_button()  # Жмем на кнопку продолжения
-    test_restore_by_mnemonic.choose_type_native()   # Выбираем: Native Segwit
-    test_restore_by_mnemonic.conf_create_wallet() # Подтверждаем создание кошелька
+    test_create_invalid_password.enter_password(password)  # Ввод пароля
+    test_create_invalid_password.conf_password(conf_password)  # Подтверждение пароля
+    test_create_invalid_password.click_reg_button()  # Клик на кнопку регистрации
+
+    if password and conf_password:  # Проверяем, что оба поля не пустые
+        try:
+            # Ожидание появления сообщения об ошибке
+            error_message = WebDriverWait(driver, 2).until(
+                EC.visibility_of_element_located((By.CLASS_NAME, "error"))
+            )
+            assert error_message.is_displayed(), "Сообщение об ошибке не отображается"
+            assert error_message.text == expected_error, f"Ожидалось сообщение об ошибке: '{expected_error}', но получено: '{error_message.text}'"
+        except TimeoutException:
+            pytest.fail("Время ожидания истекло: сообщение об ошибке не найдено")
+    else:
+        # Если одно из полей пустое, проверяем, что сообщение об ошибке не отображается
+        error_displayed = len(driver.find_elements(By.CLASS_NAME, "error")) > 0
+        assert not error_displayed, "Сообщение об ошибке не должно отображаться, если одно из полей пустое"

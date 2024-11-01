@@ -12,6 +12,7 @@ def driver(request):
     # Инициализируем драйвер
     driver = webdriver.Chrome(options=options)
     driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    driver.implicitly_wait(5)
     print("Драйвер инициализирован")  # Для отладки
     yield driver
     driver.quit()

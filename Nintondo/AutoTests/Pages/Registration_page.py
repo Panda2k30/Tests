@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+from Nintondo.AutoTests.Pages.Base_page import BasePage
 
 wait = WebDriverWait
 
@@ -29,49 +30,49 @@ class LoginPageSelectors:
     NATIVE_SEGWIT = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[1]/div[1]")
 
 
-class CreateMnemonic:
+class CreateMnemonic(BasePage):
     def __init__(self, driver):
         self.driver = driver  # Сохраняем переданный драйвер
 
     def enter_password(self, password):  # Принимаем пароль как аргумент
         password_field = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.PASSWORD_FIELD))
+            EC.element_to_be_clickable(LoginPageSelectors.PASSWORD_FIELD))
         password_field.send_keys(password)  # Используем переданный аргумент
         print("- Ввели валидный пароль")
 
     def conf_password(self, confpassword):  # Принимаем подтверждение пароля как аргумент
         confpassword_field = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.CONF_PASSWORD_FIELD))
+            EC.element_to_be_clickable(LoginPageSelectors.CONF_PASSWORD_FIELD))
         confpassword_field.send_keys(confpassword)  # Используем переданный аргумент
         print("- Подтвердили пароль")
 
     def click_reg_button(self):
         reg_button = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.REG_BUTTON))
+            EC.element_to_be_clickable(LoginPageSelectors.REG_BUTTON))
         reg_button.click()
         print("- Кликнули на кнопку: Create password")
 
     def type_reg_new_mnem(self):
         type_reg = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.NEW_MNEMONIC))
+            EC.element_to_be_clickable(LoginPageSelectors.NEW_MNEMONIC))
         type_reg.click()
         print("- Кликнули на: New mnemonic")
 
     def type_reg_privacy_key(self):
         type_reg_privacy_key = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.PRIVAT_KEY))
+            EC.element_to_be_clickable(LoginPageSelectors.PRIVAT_KEY))
         type_reg_privacy_key.click()
         print("- Кликнули восстановление через приватник")
 
     def type_reg_mnemonic(self):
         type_reg_mnemonic = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.RESTORE_MNEMONIC))
+            EC.element_to_be_clickable(LoginPageSelectors.RESTORE_MNEMONIC))
         type_reg_mnemonic.click()
         print("- Кликнули восстановление через мнемонику")
 
     def type_reg_restore_mnem(self, mnemonic):
         input_field = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.RESTORE_MNEMONIC_INPUT)
+            EC.element_to_be_clickable(LoginPageSelectors.RESTORE_MNEMONIC_INPUT)
         )
 
         for word in mnemonic:
@@ -82,7 +83,7 @@ class CreateMnemonic:
 
     def copy_mnem(self):
         copy_mnem = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.COPY_MNEMONIC))
+            EC.element_to_be_clickable(LoginPageSelectors.COPY_MNEMONIC))
         copy_mnem.click()
         print("- Скопировали фразы в буфер обмена")
 
@@ -93,55 +94,56 @@ class CreateMnemonic:
     def conf_save(self):
         # Подтверждаем сохранение мнемоники
         conf_save = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.CONF_MNEMONIC))
+            EC.element_to_be_clickable(LoginPageSelectors.CONF_MNEMONIC))
         conf_save.click()
         print("- Подтвердили сохранение фраз")
 
     def conf_create_wallet(self):
         # Подтверждаем создание кошелька
         createbtn_mnemonic = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.CREATE_BUTTON))
+            EC.element_to_be_clickable(LoginPageSelectors.CREATE_BUTTON))
         createbtn_mnemonic.click()
         print("- Кликнули на: Continue")
 
     def choose_type_legacy(self):
         # Выбираем: Legacy Type"
         legacy_type = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.LEGACY_TYPE))
+            EC.element_to_be_clickable(LoginPageSelectors.LEGACY_TYPE))
         legacy_type.click()
         print("- Выбрали: Legacy Type")
 
     def choose_type_native(self):
         # Выбираем: Native Segwit"
         choose_type_native = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.NATIVE_SEGWIT))
+            EC.element_to_be_clickable(LoginPageSelectors.NATIVE_SEGWIT))
         choose_type_native.click()
         print("- Выбрали: Native Segwit")
 
     def conf_create_wallet(self):
         # Подтверждаем создание кошелька
         createbtn_mnemonic = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.CREATE_BUTTON))
+            EC.element_to_be_clickable(LoginPageSelectors.CREATE_BUTTON))
         createbtn_mnemonic.click()
         print("- Подтвердлили создание кошелька")
 
     def conf_recover_wallet(self):
         # Подтверждаем создание кошелька
         conf_recover_wallet = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.RECOVER_BUTTON))
+            EC.element_to_be_clickable(LoginPageSelectors.RECOVER_BUTTON))
         conf_recover_wallet.click()
         print("- Кликнули на: Recover")
 
     def restore_input(self, privat_key):
         # Подтверждаем создание кошелька
         restore_input = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.RESTORE_INPUT))
+            EC.element_to_be_clickable(LoginPageSelectors.RESTORE_INPUT))
         restore_input.send_keys(privat_key)  # Используем переданный аргумент
         print("- Ввели приватный ключ")
 
     def click_restore_button(self):
         # Подтверждаем восстановление кошелька по мнемоникам
         click_restore_button = wait(self.driver, 10).until(
-            EC.presence_of_element_located(LoginPageSelectors.RESTORE_BUTTON))
+            EC.element_to_be_clickable(LoginPageSelectors.RESTORE_BUTTON))
         click_restore_button.click()
         print("- Кликнули на кнопку: Continue")
+
