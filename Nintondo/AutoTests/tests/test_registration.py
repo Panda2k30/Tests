@@ -31,6 +31,7 @@ def test_create_valid_password(driver, password, conf_password):
     ("a1234567", "7654321a", "Passwords dismatches"),
     ("", "a1234567", None),
     ("a1234567", "", None),
+    ("", "", None),
 ])
 def test_create_invalid_password(driver, password, conf_password, expected_error):
     test_create_invalid_password = CreateMnemonic(driver)

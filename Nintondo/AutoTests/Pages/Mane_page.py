@@ -87,7 +87,6 @@ class ManePage(BasePage):
         print("Текущий баланс пользователя:", total_balance)
         return total_balance  # Возвращаем итоговый баланс
 
-
     def change_network(self):
 
         self.driver.get(f"chrome-extension://{Data.EX_ID}/index.html#/pages/network-settings")
@@ -104,5 +103,5 @@ class ManePage(BasePage):
             EC.element_to_be_clickable(ManePageSelector.TRANSACTION_LIST))
 
         txid = get_transaction.text
-        print("TXID:", txid)
+        print("Последнее TXID:", txid)
         return txid
