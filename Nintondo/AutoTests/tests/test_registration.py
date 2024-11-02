@@ -1,3 +1,4 @@
+import time
 import allure
 import pytest
 from Nintondo.AutoTests.Pages.Registration_page import CreateMnemonic
@@ -14,7 +15,7 @@ from selenium.common.exceptions import TimeoutException
 def test_create_valid_password(driver, password, conf_password):
 
     test_create_valid_password = CreateMnemonic(driver)
-
+    time.sleep(0.5)
     test_create_valid_password.enter_password(password) # Ввод пароля
     test_create_valid_password.conf_password(conf_password) # Подтверждение пароля
     test_create_valid_password.click_reg_button() # Жмем на кнопку продолжения
@@ -37,7 +38,7 @@ def test_create_valid_password(driver, password, conf_password):
 # Проверяем негативные сценарии ввода пароля
 def test_create_invalid_password(driver, password, conf_password, expected_error):
     test_create_invalid_password = CreateMnemonic(driver)
-
+    time.sleep(0.5)
     test_create_invalid_password.enter_password(password)  # Ввод пароля
     test_create_invalid_password.conf_password(conf_password)  # Подтверждение пароля
     test_create_invalid_password.click_reg_button()  # Клик на кнопку регистрации

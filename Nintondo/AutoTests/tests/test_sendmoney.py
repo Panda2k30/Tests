@@ -22,7 +22,7 @@ def test_valid_sendmoney(driver):
     restore_by_private_key = CreateMnemonic(driver)
     sendmoney = SendPage(driver)
     change_network = ManePage(driver)
-
+    time.sleep(0.5)
     # Ввод пароля и восстановление кошелька
     restore_by_private_key.enter_password(Data.PASS)
     restore_by_private_key.conf_password(Data.CONFPASS)
@@ -34,7 +34,7 @@ def test_valid_sendmoney(driver):
     restore_by_private_key.choose_type_legacy()
     restore_by_private_key.conf_recover_wallet()
     time.sleep(0.5)
-
+    change_network.get_balance()
     # Смена сети и получение старого баланса
     change_network.change_network()
     time.sleep(0.5)
@@ -80,7 +80,7 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
     restore_by_private_key = CreateMnemonic(driver)
     send_invalid_amount = SendPage(driver)
     change_network = ManePage(driver)
-
+    time.sleep(0.5)
     restore_by_private_key.enter_password(Data.PASS)  # Ввод пароля
     restore_by_private_key.conf_password(Data.CONFPASS)  # Подтверждение пароля
     restore_by_private_key.click_reg_button()  # Жмем на кнопку продолжения
@@ -90,8 +90,9 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
     restore_by_private_key.conf_create_wallet()  # Подтверждаем создание кошелька
     restore_by_private_key.choose_type_legacy()  # Выбираем:Legacy Type"
     restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
-    time.sleep(0.5)
+    change_network.get_balance()
     change_network.change_network()
+    time.sleep(0.5)
     change_network.get_balance()
     change_network.send_page_btn()
 

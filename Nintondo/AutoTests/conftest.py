@@ -7,15 +7,15 @@ import allure
 @pytest.fixture(autouse=True, scope="function")
 def driver(request):
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
     options.add_argument("--window-size=1280,720")
-    extension_path = "/home/dev/Autotests_wallet/Nintondo/NintondoWallet.crx"
+    extension_path = "/home/alexsey/Tests/Nintondo/NintondoWallet.crx"
     options.add_extension(extension_path)
 
     # Инициализируем драйвер
     driver = webdriver.Chrome(options=options)
     driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(4)
     print("Драйвер инициализирован")  # Для отладки
 
     screenshot_dir = "screenshots"
