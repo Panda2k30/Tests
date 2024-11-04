@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from Nintondo.AutoTests.conftest import driver
+from Nintondo.AutoTests.Pages.Mane_page import ManePage
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Test Connect Wallet")
@@ -16,6 +17,7 @@ def test_connect(driver):
 
     restore_by_private_key = CreateMnemonic(driver)
     connect = NintondoPage(driver)
+    change_network = ManePage(driver)
 
     driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
 
@@ -31,20 +33,27 @@ def test_connect(driver):
     # Выбираем: Native по умолчанию"
     restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
 
+    change_network.get_balance()
+    change_network.change_network()
+
     driver.get("https://nintondo.io/")
-    time.sleep(4)
+    # connect.change_network_btn()
+    time.sleep(0.3)
     connect.change_network_btn()
+
     driver.set_window_size(800, 768)
-    time.sleep(4)
+
+    time.sleep(0.3)
     connect.connect_btn()
+    # connect.switch_network_btn()
 
     WebDriverWait(driver, 10).until(EC.number_of_windows_to_be(2))
     windows = driver.window_handles
+    time.sleep(0.3)
     driver.switch_to.window(windows[1])
-
     print(driver.title)
 
     connect.sign_btn()
-    time.sleep(4)
+    time.sleep(0.2)
     driver.switch_to.window(windows[0])
     driver.set_window_size(1280, 720)
