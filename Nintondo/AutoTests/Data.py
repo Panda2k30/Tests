@@ -12,8 +12,9 @@ class Data:
 
     # Тестовый приватник
     KEY_MONEY_WALLET = "PihWthEm68TGZ2iWoDRWYJLmXPr5itHvKnhmYBz6vseVV6dN1rdU"
+    INVALID_KEY_WALLET = "PihWthEm68TGZ2iWoDRWYJLmXPr5itHvKnhmYBz6vseVV6dN1rd"
 
-    MNEMONIC_DATA = [
+    VALID_MNEMONIC_DATA = [
         "father",
         "wing",
         "predict",
@@ -21,6 +22,20 @@ class Data:
         "click",
         "sunset",
         "legal",
+        "garden",
+        "current",
+        "blood",
+        "mushroom",
+        "baby"]
+
+    INVALID_MNEMONIC_DATA = [
+        "father",
+        "wing",
+        "predict",
+        "type",
+        "click",
+        "sunset",
+        "",
         "garden",
         "current",
         "blood",

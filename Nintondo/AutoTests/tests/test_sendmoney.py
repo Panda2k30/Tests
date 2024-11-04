@@ -76,8 +76,7 @@ def test_valid_sendmoney(driver):
     ("555555555", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
     ("", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
     ("0.1", "", "Insert receiver's address"),
-    ("", "", "Insert receiver's address"),
-])
+    ("", "", "Insert receiver's address"),])
 # Проверяем отправку с невалидным балансом и негативные сценарии
 def test_invalid_sendmoney(driver, amount, blank, expected_error):
 
