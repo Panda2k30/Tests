@@ -1,7 +1,7 @@
+import os
 import pytest
 from selenium import webdriver
-import os
-from .Data import Data
+from selenium.common.exceptions import NoSuchWindowException
 import allure
 
 @pytest.fixture(autouse=True, scope="function")
@@ -17,15 +17,21 @@ def driver(request):
     driver.implicitly_wait(4)
     print("Драйвер инициализирован")  # Для отладки
 
+    # Директория для скриншотов
     screenshot_dir = "screenshots"
-    if not os.path.exists(screenshot_dir):
-        os.makedirs(screenshot_dir)
+    os.makedirs(screenshot_dir, exist_ok=True)
 
     yield driver
 
+    # Попытка сделать скриншот и прикрепить его к отчёту Allure
     screenshot_path = f"{screenshot_dir}/{request.node.name}.png"
-    driver.save_screenshot(screenshot_path)
-
-    allure.attach.file(screenshot_path, name="Screenshot", attachment_type=allure.attachment_type.PNG)
-
-    driver.quit()
+    try:
+        if len(driver.window_handles) > 0:
+            driver.save_screenshot(screenshot_path)
+            allure.attach.file(screenshot_path, name="Screenshot", attachment_type=allure.attachment_type.PNG)
+        else:
+            print("Скриншот не сделан, так как все окна были закрыты")
+    except NoSuchWindowException:
+        print("Окно было закрыто, скриншот не сделан")
+    finally:
+        driver.quit()

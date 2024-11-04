@@ -5,6 +5,7 @@ from Nintondo.AutoTests.Data import Data
 from Nintondo.AutoTests.conftest import driver
 from .Base_page import BasePage
 import pyperclip
+import time
 
 wait = WebDriverWait
 
@@ -117,11 +118,14 @@ class ManePage(BasePage):
         print("- Кликнули на кнопку: Назад")
 
     def account_address_btn(self):
-        account_address_btn = wait(self.driver, 10).until(
+        # Ждем, пока кнопка станет кликабельной
+        button = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.ACCOUNT_ADDRESS))
-        account_address_btn.click()
-        print("- Кликнули на: Copy Address")
 
-        btn_address_account = pyperclip.paste().strip()
-        print("Адрес из кнопки:", btn_address_account)
-        return btn_address_account
+        # Используем JavaScript для получения атрибута title
+        button_title = self.driver.execute_script(
+            "return arguments[0].getAttribute('title');", button
+        )
+
+        print("Адрес аккаунта на главной:", button_title)
+        return button_title
