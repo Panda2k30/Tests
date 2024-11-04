@@ -13,7 +13,6 @@ import os
 # Проверка адреса кошелька
 
 def test_wallet_address_verification(driver):
-
     restore_by_private_key = CreateMnemonic(driver)
     check_address = ReceivePage(driver)
     test_wallet_address_verification = ManePage(driver)
@@ -27,7 +26,7 @@ def test_wallet_address_verification(driver):
     restore_by_private_key.type_reg_privacy_key()  # Выбираем восстановление через приватник
     restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)  # Вводим приватник
     restore_by_private_key.conf_create_wallet()  # Подтверждаем создание кошелька
-    restore_by_private_key.choose_type_legacy()  # Выбираем:Legacy Type"
+    restore_by_private_key.choose_type_legacy()  # Выбираем: Legacy Type
     restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
 
     test_wallet_address_verification.get_balance()
@@ -35,10 +34,20 @@ def test_wallet_address_verification(driver):
     time.sleep(0.5)
     test_wallet_address_verification.receive_page_btn()
 
-    check_address.receive_address_btn()
-    check_address.receive_address_text()
+    # Получение адресов
+    received_address = check_address.receive_address_btn()
+    received_address_text = check_address.receive_address_text()
 
+    # Скриншот
     screenshot_folder = 'screenshots'
     screenshot_file_path = os.path.join(screenshot_folder, 'screenshot.png')
     driver.get_screenshot_as_file(screenshot_file_path)
     print(f"Скриншот страницы с адресом сохранен в: {screenshot_file_path}")
+
+    test_wallet_address_verification.back_btn()
+
+    account_address = test_wallet_address_verification.account_address_btn()
+
+    # Проверка на соответствие адресов в самом конце
+    assert received_address == account_address, f"Ошибка: адреса не совпадают! Полученный адрес: '{received_address}', Ожидаемый адрес: '{account_address}'"
+    assert received_address_text == account_address, f"Ошибка: адреса не совпадают! Полученный текст адреса: '{received_address_text}', Ожидаемый адрес: '{account_address}'"

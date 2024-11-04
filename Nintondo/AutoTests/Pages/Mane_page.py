@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from Nintondo.AutoTests.Data import Data
 from Nintondo.AutoTests.conftest import driver
 from .Base_page import BasePage
+import pyperclip
 
 wait = WebDriverWait
 
@@ -17,6 +18,7 @@ class ManePageSelector:
     SETTINGS_PAGE_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[1]/div/a[2]")
     ACCOUNT_PAGE_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div[3]/a")
     NFT_PAGE_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[1]/div/a[1]")
+    BACK_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[1]/div[1]")
 
     # INFO
     BALANCE_WALLET_MANE = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/div/div/span[1]")
@@ -24,6 +26,8 @@ class ManePageSelector:
     INSCRIPRION_ALLERT = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[1]/div/a[1]")
     TRANSACTION_LIST = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[3]/div[1]/a[1]/div[1]/div[2]")
     TESTNET_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]")
+
+    ACCOUNT_ADDRESS = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div[2]/div/button")
 
 class ManePage(BasePage):
     def __init__(self, driver):
@@ -105,3 +109,19 @@ class ManePage(BasePage):
         txid = get_transaction.text
         print("Последнее TXID:", txid)
         return txid
+
+    def back_btn(self):
+        back_btn = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(ManePageSelector.BACK_BTN))
+        back_btn.click()
+        print("- Кликнули на кнопку: Назад")
+
+    def account_address_btn(self):
+        account_address_btn = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(ManePageSelector.ACCOUNT_ADDRESS))
+        account_address_btn.click()
+        print("- Кликнули на: Copy Address")
+
+        btn_address_account = pyperclip.paste().strip()
+        print("Адрес из кнопки:", btn_address_account)
+        return btn_address_account

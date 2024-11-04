@@ -22,7 +22,7 @@ class ReceivePage(BasePage):
         receive_address_text = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ReceivePageSelector.WALLET_ADDRESS_TEXT))
         receive_address_text.click()
-        print("- ")
+        print("- Забираем адрес из строки ")
         text_address = receive_address_text.text
         print("Адрес из строки:", text_address)
         return text_address
