@@ -90,12 +90,12 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
     restore_by_private_key.enter_password(Data.PASS)  # Ввод пароля
     restore_by_private_key.conf_password(Data.CONFPASS)  # Подтверждение пароля
     restore_by_private_key.click_reg_button()  # Жмем на кнопку продолжения
-
     restore_by_private_key.type_reg_privacy_key()  # Выбираем восстановление через приватник
     restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)  # Вводим приватник
     restore_by_private_key.conf_create_wallet()  # Подтверждаем создание кошелька
-    restore_by_private_key.choose_type_legacy()  # Выбираем:Legacy Type"
-    restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
+    print("Выбираем тип кошелька: Native, по умолчанию")
+    # Выбираем: Native по умолчанию"
+    restore_by_private_key.conf_recover_wallet() # Подтверждаем создание кошелька
     change_network.get_balance()
     change_network.change_network()
     time.sleep(0.5)

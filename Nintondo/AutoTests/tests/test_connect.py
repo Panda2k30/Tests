@@ -10,8 +10,8 @@ from selenium.webdriver.common.by import By
 from Nintondo.AutoTests.conftest import driver
 
 @pytest.mark.usefixtures("driver")
-@allure.feature("")
-#
+@allure.feature("Test Connect Wallet")
+# Подключаем кошелек к Nintondo
 def test_connect(driver):
 
     restore_by_private_key = CreateMnemonic(driver)
@@ -27,14 +27,15 @@ def test_connect(driver):
     restore_by_private_key.type_reg_privacy_key()  # Выбираем восстановление через приватник
     restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)  # Вводим приватник
     restore_by_private_key.conf_create_wallet()  # Подтверждаем создание кошелька
-    restore_by_private_key.choose_type_legacy()  # Выбираем:Legacy Type"
+    print("Выбираем тип кошелька: Native, по умолчанию")
+    # Выбираем: Native по умолчанию"
     restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
 
     driver.get("https://nintondo.io/")
-    time.sleep(0.5)
+    time.sleep(4)
     connect.change_network_btn()
     driver.set_window_size(800, 768)
-    time.sleep(0.2)
+    time.sleep(4)
     connect.connect_btn()
 
     WebDriverWait(driver, 10).until(EC.number_of_windows_to_be(2))
@@ -44,6 +45,6 @@ def test_connect(driver):
     print(driver.title)
 
     connect.sign_btn()
-    time.sleep(1)
+    time.sleep(4)
     driver.switch_to.window(windows[0])
     driver.set_window_size(1280, 720)

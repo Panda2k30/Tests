@@ -12,6 +12,9 @@ class NintondoPageSelector:
     SIGN_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[3]/button[1]")
     CHANGE_NETWORK = (By.XPATH, "/html/body/div[1]/nav[1]/div[1]/span")
 
+    OPEN_MENU = (By.XPATH, "/html/body/div[1]/nav[1]/div[3]")
+    PROFILE_BNT = (By.XPATH, "/html/body/div[4]/div/div/div[2]/a[1]")
+
 class NintondoPage(BasePage):
     def __init__(self, driver):
         self.driver = driver  # Сохраняем переданный драйвер
@@ -33,3 +36,20 @@ class NintondoPage(BasePage):
             EC.element_to_be_clickable(NintondoPageSelector.CHANGE_NETWORK))
         change_network_btn.click()
         print("- Поменяли сеть")
+
+class NintondoUserMenu(BasePage):
+    def __init__(self, driver):
+        self.driver = driver  # Сохраняем переданный драйвер
+
+    def open_menu(self):
+        open_menu = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NintondoPageSelector.CONNECT_BTN))
+        open_menu.click()
+        print("- Кликнули на раскрытие меню")
+
+    def menu_profile_btn(self):
+        menu_profile_btn = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NintondoPageSelector.CONNECT_BTN))
+        menu_profile_btn.click()
+        print("- Кликнули на: Profile")
+
