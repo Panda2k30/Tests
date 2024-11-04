@@ -1,12 +1,6 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.Pages.Registration_page import CreateMnemonic
-from Nintondo.AutoTests.Data import Data
-from Nintondo.AutoTests.Pages.Nintondo_Mane import NintondoPage
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
 from Nintondo.AutoTests.conftest import driver
 from Nintondo.AutoTests.tests.test_connect import test_connect
 from Nintondo.AutoTests.Pages.Nintondo_Mane import NintondoUserMenu

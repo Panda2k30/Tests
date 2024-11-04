@@ -1,10 +1,10 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.Pages.Registration_page import CreateMnemonic
+from Nintondo.AutoTests.Pages.Wallet_registration_page import CreateMnemonic
 from Nintondo.AutoTests.Data import Data
-from Nintondo.AutoTests.Pages.Mane_page import ManePage
-from Nintondo.AutoTests.Pages.Receive_Page import ReceivePage
+from Nintondo.AutoTests.Pages.Wallet_mane_page import ManePage
+from Nintondo.AutoTests.Pages.Wallet_receive_Page import ReceivePage
 from Nintondo.AutoTests.conftest import driver
 import os
 
