@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+from Nintondo.AutoTests.Data import Data
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Create valid wallet password")
@@ -15,6 +16,9 @@ from selenium.common.exceptions import TimeoutException
 def test_create_valid_password(driver, password, conf_password):
 
     test_create_valid_password = CreateMnemonic(driver)
+
+    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+
     time.sleep(0.5)
     test_create_valid_password.enter_password(password) # Ввод пароля
     test_create_valid_password.conf_password(conf_password) # Подтверждение пароля
@@ -38,6 +42,9 @@ def test_create_valid_password(driver, password, conf_password):
 # Проверяем негативные сценарии ввода пароля
 def test_create_invalid_password(driver, password, conf_password, expected_error):
     test_create_invalid_password = CreateMnemonic(driver)
+
+    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+
     time.sleep(0.5)
     test_create_invalid_password.enter_password(password)  # Ввод пароля
     test_create_invalid_password.conf_password(conf_password)  # Подтверждение пароля

@@ -10,6 +10,9 @@ from Nintondo.AutoTests.Data import Data
 def test_create_mnemonic(driver):
 
     test_create_mnemonic = CreateMnemonic(driver)
+
+    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+
     time.sleep(0.5)
     test_create_mnemonic.enter_password(Data.PASS) # Ввод пароля
     test_create_mnemonic.conf_password(Data.CONFPASS) # Подтверждение пароля
@@ -28,6 +31,9 @@ def test_create_mnemonic(driver):
 def test_restore_by_private_key(driver):
 
     test_restore_by_private_key = CreateMnemonic(driver)
+
+    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+
     time.sleep(0.5)
     test_restore_by_private_key.enter_password(Data.PASS) # Ввод пароля
     test_restore_by_private_key.conf_password(Data.CONFPASS) # Подтверждение пароля
@@ -44,6 +50,9 @@ def test_restore_by_private_key(driver):
 def test_restore_by_mnemonic(driver):
 
     test_restore_by_mnemonic = CreateMnemonic(driver)
+
+    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+
     time.sleep(0.5)
     test_restore_by_mnemonic.enter_password(Data.PASS)  # Ввод пароля
     test_restore_by_mnemonic.conf_password(Data.CONFPASS)  # Подтверждение пароля

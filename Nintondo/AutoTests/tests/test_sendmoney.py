@@ -14,6 +14,7 @@ from Nintondo.AutoTests.conftest import driver
 @allure.feature("Send money and verify balance")
 # Проверяем отправку с валидным балансом
 def test_valid_sendmoney(driver):
+
     # Вспомогательная функция для проверки отличий в TXID
     def are_txids_different(txid1, txid2):
         # Проверяем, отличаются ли TXID хотя бы одним символом
@@ -22,6 +23,9 @@ def test_valid_sendmoney(driver):
     restore_by_private_key = CreateMnemonic(driver)
     sendmoney = SendPage(driver)
     change_network = ManePage(driver)
+
+    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+
     time.sleep(0.5)
     # Ввод пароля и восстановление кошелька
     restore_by_private_key.enter_password(Data.PASS)
@@ -38,7 +42,7 @@ def test_valid_sendmoney(driver):
     # Смена сети и получение старого баланса
     change_network.change_network()
     time.sleep(0.5)
-    old_balance = change_network.get_balance()
+    change_network.get_balance()
 
     # Получение старого TXID
     old_transaction_verify = change_network.verify_transaction()
@@ -56,7 +60,7 @@ def test_valid_sendmoney(driver):
     time.sleep(0.5)
 
     # Получение нового баланса и TXID
-    new_balance = change_network.get_balance()
+    change_network.get_balance()
     new_transaction_verify = change_network.verify_transaction()
 
     # Проверка, что TXID изменился
@@ -80,6 +84,9 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
     restore_by_private_key = CreateMnemonic(driver)
     send_invalid_amount = SendPage(driver)
     change_network = ManePage(driver)
+
+    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+
     time.sleep(0.5)
     restore_by_private_key.enter_password(Data.PASS)  # Ввод пароля
     restore_by_private_key.conf_password(Data.CONFPASS)  # Подтверждение пароля
