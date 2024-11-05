@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from Nintondo.AutoTests.Pages.Base_page import BasePage
+from Nintondo.AutoTests.Pages.base_page import BasePage
 
 wait = WebDriverWait
 

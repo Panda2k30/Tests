@@ -3,9 +3,9 @@ import allure
 import pytest
 from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.Pages.Wallet_registration_page import CreateMnemonic
-from Nintondo.AutoTests.Pages.Wallet_mane_page import ManePage
-from Nintondo.AutoTests.Pages.Wallet_send_page import SendPage
+from Nintondo.AutoTests.Pages.wallet_registration_page import CreateMnemonic
+from Nintondo.AutoTests.Pages.wallet_mane_page import ManePage
+from Nintondo.AutoTests.Pages.wallet_send_page import SendPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -15,7 +15,7 @@ from selenium.webdriver.common.by import By
 # Проверяем отправку с валидным балансом
 def test_valid_sendmoney(driver):
 
-    # Вспомогательная функция для проверки отличий в TXID
+    # Функция для проверки отличий в TXID
     def are_txids_different(txid1, txid2):
         # Проверяем, отличаются ли TXID хотя бы одним символом
         return any(char1 != char2 for char1, char2 in zip(txid1, txid2)) or len(txid1) != len(txid2)
