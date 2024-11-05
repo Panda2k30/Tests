@@ -28,6 +28,8 @@ class ProfilePageSelector:
     INSCRIPTIONS_LIST_BTN = (By.XPATH, "//button[text()='List']")
     INSCRIPTIONS_SIGN_BTN = (By.XPATH, "//button[text()='Sign']")
 
+    INSCRIPTIONS_UNLIST_BTN = (By.XPATH, "//button[text()='Unlist']")
+
 class ProfilePage(BasePage):
     def __init__(self, driver):
         self.driver = driver  # Сохраняем переданный драйвер
@@ -101,7 +103,13 @@ class Inscriptions(BasePage):
         inscription_list_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_LIST_BTN))
         inscription_list_btn.click()
-        print("- Ввели в поле стоимость")
+        print("- Кликнули на: List")
+
+    def inscription_unlist_btn(self):
+        inscription_unlist_btn = wait(self.driver, 10).until(
+                EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_UNLIST_BTN))
+        inscription_unlist_btn.click()
+        print("- Кликнули на: Unlist")
 
     def sign_btn(self):
         sign_btn = wait(self.driver, 10).until(
