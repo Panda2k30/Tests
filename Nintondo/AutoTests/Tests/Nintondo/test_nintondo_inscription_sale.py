@@ -2,7 +2,7 @@ import time
 import allure
 import pytest
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.tests.test_connect import test_connect
+from Nintondo.AutoTests.tests.Nintondo.test_connect import test_connect
 from Nintondo.AutoTests.Pages.Nintondo_Mane import NintondoUserMenu
 from Nintondo.AutoTests.Pages.Nintondo_Profile import ProfilePage
 

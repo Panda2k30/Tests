@@ -7,7 +7,7 @@ import allure
 @pytest.fixture(autouse=True, scope="function")
 def driver(request):
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
     options.add_argument("--window-size=1280,720")
     extension_path = "/home/dev/Autotests_wallet/Nintondo/NintondoWallet.crx"
     options.add_extension(extension_path)
@@ -23,7 +23,7 @@ def driver(request):
 
     yield driver
 
-    # Попытка сделать скриншот и прикрепить его к отчёту Allure
+    # Пробуем создать скриншот для алюра
     screenshot_path = f"{screenshot_dir}/{request.node.name}.png"
     try:
         if len(driver.window_handles) > 0:

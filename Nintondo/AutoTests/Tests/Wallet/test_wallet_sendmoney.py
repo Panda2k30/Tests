@@ -2,7 +2,7 @@ import time
 import allure
 import pytest
 from Nintondo.AutoTests.Pages.Wallet_registration_page import CreateMnemonic
-from Nintondo.AutoTests.Data import Data
+from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.Pages.Wallet_mane_page import ManePage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -74,9 +74,11 @@ def test_valid_sendmoney(driver):
 @allure.feature("Sending money with an invalid balance")
 @pytest.mark.parametrize("amount, blank, expected_error", [
     ("555555555", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
-    ("", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
+    ("", f"{Data.VALID_RECEIVE_ADDRESS}", "Minimum amount is 0.00000001 BEL"),
     ("0.1", "", "Insert receiver's address"),
-    ("", "", "Insert receiver's address"),])
+    ("", "", "Insert receiver's address"),
+    ("", f"{Data.NOT_VALID_ADDRESS}", "Invalid receiver's address")])
+
 # Проверяем отправку с невалидным балансом и негативные сценарии
 def test_invalid_sendmoney(driver, amount, blank, expected_error):
 

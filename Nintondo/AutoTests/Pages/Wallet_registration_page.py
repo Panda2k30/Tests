@@ -26,7 +26,7 @@ class LoginPageSelectors:
     RESTORE_MNEMONIC_INPUT = (By.XPATH, "//input[@class='_input_u2hpt_1']")
     RESTORE_BUTTON = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[2]/button")
 
-    LEGACY_TYPE = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/form/div/div[2]")
+    LEGACY_TYPE = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[1]/div/div[2]")
     NATIVE_SEGWIT = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[1]/div[1]")
 
 

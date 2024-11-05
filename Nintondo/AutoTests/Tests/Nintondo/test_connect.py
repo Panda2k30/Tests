@@ -2,7 +2,7 @@ import time
 import allure
 import pytest
 from Nintondo.AutoTests.Pages.Wallet_registration_page import CreateMnemonic
-from Nintondo.AutoTests.Data import Data
+from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.Pages.Nintondo_Mane import NintondoPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait

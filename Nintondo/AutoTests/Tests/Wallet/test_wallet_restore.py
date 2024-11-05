@@ -2,7 +2,7 @@ import time
 import allure
 import pytest
 from Nintondo.AutoTests.Pages.Wallet_registration_page import CreateMnemonic
-from Nintondo.AutoTests.Data import Data
+from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.Pages.Wallet_registration_page import LoginPageSelectors
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -26,7 +26,8 @@ def test_valid_create_mnemonic(driver):
     test_create_mnemonic.paste_mnen() # Выводим фразы
     test_create_mnemonic.conf_save() # Подтверждаем сохранение мнемоники
     test_create_mnemonic.conf_create_wallet() # Подтверждаем создание кошелька
-    test_create_mnemonic.choose_type_legacy() # Выбираем:Legacy Type"
+    print("Выбираем тип кошелька: Native, по умолчанию")
+    # Выбираем: Native по умолчанию"
     test_create_mnemonic.conf_create_wallet() # Подтверждаем создание кошелька
 
 @pytest.mark.usefixtures("driver")
@@ -68,7 +69,8 @@ def test_restore_by_private_key(driver):
     test_restore_by_private_key.type_reg_privacy_key() # Выбираем восстановление через приватник
     test_restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET) # Вводим приватник
     test_restore_by_private_key.conf_create_wallet() # Подтверждаем создание кошелька
-    test_restore_by_private_key.choose_type_legacy()  # Выбираем:Legacy Type"
+    print("Выбираем тип кошелька: Native, по умолчанию")
+    # Выбираем: Native по умолчанию"
     test_restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
 
 @pytest.mark.usefixtures("driver")
@@ -91,7 +93,8 @@ def test_restore_by_invalid_private_key(driver, data, expected_error):
     test_restore_by_invalid_private_key.type_reg_privacy_key() # Выбираем восстановление через приватник
     test_restore_by_invalid_private_key.restore_input(data) # Вводим приватник
     test_restore_by_invalid_private_key.conf_create_wallet() # Подтверждаем создание кошелька
-    test_restore_by_invalid_private_key.choose_type_legacy()  # Выбираем:Legacy Type"
+    print("Выбираем тип кошелька: Native, по умолчанию")
+    # Выбираем: Native по умолчанию"
     test_restore_by_invalid_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
 
     try:

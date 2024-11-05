@@ -2,7 +2,7 @@ import time
 import allure
 import pytest
 from Nintondo.AutoTests.Pages.Wallet_registration_page import CreateMnemonic
-from Nintondo.AutoTests.Data import Data
+from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.Pages.Wallet_mane_page import ManePage
 from Nintondo.AutoTests.Pages.Wallet_receive_Page import ReceivePage
 from Nintondo.AutoTests.conftest import driver
@@ -23,10 +23,12 @@ def test_wallet_address_verification(driver):
     restore_by_private_key.enter_password(Data.PASS)  # Ввод пароля
     restore_by_private_key.conf_password(Data.CONFPASS)  # Подтверждение пароля
     restore_by_private_key.click_reg_button()  # Жмем на кнопку продолжения
+
     restore_by_private_key.type_reg_privacy_key()  # Выбираем восстановление через приватник
     restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)  # Вводим приватник
     restore_by_private_key.conf_create_wallet()  # Подтверждаем создание кошелька
-    restore_by_private_key.choose_type_legacy()  # Выбираем: Legacy Type
+    print("Выбираем тип кошелька: Native, по умолчанию")
+    # Выбираем: Native по умолчанию"
     restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
     test_wallet_address_verification.get_balance()
     test_wallet_address_verification.change_network()
@@ -36,7 +38,7 @@ def test_wallet_address_verification(driver):
     received_address_text = check_address.receive_address_text()
 
     screenshot_folder = 'screenshots'
-    screenshot_file_path = os.path.join(screenshot_folder, 'screenshot.png')
+    screenshot_file_path = os.path.join(screenshot_folder, 'screenshot-address.png')
     driver.get_screenshot_as_file(screenshot_file_path)
     print(f"Скриншот страницы с адресом сохранен в: {screenshot_file_path}")
 

@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from Nintondo.AutoTests.Data import Data
+from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.conftest import driver
 from .Base_page import BasePage
 import pyperclip
@@ -28,7 +28,7 @@ class ManePageSelector:
     TRANSACTION_LIST = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[3]/div[1]/a[1]/div[1]/div[2]")
     TESTNET_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]")
 
-    ACCOUNT_ADDRESS = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div[2]/div/button")
+    ACCOUNT_ADDRESS = (By.CSS_SELECTOR, "._walletDiv_1nrdb_1 ._accPanel_1nrdb_4 ._accPubAddress_1nrdb_13")
 
 class ManePage(BasePage):
     def __init__(self, driver):

@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
-from Nintondo.AutoTests.Data import Data
+from Nintondo.AutoTests.data import Data
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Create valid wallet password")
