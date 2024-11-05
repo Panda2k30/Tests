@@ -1,14 +1,14 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.Pages.Wallet_registration_page import CreateMnemonic
 from Nintondo.AutoTests.data import Data
+from Nintondo.AutoTests.conftest import driver
+from Nintondo.AutoTests.Pages.Wallet_registration_page import CreateMnemonic
 from Nintondo.AutoTests.Pages.Wallet_mane_page import ManePage
+from Nintondo.AutoTests.Pages.Wallet_send_page import SendPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from Nintondo.AutoTests.Pages.Wallet_send_page import SendPage
 from selenium.webdriver.common.by import By
-from Nintondo.AutoTests.conftest import driver
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Send money and verify balance")
@@ -35,8 +35,10 @@ def test_valid_sendmoney(driver):
     restore_by_private_key.type_reg_privacy_key()
     restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)
     restore_by_private_key.conf_create_wallet()
-    restore_by_private_key.choose_type_legacy()
+    print("Выбираем тип кошелька: Native, по умолчанию")
+    # Выбираем: Native по умолчанию"
     restore_by_private_key.conf_recover_wallet()
+
     time.sleep(0.5)
     change_network.get_balance()
     # Смена сети и получение старого баланса
