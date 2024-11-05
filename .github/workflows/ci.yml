@@ -1,3 +1,4 @@
+
 name: CI
 
 on:
@@ -16,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Docker
+      - name: Install required packages
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -24,8 +25,17 @@ jobs:
             curl \
             gnupg \
             lsb-release
-          echo "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+      - name: Add Docker’s official GPG key
+        run: |
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+      - name: Set up the Docker repository
+        run: |
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+      - name: Install Docker
+        run: |
           sudo apt-get update
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
