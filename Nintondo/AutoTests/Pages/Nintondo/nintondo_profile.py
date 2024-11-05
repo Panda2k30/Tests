@@ -99,6 +99,12 @@ class Inscriptions(BasePage):
         inscription_field_price.send_keys("1")
         print("- Ввели в поле стоимость")
 
+    def inscription_field_invalid_price(self, amount):
+        inscription_field_invalid_price = wait(self.driver, 10).until(
+                EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_FIELD_PRICE))
+        inscription_field_invalid_price.send_keys(amount)
+        print("- Ввели в поле невалидную стоимость")
+
     def inscription_list_btn(self):
         inscription_list_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_LIST_BTN))
