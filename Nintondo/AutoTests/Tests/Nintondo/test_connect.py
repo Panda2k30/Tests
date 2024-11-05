@@ -36,7 +36,7 @@ def test_connect(driver):
     change_network.change_network()
 
     driver.get("https://nintondo.io/")
-    # connect.change_network_btn()
+
     time.sleep(0.3)
     connect.change_network_btn()
 
@@ -44,7 +44,6 @@ def test_connect(driver):
 
     time.sleep(0.3)
     connect.connect_btn()
-    # connect.switch_network_btn()
 
     WebDriverWait(driver, 10).until(EC.number_of_windows_to_be(2))
     windows = driver.window_handles
