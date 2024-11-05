@@ -3,8 +3,8 @@ import allure
 import pytest
 from Nintondo.AutoTests.conftest import driver
 from Nintondo.AutoTests.Tests.Nintondo.test_connect import test_connect
-from Nintondo.AutoTests.Pages.nintondo_mane import NintondoUserMenu
-from Nintondo.AutoTests.Pages.nintondo_profile import ProfilePage
+from Nintondo.AutoTests.Pages.Nintondo.nintondo_mane import NintondoUserMenu
+from Nintondo.AutoTests.Pages.Nintondo.nintondo_profile import ProfilePage
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Test inscription sale")

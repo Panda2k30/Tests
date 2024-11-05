@@ -1,14 +1,13 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.Pages.wallet_registration_page import CreateMnemonic
+from Nintondo.AutoTests.Pages.Wallet.wallet_registration_page import CreateMnemonic
 from Nintondo.AutoTests.data import Data
-from Nintondo.AutoTests.Pages.nintondo_mane import NintondoPage
+from Nintondo.AutoTests.Pages.Nintondo.nintondo_mane import NintondoPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.Pages.wallet_mane_page import ManePage
+from Nintondo.AutoTests.Pages.Wallet.wallet_mane_page import ManePage
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Test Connect Wallet")

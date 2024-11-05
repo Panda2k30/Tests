@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.conftest import driver
-from .base_page import BasePage
+from Nintondo.AutoTests.Pages.base_page import BasePage
 import pyperclip
 import time
 

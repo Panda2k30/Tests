@@ -24,7 +24,7 @@ def driver(request):
 
     yield driver
 
-    # Пробуем создать скриншот для алюра
+    # Пробуем создать скриншот для аллюра
     screenshot_path = f"{screenshot_dir}/{request.node.name}.png"
     try:
         if len(driver.window_handles) > 0:
