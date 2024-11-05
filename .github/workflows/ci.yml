@@ -16,6 +16,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Remove old versions of Docker
+        run: |
+          sudo apt-get remove docker docker-engine docker.io containerd runc || true
+          sudo apt-get autoremove -y
+
       - name: Set up Docker
         run: |
           sudo apt-get update
