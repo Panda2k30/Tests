@@ -8,5 +8,9 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./Nintondo:/usr/workspace/Nintondo
-    command: /bin/sh -c "ls -la && pytest"
     working_dir: /usr/workspace/Nintondo/AutoTests/Tests
+    environment:
+      - DISPLAY=:99
+      - CHROME_BIN=/usr/bin/chromium
+      - CHROMEDRIVER_PATH=/usr/bin/chromedriver
+    command: /bin/sh -c "ls -la && pytest"

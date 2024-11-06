@@ -8,11 +8,11 @@ import allure
 def driver(request):
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1280,720")
     project_path = os.path.dirname(os.path.abspath(__file__))
     extension_path = f"{project_path}/NintondoWallet.crx"
     options.add_extension(extension_path)
+    options.add_argument(f'--load-extension={extension_path}')
 
     # Инициализируем драйвер
     driver = webdriver.Chrome(options=options)
