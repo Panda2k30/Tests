@@ -1,16 +1,16 @@
-version: '3.7'
-
-services:
-  regression:
-    image: pytest:v1
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./Nintondo:/usr/workspace/Nintondo
-    working_dir: /usr/workspace/Nintondo/AutoTests/Tests
-    environment:
-      - DISPLAY=:99
-      - CHROME_BIN=/usr/bin/chromium
-      - CHROMEDRIVER_PATH=/usr/bin/chromedriver
-    command: /bin/sh -c "ls -la && pytest"
+#version: '3.7'
+#
+#services:
+#  regression:
+#    image: pytest:v1
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./Nintondo:/usr/workspace/Nintondo
+#    working_dir: /usr/workspace/Nintondo/AutoTests/Tests
+#    environment:
+#      - DISPLAY=:99
+#      - CHROME_BIN=/usr/bin/chromium
+#      - CHROMEDRIVER_PATH=/usr/bin/chromedriver
+#    command: /bin/sh -c "ls -la && pytest -sv --alluredir=allure-results"
