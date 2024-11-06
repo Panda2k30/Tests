@@ -1,60 +1,58 @@
-FROM python:3.12.0a4-alpine3.17
+# Используем официальный образ Python на основе Ubuntu
+FROM ubuntu:20.04
 
-# Обновление репозиториев Alpine
-RUN echo "https://dl-4.alpinelinux.org/alpine/v3.10/main" >> /etc/apk/repositories && \
-    echo "https://dl-4.alpinelinux.org/alpine/v3.10/community" >> /etc/apk/repositories
+# Устанавливаем переменную окружения для подавления интерактивных запросов
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Установка Chromium и ChromeDriver
-RUN apk update && \
-    apk add --no-cache \
-    chromium \
-    chromium-chromedriver \
-    nss \
-    freetype \
-    harfbuzz \
-    ttf-freefont
+# Обновляем систему и устанавливаем необходимые зависимости
+RUN apt-get update && apt-get install -y \
+    wget \
+    curl \
+    unzip \
+    gnupg2 \
+    ca-certificates \
+    lsb-release \
+    libx11-dev \
+    libxcomposite1 \
+    libxrandr2 \
+    libglu1-mesa \
+    libnss3 \
+    libgdk-pixbuf2.0-0 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libgbm1 \
+    libasound2 \
+    fonts-liberation \
+    xdg-utils \
+    libappindicator3-1 \
+    libnspr4 \
+    libxtst6 \
+    sudo \
+    python3-pip \
+    python3-dev \
+    && apt-get clean
 
-# Установка зависимостей для работы с Selenium и тестами
-RUN pip3 install selenium pytest webdriver-manager
+# Устанавливаем Google Chrome
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN dpkg -i google-chrome-stable_current_amd64.deb || apt --fix-broken install -y
 
-# Get all the prereqs
-# Добавляем публичный ключ для установки пакетов
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+# Устанавливаем Chromium из репозитория Google
+RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o /tmp/google-chrome-stable_current_amd64.deb \
+    && dpkg -i /tmp/google-chrome-stable_current_amd64.deb \
+    && apt-get update && apt-get install -f -y
 
-# Удаляем старый файл и скачиваем новый
-RUN rm -f /tmp/glibc-2.30-r0.apk && \
-    wget -O /tmp/glibc-2.30-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk
+# Устанавливаем Selenium и pytest
+RUN pip3 install --upgrade pip
+RUN pip3 install selenium pytest
 
-# Проверка наличия файла перед скачиванием (удаление если существует)
-RUN [ ! -f /tmp/glibc-2.30-r0.apk ] && \
-    wget -O /tmp/glibc-2.30-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk || echo "Файл уже существует"
-
-# Дополнительный файл, скачиваем с другим именем
-RUN wget -O /tmp/glibc-bin-2.30-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-bin-2.30-r0.apk
-
-# Установка Allure
-RUN apk add --no-cache openjdk11-jre curl tar && \
-    curl -o allure-2.13.8.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.13.8/allure-commandline-2.13.8.tgz && \
-    tar -zxvf allure-2.13.8.tgz -C /opt/ && \
-    rm -f /usr/bin/allure && \
-    ln -s /opt/allure-2.13.8/bin/allure /usr/bin/allure && \
-    rm allure-2.13.8.tgz
-
-# Установка рабочего каталога
-WORKDIR /usr/workspace
-
-# Копирование зависимостей Python
-COPY ./requirements.txt /usr/workspace
-
-# Установка Python зависимостей
+# Копируем requirements.txt в контейнер
+COPY requirements.txt /app/
+WORKDIR /app
 RUN pip3 install -r requirements.txt
 
-# Указание пути к бинарнику Chromium для Selenium
-ENV CHROME_BIN=/usr/bin/chromium
-ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+# Добавляем пути к браузерам в переменные среды
+ENV CHROMIUM_PATH="/usr/bin/chromium"
+ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 
-# Открытие порта для Allure
-EXPOSE 8080
-
-# Команда по умолчанию для запуска тестов
-CMD ["pytest"]
+# Запускаем pytest для тестов
+CMD ["pytest", "AutoTests/Tests/wallet_tests/test_wallet_sendmoney.py"]

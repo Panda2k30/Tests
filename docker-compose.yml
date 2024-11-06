@@ -1,16 +1,25 @@
-version: '3.7'
+version: '3.8'
 
 services:
-  regression:
-    image: pytest:v1
+  web:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: selenium-tests
     volumes:
       - ./Nintondo:/usr/workspace/Nintondo
     working_dir: /usr/workspace/Nintondo/AutoTests/Tests
-    environment:
-      - DISPLAY=:99
-      - CHROME_BIN=/usr/bin/chromium
-      - CHROMEDRIVER_PATH=/usr/bin/chromedriver
-    command: /bin/sh -c "ls -la && pytest -sv --alluredir=allure-results"
+    command: pytest -s
+#    environment:
+#      - DISPLAY=:99  # Это необходимо, если требуется запускать браузер в headless-режиме
+#    ports:
+#      - "4444:4444"  # Если нужно пробросить порты для взаимодействия с Selenium
+#    networks:
+#      - selenium_network
+
+  # Если хотите использовать X11 для отображения, то можно добавить X сервер
+  # Если тесты работают в headless режиме, этот сервис не нужен.
+
+networks:
+  selenium_network:
+    driver: bridge

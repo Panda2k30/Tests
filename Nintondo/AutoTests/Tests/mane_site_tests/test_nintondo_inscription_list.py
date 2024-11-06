@@ -73,7 +73,7 @@ def test_valid_inscription_list(driver):
     ("0.00000001", "Price must be at least 1000 satoshi", "group1"),
 ])
 
-# Проверяем публикацию и снятие инскрипций с продажи
+# Проверяем ввод невалидных значений в поле суммы инскрипции
 def test_invalid_inscription_list(driver, amount, expected_error, check_type):
     test_connect(driver)
 
