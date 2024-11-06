@@ -3,8 +3,6 @@ import pytest
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchWindowException
 import allure
-import sys
-sys.path.append('/usr/workspace/Autotests_wallet')
 
 @pytest.fixture(autouse=True, scope="function")
 def driver(request):
