@@ -10,12 +10,12 @@ services:
       - ./Nintondo:/usr/workspace/Nintondo
     working_dir: /usr/workspace/Nintondo/AutoTests/Tests
     command: pytest -s
-#    environment:
-#      - DISPLAY=:99  # Это необходимо, если требуется запускать браузер в headless-режиме
-#    ports:
-#      - "4444:4444"  # Если нужно пробросить порты для взаимодействия с Selenium
-#    networks:
-#      - selenium_network
+    environment:
+      - DISPLAY=:99  # Это необходимо, если требуется запускать браузер в headless-режиме
+    ports:
+      - "4444:4444"  # Если нужно пробросить порты для взаимодействия с Selenium
+    networks:
+      - selenium_network
 
   # Если хотите использовать X11 для отображения, то можно добавить X сервер
   # Если тесты работают в headless режиме, этот сервис не нужен.
