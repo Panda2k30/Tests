@@ -1,8 +1,10 @@
-# Используйте официальный образ Ubuntu
-FROM ubuntu:latest
-LABEL authors="dev"
+# Используйте официальный образ Python с поддержкой slim
+FROM python:3.10-slim
 
-# Установите необходимые системные библиотеки
+# Установите рабочую директорию
+WORKDIR /app
+
+# Установите необходимые системные библиотеки для работы Chrome и ChromeDriver
 RUN apt-get update && apt-get install -y \
     wget \
     unzip \
@@ -27,7 +29,8 @@ RUN apt-get update && apt-get install -y \
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update \
-    && apt-get install -y google-chrome-stable
+    && apt-get install -y google-chrome-stable \
+    && rm -rf /var/lib/apt/lists/*
 
 # Установка ChromeDriver
 RUN CHROME_VERSION=$(google-chrome --version | sed 's/.* //;s/\..*//') \
@@ -38,16 +41,10 @@ RUN CHROME_VERSION=$(google-chrome --version | sed 's/.* //;s/\..*//') \
     && chmod +x /usr/local/bin/chromedriver \
     && rm chromedriver_linux64.zip
 
-# Используйте официальный образ Python
-FROM python:3.10-slim
-
-# Установите рабочую директорию
-WORKDIR /app
-
 # Скопируйте файлы зависимостей
 COPY requirements.txt .
 
-# Установите зависимости
+# Установите зависимости Python
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Скопируйте весь код в контейнер
