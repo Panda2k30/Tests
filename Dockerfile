@@ -4,6 +4,9 @@ FROM ubuntu:20.04
 # Устанавливаем переменную окружения для подавления интерактивных запросов
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Переходим на пользователя root для установки пакетов с максимальными правами
+USER root
+
 # Обновляем систему и устанавливаем необходимые зависимости
 RUN apt-get update && apt-get install -y \
     wget \
@@ -33,6 +36,10 @@ RUN apt-get update && apt-get install -y \
     xclip \
     x11-utils \
     xvfb \
+    libcups2 \
+    xfonts-100dpi \
+    xfonts-75dpi \
+    libxmu6 \
     && apt-get clean  # Очищаем кэш apt, чтобы уменьшить размер образа
 
 # Устанавливаем Google Chrome
@@ -48,6 +55,8 @@ RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_am
 RUN pip3 install --upgrade pip
 RUN pip3 install selenium pytest
 
+RUN apt-get update && apt-get install -y xclip x11-utils && apt-get clean && \
+    dpkg -l | grep xclip
 # Копируем requirements.txt в контейнер
 COPY requirements.txt /app/
 
@@ -59,4 +68,4 @@ ENV CHROMIUM_PATH="/usr/bin/chromium"
 ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 
 # Запускаем pytest для тестов
-ENTRYPOINT ["xvfb-run", "-a", "pytest"]
+CMD ["pytest"]

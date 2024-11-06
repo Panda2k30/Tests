@@ -1,21 +1,23 @@
+version: '3.8'
+
 services:
   web:
-    image: selenium/standalone-chrome:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: selenium-tests
     volumes:
-      - ./Nintondo:/usr/workspace/Nintondo
+      - ./Nintondo:/usr/workspace/Nintondo  # Том для проекта
+      - /tmp/.X11-unix:/tmp/.X11-unix  # Проброс X11
     working_dir: /usr/workspace/Nintondo/AutoTests/Tests
-    entrypoint: ["xvfb-run", "-a", "pytest", "-s"]
+    command:
+      - pytest
     environment:
-      - DISPLAY=:99  # Используется виртуальный дисплей
+      - DISPLAY=${DISPLAY}  # Использование переменной окружения DISPLAY для подключения X11
     ports:
-      - "4444:4444"
+      - "4444:4444"  # Selenium WebDriver порт
     networks:
       - selenium_network
-    deploy:
-      resources:
-        limits:
-          memory: 2g  # Ограничение памяти для контейнера
 
 networks:
   selenium_network:
