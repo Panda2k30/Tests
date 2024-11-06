@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
     libxtst6 \
     libxrandr2 \
     x11-utils \
+    xvfb \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -37,7 +38,7 @@ RUN CHROME_VERSION=$(google-chrome --version | sed 's/.* //;s/\..*//') \
     && CHROME_DRIVER_VERSION=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION) \
     && wget -q "https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip" \
     && unzip chromedriver_linux64.zip \
-    && mv chromedriver /usr/local/bin/ \
+    && mv chromedriver /usr/local/bin/chromedriver \
     && chmod +x /usr/local/bin/chromedriver \
     && rm chromedriver_linux64.zip
 
