@@ -8,7 +8,7 @@ from Nintondo.AutoTests.Pages.mane_site.nintondo_profile import ProfilePage, Ins
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.common import TimeoutException
+from selenium.common import TimeoutException, StaleElementReferenceException
 
 
 @pytest.mark.usefixtures("driver")
@@ -22,7 +22,7 @@ def test_valid_inscription_list(driver):
 
     menu.open_menu()
     menu.menu_profile_btn()
-
+    time.sleep(0.5)
     inscription.select_inscription()
     inscription.inscription_list()
     inscription.inscription_field_price()
@@ -33,7 +33,11 @@ def test_valid_inscription_list(driver):
     time.sleep(0.3)
     driver.switch_to.window(windows[1])
 
-    inscription.sign_btn()
+    try:
+        inscription.sign_btn()
+    except StaleElementReferenceException:
+        inscription = Inscriptions(driver)  # Повторно создаем объект инскрипции
+        inscription.sign_btn()  # Повторно находим кнопку и кликаем
     time.sleep(0.3)
 
     driver.switch_to.window(windows[0])
@@ -48,7 +52,7 @@ def test_valid_inscription_list(driver):
         assert error_message.text == expected_sign_error, f"Ожидалось сообщение об ошибке: '{expected_sign_error}', но получено: '{error_message.text}'"
     except Exception as e:
         pytest.fail(f"Ошибка при проверке сообщения об ошибке после публикации: {e}")
-
+    time.sleep(0.3)
     inscription.select_inscription()
     inscription.inscription_unlist()
     inscription.inscription_unlist_btn()
@@ -82,7 +86,7 @@ def test_invalid_inscription_list(driver, amount, expected_error, check_type):
 
     menu.open_menu()
     menu.menu_profile_btn()
-
+    time.sleep(0.5)
     inscription.select_inscription()
     inscription.inscription_list()
     inscription.inscription_field_invalid_price(amount)
