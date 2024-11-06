@@ -9,16 +9,13 @@ services:
     volumes:
       - ./Nintondo:/usr/workspace/Nintondo
     working_dir: /usr/workspace/Nintondo/AutoTests/Tests
-    command: pytest -s
+    command: xvfb-run -a pytest -s  # Запуск через Xvfb для headless-режима
     environment:
-      - DISPLAY=:99  # Это необходимо, если требуется запускать браузер в headless-режиме
+      - DISPLAY=:99  # Используется виртуальный дисплей
     ports:
-      - "4444:4444"  # Если нужно пробросить порты для взаимодействия с Selenium
+      - "4444:4444"
     networks:
       - selenium_network
-
-  # Если хотите использовать X11 для отображения, то можно добавить X сервер
-  # Если тесты работают в headless режиме, этот сервис не нужен.
 
 networks:
   selenium_network:
