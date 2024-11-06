@@ -16,7 +16,7 @@ from selenium.common import TimeoutException
 # Проверяем публикацию и снятие инскрипций с продажи
 def test_valid_inscription_list(driver):
     test_connect(driver)
-
+    time.sleep(0.5)
     menu = NintondoUserMenu(driver)
     inscription = Inscriptions(driver)
 
@@ -76,7 +76,7 @@ def test_valid_inscription_list(driver):
 # Проверяем ввод невалидных значений в поле суммы инскрипции
 def test_invalid_inscription_list(driver, amount, expected_error, check_type):
     test_connect(driver)
-
+    time.sleep(0.5)
     menu = NintondoUserMenu(driver)
     inscription = Inscriptions(driver)
 
