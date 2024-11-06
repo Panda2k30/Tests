@@ -1,15 +1,15 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.Pages.Wallet.wallet_registration_page import CreateMnemonic
+from Nintondo.AutoTests.Pages.wallet.wallet_registration_page import CreateMnemonic
 from Nintondo.AutoTests.data import Data
-from Nintondo.AutoTests.Pages.Wallet.wallet_mane_page import ManePage
-from Nintondo.AutoTests.Pages.Wallet.wallet_receive_page import ReceivePage
+from Nintondo.AutoTests.Pages.wallet.wallet_mane_page import ManePage
+from Nintondo.AutoTests.Pages.wallet.wallet_receive_page import ReceivePage
 from Nintondo.AutoTests.conftest import driver
 import os
 
 @pytest.mark.usefixtures("driver")
-@allure.feature("Wallet address verification")
+@allure.feature("wallet_tests address verification")
 # Проверка адреса кошелька
 
 def test_wallet_address_verification(driver):

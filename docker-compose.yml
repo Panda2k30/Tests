@@ -7,8 +7,8 @@
 #      context: .
 #      dockerfile: Dockerfile
 #    volumes:
-#      - ./Nintondo:/usr/workspace/Nintondo
-#    working_dir: /usr/workspace/Nintondo/AutoTests/Tests
+#      - ./mane_site:/usr/workspace/mane_site
+#    working_dir: /usr/workspace/mane_site/AutoTests/Tests
 #    environment:
 #      - DISPLAY=:99
 #      - CHROME_BIN=/usr/bin/chromium

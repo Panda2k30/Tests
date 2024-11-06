@@ -2,9 +2,9 @@ import time
 import allure
 import pytest
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.Tests.Nintondo.test_connect import test_connect
-from Nintondo.AutoTests.Pages.Nintondo.nintondo_mane import NintondoUserMenu
-from Nintondo.AutoTests.Pages.Nintondo.nintondo_profile import ProfilePage, Inscriptions
+from Nintondo.AutoTests.Tests.mane_site_tests.test_connect import test_connect
+from Nintondo.AutoTests.Pages.mane_site.nintondo_mane import NintondoUserMenu
+from Nintondo.AutoTests.Pages.mane_site.nintondo_profile import ProfilePage, Inscriptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
