@@ -1,16 +1,16 @@
-#version: '3.7'
-#
-#services:
-#  regression:
-#    image: pytest:v1
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./mane_site:/usr/workspace/mane_site
-#    working_dir: /usr/workspace/mane_site/AutoTests/Tests
-#    environment:
-#      - DISPLAY=:99
-#      - CHROME_BIN=/usr/bin/chromium
-#      - CHROMEDRIVER_PATH=/usr/bin/chromedriver
-#    command: /bin/sh -c "ls -la && pytest -sv --alluredir=allure-results"
+version: '3.7'
+
+services:
+  regression:
+    image: pytest:v1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./mane_site:/usr/workspace/mane_site
+    working_dir: /usr/workspace/mane_site/AutoTests/Tests
+    environment:
+      - DISPLAY=:99
+      - CHROME_BIN=/usr/bin/chromium
+      - CHROMEDRIVER_PATH=/usr/bin/chromedriver
+    command: /bin/sh -c "ls -la && pytest -sv --alluredir=allure-results"
