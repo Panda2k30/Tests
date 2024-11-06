@@ -41,6 +41,7 @@ RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_am
     && dpkg -i /tmp/google-chrome-stable_current_amd64.deb \
     && apt-get update && apt-get install -f -y
 
+RUN apt-get update && apt-get install -y xclip
 # Устанавливаем Selenium и pytest
 RUN pip3 install --upgrade pip
 RUN pip3 install selenium pytest

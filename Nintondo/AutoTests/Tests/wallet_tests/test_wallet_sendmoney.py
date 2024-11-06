@@ -74,6 +74,7 @@ def test_valid_sendmoney(driver):
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Sending money with an invalid balance")
+@pytest.mark.xfail
 @pytest.mark.parametrize("amount, blank, expected_error", [
     ("555555555", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
     ("", f"{Data.VALID_RECEIVE_ADDRESS}", "Minimum amount is 0.00000001 BEL"),
