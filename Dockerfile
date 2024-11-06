@@ -1,61 +1,37 @@
-# Используйте официальный образ Ubuntu
-FROM ubuntu:latest
-LABEL authors="dev"
+FROM python:3.12.0a4-alpine3.17
 
-# Установите необходимые системные библиотеки
-RUN apt-get update && apt-get install -y \
-    wget \
-    unzip \
-    gnupg \
-    gnupg2 \
-    libxss1 \
-    libappindicator3-1 \
-    libatk-bridge2.0-0 \
-    libgtk-3-0 \
-    libgbm-dev \
-    libnss3 \
-    libx11-xcb1 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxi6 \
-    libxtst6 \
-    libxrandr2 \
-    x11-utils \
-    xvfb \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# update apk repo
+RUN echo "https://dl-4.alpinelinux.org/alpine/v3.10/main" >> /etc/apk/repositories && \
+    echo "https://dl-4.alpinelinux.org/alpine/v3.10/community" >> /etc/apk/repositories
 
-# Установка Google Chrome
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/*
+# install chromedriver
+RUN apk update
+RUN apk add --no-cache chromium chromium-chromedriver tzdata
 
-# Установка ChromeDriver
-RUN CHROME_VERSION=$(google-chrome --version | sed 's/.* //;s/\..*//') \
-    && CHROME_DRIVER_VERSION=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION) \
-    && wget -q "https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip" \
-    && unzip chromedriver_linux64.zip \
-    && mv chromedriver /usr/local/bin/chromedriver \
-    && chmod +x /usr/local/bin/chromedriver \
-    && rm chromedriver_linux64.zip
+# Get all the prereqs
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk
+RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-bin-2.30-r0.apk
 
-# Используйте официальный образ Python
-FROM python:3.10-slim
+RUN apk update && \
+    apk add openjdk11-jre curl tar && \
+    curl -o allure-2.13.8.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.13.8/allure-commandline-2.13.8.tgz && \
+    tar -zxvf allure-2.13.8.tgz -C /opt/ && \
+    rm allure-2.13.8.tgz && \
+    # Remove existing allure link if it exists
+    rm -f /usr/bin/allure && \
+    # Create a new symbolic link to allure
+    ln -s /opt/allure-2.13.8/bin/allure /usr/bin/allure
+WORKDIR /usr/workspace
 
-# Установите рабочую директорию
-WORKDIR /app
+# Установка pytest
+RUN pip install --no-cache-dir pytest
 
-# Скопируйте файлы зависимостей
-COPY requirements.txt .
+# Проверка, что pytest установлен и доступен
+RUN pytest --version
 
-# Установите зависимости
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy the dependencies file to the working directory
+COPY ./requirements.txt /usr/workspace
 
-# Скопируйте весь код в контейнер
-COPY Nintondo .
-
-# Укажите команду для запуска тестов
-CMD ["pytest"]
+# Install Python dependencies
+RUN pip3 install -r requirements.txt

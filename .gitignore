@@ -1,56 +1,6 @@
-# Byte-compiled / кешированные файлы
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Логи и временные файлы
-*.log
-*.tmp
-*.bak
-*.swp
-*.swo
-.DS_Store  # для macOS
-
-# Виртуальные среды
-venv/
-.venv/
-
-# Зависимости
-/env/
-/build/
-/dist/
-*.egg-info/
-
-# Конфигурационные файлы
+.pytest_cache
+.idea
+*.iml
 .env
-.env.*
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# IDE/Editor конфигурации
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-
-# Virtual environments
-venv/
-.env
-
-# Logs и временные файлы
-*.log
-*.tmp
-
-# Allure
-allure-results/
-allure-report/
-
-# IDE/Editor конфигурации
-.vscode/
-.idea/
+report
+allure-results
