@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./mane_site:/usr/workspace/mane_site
+      - ./Nintondo:/usr/workspace/Nintondo
     working_dir: /usr/workspace/mane_site/AutoTests/Tests
     environment:
       - DISPLAY=:99
