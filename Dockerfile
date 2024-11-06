@@ -30,7 +30,10 @@ RUN apt-get update && apt-get install -y \
     sudo \
     python3-pip \
     python3-dev \
-    && apt-get clean
+    xclip \
+    x11-utils \
+    xvfb \
+    && apt-get clean  # Очищаем кэш apt, чтобы уменьшить размер образа
 
 # Устанавливаем Google Chrome
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -41,15 +44,13 @@ RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_am
     && dpkg -i /tmp/google-chrome-stable_current_amd64.deb \
     && apt-get update && apt-get install -f -y
 
-RUN apt-get update && apt-get install -y xclip
-RUN apt-get update && apt-get install -y x11-utils
-RUN apk add --no-cache xvfb-run
 # Устанавливаем Selenium и pytest
 RUN pip3 install --upgrade pip
 RUN pip3 install selenium pytest
 
 # Копируем requirements.txt в контейнер
 COPY requirements.txt /app/
+
 WORKDIR /app
 RUN pip3 install -r requirements.txt
 
@@ -58,4 +59,4 @@ ENV CHROMIUM_PATH="/usr/bin/chromium"
 ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 
 # Запускаем pytest для тестов
-CMD ["pytest", "AutoTests/Tests/wallet_tests/test_wallet_sendmoney.py"]
+ENTRYPOINT ["xvfb-run", "-a", "pytest"]

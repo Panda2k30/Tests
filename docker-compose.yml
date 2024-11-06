@@ -1,21 +1,21 @@
-version: '3.8'
-
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: selenium/standalone-chrome:latest
     container_name: selenium-tests
     volumes:
       - ./Nintondo:/usr/workspace/Nintondo
     working_dir: /usr/workspace/Nintondo/AutoTests/Tests
-    command: xvfb-run -a pytest -s  # Запуск через Xvfb для headless-режима
+    entrypoint: ["xvfb-run", "-a", "pytest", "-s"]
     environment:
       - DISPLAY=:99  # Используется виртуальный дисплей
     ports:
       - "4444:4444"
     networks:
       - selenium_network
+    deploy:
+      resources:
+        limits:
+          memory: 2g  # Ограничение памяти для контейнера
 
 networks:
   selenium_network:
