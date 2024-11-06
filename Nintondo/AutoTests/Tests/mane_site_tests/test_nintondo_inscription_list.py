@@ -8,11 +8,11 @@ from Nintondo.AutoTests.Pages.mane_site.nintondo_profile import ProfilePage, Ins
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.common import TimeoutException, StaleElementReferenceException
+from selenium.common import TimeoutException
 
 
 @pytest.mark.usefixtures("driver")
-@allure.feature("Test valid inscription listing/unlisting")
+@allure.feature("Test valid inscription listing")
 # Проверяем публикацию и снятие инскрипций с продажи
 def test_valid_inscription_list(driver):
     test_connect(driver)
@@ -22,9 +22,11 @@ def test_valid_inscription_list(driver):
 
     menu.open_menu()
     menu.menu_profile_btn()
-    time.sleep(0.5)
+    time.sleep(0.3)
     inscription.select_inscription()
+    time.sleep(0.3)
     inscription.inscription_list()
+    time.sleep(0.3)
     inscription.inscription_field_price()
     inscription.inscription_list_btn()
 
@@ -33,28 +35,38 @@ def test_valid_inscription_list(driver):
     time.sleep(0.3)
     driver.switch_to.window(windows[1])
 
-    try:
-        inscription.sign_btn()
-    except StaleElementReferenceException:
-        inscription = Inscriptions(driver)  # Повторно создаем объект инскрипции
-        inscription.sign_btn()  # Повторно находим кнопку и кликаем
+    inscription.sign_btn()
     time.sleep(0.3)
 
     driver.switch_to.window(windows[0])
 
-    # # Проверка сообщения об ошибке после публикации инскрипции
-    # expected_sign_error = "Inscription(s) listed successfully"
-    # try:
-    #     error_message = WebDriverWait(driver, 5).until(
-    #         EC.visibility_of_element_located((By.CLASS_NAME, "go3958317564"))
-    #     )
-    #     assert error_message.is_displayed(), "Сообщение об ошибке не отображается"
-    #     assert error_message.text == expected_sign_error, f"Ожидалось сообщение об ошибке: '{expected_sign_error}', но получено: '{error_message.text}'"
-    # except Exception as e:
-    #     pytest.fail(f"Ошибка при проверке сообщения об ошибке после публикации: {e}")
-    time.sleep(0.3)
+    # Проверка сообщения об ошибке после публикации инскрипции
+    expected_sign_error = "Inscription(s) listed successfully"
+    try:
+        error_message = WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located((By.CLASS_NAME, "go3958317564"))
+        )
+        assert error_message.is_displayed(), "Сообщение об ошибке не отображается"
+        assert error_message.text == expected_sign_error, f"Ожидалось сообщение об ошибке: '{expected_sign_error}', но получено: '{error_message.text}'"
+    except Exception as e:
+        pytest.fail(f"Ошибка при проверке сообщения об ошибке после публикации: {e}")
+
+
+@pytest.mark.usefixtures("driver")
+@allure.feature("Test valid inscription unlisting")
+# Проверяем публикацию и снятие инскрипций с продажи
+def test_valid_inscription_unlist(driver):
+    test_connect(driver)
+    time.sleep(0.5)
+    menu = NintondoUserMenu(driver)
+    inscription = Inscriptions(driver)
+
+    menu.open_menu()
+    menu.menu_profile_btn()
+    time.sleep(0.5)
     inscription.select_inscription()
     inscription.inscription_unlist()
+    time.sleep(0.5)
     inscription.inscription_unlist_btn()
 
     # Проверка сообщения об ошибке после аннулирования инскрипции
@@ -86,7 +98,7 @@ def test_invalid_inscription_list(driver, amount, expected_error, check_type):
 
     menu.open_menu()
     menu.menu_profile_btn()
-    time.sleep(0.5)
+
     inscription.select_inscription()
     inscription.inscription_list()
     inscription.inscription_field_invalid_price(amount)
