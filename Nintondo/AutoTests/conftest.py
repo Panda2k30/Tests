@@ -2,6 +2,8 @@ import os
 import pytest
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchWindowException
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 import allure
 
 @pytest.fixture(autouse=True, scope="function")
@@ -9,13 +11,15 @@ def driver(request):
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     options.add_argument("--window-size=1280,720")
+    options.add_argument("--remote-debugging-port=9222")  # Дополнительная настройка для отладки
+    options.binary_location = "/usr/bin/chromium"  # Путь к бинарнику Chromium
     project_path = os.path.dirname(os.path.abspath(__file__))
     extension_path = f"{project_path}/NintondoWallet.crx"
     options.add_extension(extension_path)
     options.add_argument(f'--load-extension={extension_path}')
     print(os.getcwd())
     # Инициализируем драйвер
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(service=Service("/usr/bin/chromium"), options=options)
     driver.implicitly_wait(4)
     print("Драйвер инициализирован")  # Для отладки
 
