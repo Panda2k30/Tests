@@ -1,7 +1,7 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.Pages.wallet.wallet_registration_page import CreateMnemonic
+from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -17,7 +17,8 @@ def test_create_valid_password(driver, password, conf_password):
 
     test_create_valid_password = CreateMnemonic(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    test_create_valid_password.exec_id()
+    test_create_valid_password.use_id()
 
     time.sleep(0.5)
     test_create_valid_password.enter_password(password) # Ввод пароля
@@ -43,7 +44,8 @@ def test_create_valid_password(driver, password, conf_password):
 def test_create_invalid_password(driver, password, conf_password, expected_error):
     test_create_invalid_password = CreateMnemonic(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    test_create_invalid_password.exec_id()
+    test_create_invalid_password.use_id()
 
     time.sleep(0.5)
     test_create_invalid_password.enter_password(password)  # Ввод пароля

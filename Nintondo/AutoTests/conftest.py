@@ -1,6 +1,7 @@
 import os
 import pytest
 from selenium import webdriver
+import time
 from selenium.common.exceptions import NoSuchWindowException
 import allure
 
@@ -8,21 +9,27 @@ import allure
 def driver(request):
 
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
     options.add_argument("--no-sandbox")
-    # options.add_argument("--remote-debugging-port=9222")
     options.add_argument("--window-size=1280,720")
     options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')  # Для использования в headless режиме
+    # options.add_argument('--disable-gpu')  # Для использования в headless режиме
 
     project_path = os.path.dirname(os.path.abspath(__file__))
-    extension_path = f"{project_path}/NintondoWallet.crx"
-    options.add_extension(extension_path)
+    extension_path = f"{project_path}/extension/dist/chrome"
+    options.add_argument(f"--load-extension={extension_path}")
 
     # Инициализируем драйвер
     driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(4)
     print("Драйвер инициализирован")  # Для отладки
+
+    driver.get('chrome://newtab')
+    # Выполняем JavaScript для получения хоста
+
+    # ex_id = driver.execute_script("return window.location.host;")
+    # # Выводим результат
+    # print("Current ID:", ex_id)
 
     # Директория для скриншотов
     screenshot_dir = "screenshots"

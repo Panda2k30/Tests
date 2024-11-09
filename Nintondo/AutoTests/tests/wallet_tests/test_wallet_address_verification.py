@@ -1,11 +1,11 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.Pages.wallet.wallet_registration_page import CreateMnemonic
-from Nintondo.AutoTests.data import Data
-from Nintondo.AutoTests.Pages.wallet.wallet_mane_page import ManePage
-from Nintondo.AutoTests.Pages.wallet.wallet_receive_page import ReceivePage
 from Nintondo.AutoTests.conftest import driver
+from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
+from Nintondo.AutoTests.data import Data
+from Nintondo.AutoTests.pages.wallet.wallet_mane_page import ManePage
+from Nintondo.AutoTests.pages.wallet.wallet_receive_page import ReceivePage
 import os
 
 @pytest.mark.usefixtures("driver")
@@ -17,7 +17,9 @@ def test_wallet_address_verification(driver):
     check_address = ReceivePage(driver)
     test_wallet_address_verification = ManePage(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+
+    ex_id = restore_by_private_key.exec_id() # Получаем ID расширения
+    restore_by_private_key.use_id() # Открываем в полном экране
 
     time.sleep(0.5)
     restore_by_private_key.enter_password(Data.PASS)  # Ввод пароля
@@ -31,7 +33,7 @@ def test_wallet_address_verification(driver):
     # Выбираем: Native по умолчанию"
     restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
     test_wallet_address_verification.get_balance()
-    test_wallet_address_verification.change_network()
+    test_wallet_address_verification.change_network(ex_id)
     test_wallet_address_verification.receive_page_btn()
     # Получение адресов
     received_address = check_address.receive_address_btn()

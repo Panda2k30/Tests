@@ -3,9 +3,9 @@ import allure
 import pytest
 from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.Pages.wallet.wallet_registration_page import CreateMnemonic
-from Nintondo.AutoTests.Pages.wallet.wallet_mane_page import ManePage
-from Nintondo.AutoTests.Pages.wallet.wallet_send_page import SendPage
+from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
+from Nintondo.AutoTests.pages.wallet.wallet_mane_page import ManePage
+from Nintondo.AutoTests.pages.wallet.wallet_send_page import SendPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -24,9 +24,11 @@ def test_valid_sendmoney(driver):
     sendmoney = SendPage(driver)
     change_network = ManePage(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    ex_id = restore_by_private_key.exec_id()
+    restore_by_private_key.use_id()
 
     time.sleep(0.5)
+
     # Ввод пароля и восстановление кошелька
     restore_by_private_key.enter_password(Data.PASS)
     restore_by_private_key.conf_password(Data.CONFPASS)
@@ -35,14 +37,12 @@ def test_valid_sendmoney(driver):
     restore_by_private_key.type_reg_privacy_key()
     restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)
     restore_by_private_key.conf_create_wallet()
-    print("Выбираем тип кошелька: Native, по умолчанию")
-    # Выбираем: Native по умолчанию"
+    print("Выбираем тип кошелька: Native, по умолчанию") # Выбираем: Native по умолчанию"
     restore_by_private_key.conf_recover_wallet()
 
     time.sleep(0.5)
     change_network.get_balance()
-    # Смена сети и получение старого баланса
-    change_network.change_network()
+    change_network.change_network(ex_id) # Смена сети и получение старого баланса
     time.sleep(0.5)
     change_network.get_balance()
 
@@ -74,7 +74,6 @@ def test_valid_sendmoney(driver):
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Sending money with an invalid balance")
-@pytest.mark.xfail
 @pytest.mark.parametrize("amount, blank, expected_error", [
     ("555555555", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
     ("", f"{Data.VALID_RECEIVE_ADDRESS}", "Minimum amount is 0.00000001 BEL"),
@@ -89,7 +88,8 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
     send_invalid_amount = SendPage(driver)
     change_network = ManePage(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    restore_by_private_key.exec_id()
+    restore_by_private_key.use_id()
 
     time.sleep(0.5)
     restore_by_private_key.enter_password(Data.PASS)  # Ввод пароля

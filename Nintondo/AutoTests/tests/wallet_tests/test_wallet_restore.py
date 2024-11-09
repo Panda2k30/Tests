@@ -1,9 +1,9 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.Pages.wallet.wallet_registration_page import CreateMnemonic
+from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
 from Nintondo.AutoTests.data import Data
-from Nintondo.AutoTests.Pages.wallet.wallet_registration_page import LoginPageSelectors
+from Nintondo.AutoTests.pages.wallet.wallet_registration_page import LoginPageSelectors
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -15,15 +15,15 @@ def test_valid_create_mnemonic(driver):
 
     test_create_mnemonic = CreateMnemonic(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
-
+    test_create_mnemonic.exec_id()
+    test_create_mnemonic.use_id()
     time.sleep(0.5)
     test_create_mnemonic.enter_password(Data.PASS) # Ввод пароля
     test_create_mnemonic.conf_password(Data.CONFPASS) # Подтверждение пароля
     test_create_mnemonic.click_reg_button() # Жмем на кнопку продолжения
     test_create_mnemonic.type_reg_new_mnem() # Выбираем тип авторизации: Новая мнемоника
-    test_create_mnemonic.copy_mnem() # Копируем фразы
-    test_create_mnemonic.paste_mnen() # Выводим фразы
+    # test_create_mnemonic.copy_mnem() # Копируем фразы
+    # test_create_mnemonic.paste_mnen() # Выводим фразы
     test_create_mnemonic.conf_save() # Подтверждаем сохранение мнемоники
     test_create_mnemonic.conf_create_wallet() # Подтверждаем создание кошелька
     print("Выбираем тип кошелька: Native, по умолчанию")
@@ -37,8 +37,8 @@ def test_invalid_create_mnemonic(driver):
 
     test_invalid_create_mnemonic = CreateMnemonic(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
-
+    test_invalid_create_mnemonic.exec_id()
+    test_invalid_create_mnemonic.use_id()
     time.sleep(0.5)
     test_invalid_create_mnemonic.enter_password(Data.PASS) # Ввод пароля
     test_invalid_create_mnemonic.conf_password(Data.CONFPASS) # Подтверждение пароля
@@ -60,7 +60,8 @@ def test_restore_by_private_key(driver):
 
     test_restore_by_private_key = CreateMnemonic(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    test_restore_by_private_key.exec_id()
+    test_restore_by_private_key.use_id()
 
     time.sleep(0.5)
     test_restore_by_private_key.enter_password(Data.PASS) # Ввод пароля
@@ -84,7 +85,8 @@ def test_restore_by_invalid_private_key(driver, data, expected_error):
 
     test_restore_by_invalid_private_key = CreateMnemonic(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    test_restore_by_invalid_private_key.exec_id()
+    test_restore_by_invalid_private_key.use_id()
 
     time.sleep(0.5)
     test_restore_by_invalid_private_key.enter_password(Data.PASS) # Ввод пароля
@@ -114,7 +116,8 @@ def test_restore_by_mnemonic(driver):
 
     test_restore_by_mnemonic = CreateMnemonic(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    test_restore_by_mnemonic.exec_id()
+    test_restore_by_mnemonic.use_id()
 
     time.sleep(0.5)
     test_restore_by_mnemonic.enter_password(Data.PASS)  # Ввод пароля
@@ -136,7 +139,8 @@ def test_invalid_restore_by_mnemonic(driver, data, expected_error):
 
     test_invalid_restore_by_mnemonic = CreateMnemonic(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    test_invalid_restore_by_mnemonic.exec_id()
+    test_invalid_restore_by_mnemonic.use_id()
 
     time.sleep(0.5)
     test_invalid_restore_by_mnemonic.enter_password(Data.PASS)  # Ввод пароля

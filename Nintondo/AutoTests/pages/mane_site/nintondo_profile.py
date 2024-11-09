@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.Pages.base_page import BasePage
+from Nintondo.AutoTests.pages.base_page import BasePage
 from selenium.webdriver.common.action_chains import ActionChains
 
 wait = WebDriverWait
@@ -17,14 +17,14 @@ class ProfilePageSelector:
     WALLET_ADDRESS = (By.XPATH, "/html/body/main/div/div[1]/div[2]/div[1]/h3")
     BALANCE = (By.XPATH, "/html/body/main/div/div[1]/div[2]/div[2]/div[1]/span[2]")
 
-    INSCRIPTIONS = (By.XPATH, "/html/body/main/div/div[3]/div/div[2]/div[2]/div/div[1]/div[1]/img")
+    INSCRIPTIONS = (By.XPATH, "/html/body/main/div/div[3]/div/div/div[2]/div[2]/div/div[1]/div[1]/div/img")
     INSCRIPTIONS_COUNT = (By.XPATH, "")
 
     INSCRIPTIONS_LIST = (By.XPATH, "//button/span[text()='List']")
     INSCRIPTIONS_SEND = (By.XPATH, "//button/span[text()='Send']")
     INSCRIPTIONS_UNLIST = (By.XPATH, "//button/span[text()='Unlist']")
 
-    INSCRIPTIONS_FIELD_PRICE = (By.XPATH, "/html/body/div[4]/div/div/div/div/div/div/div[3]/div[1]/div[1]/input")
+    INSCRIPTIONS_FIELD_PRICE = (By.XPATH, "/html/body/div[5]/div/div/div/div/div/div/div[3]/div[1]/div[1]/input")
     INSCRIPTIONS_LIST_BTN = (By.XPATH, "//button[text()='List']")
     INSCRIPTIONS_SIGN_BTN = (By.XPATH, "//button[text()='Sign']")
 

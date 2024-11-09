@@ -3,8 +3,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.Pages.base_page import BasePage
-import pyperclip
+from Nintondo.AutoTests.pages.base_page import BasePage
+from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
 import time
 
 wait = WebDriverWait
@@ -92,10 +92,8 @@ class ManePage(BasePage):
         print("Текущий баланс пользователя:", total_balance)
         return total_balance  # Возвращаем итоговый баланс
 
-    def change_network(self):
-
-        self.driver.get(f"chrome-extension://{Data.EX_ID}/index.html#/pages/network-settings")
-
+    def change_network(self, ex_id):
+        self.driver.get(f"chrome-extension://{ex_id}/index.html#/pages/network-settings")
         print("- Перешли на страницу изменения типа сети")
 
         change_network = wait(self.driver, 10).until(

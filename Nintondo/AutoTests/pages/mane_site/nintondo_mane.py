@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.Pages.base_page import BasePage
+from Nintondo.AutoTests.pages.base_page import BasePage
 
 wait = WebDriverWait
 
@@ -14,7 +14,7 @@ class NintondoPageSelector:
     SWITCH_NETWORK = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[3]/button[1]")
 
     OPEN_MENU = (By.XPATH, "/html/body/div[1]/nav[1]/div[3]/div/div/button")
-    PROFILE_BNT = (By.XPATH, "/html/body/div[4]/div/div/div[2]/a[1]")
+    PROFILE_BNT = (By.XPATH, "/html/body/div[5]/div/div/div[2]/a[1]")
 
 class NintondoPage(BasePage):
     def __init__(self, driver):

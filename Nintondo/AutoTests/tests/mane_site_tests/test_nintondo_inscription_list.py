@@ -2,9 +2,9 @@ import time
 import allure
 import pytest
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.Tests.mane_site_tests.test_connect import test_connect
-from Nintondo.AutoTests.Pages.mane_site.nintondo_mane import NintondoUserMenu
-from Nintondo.AutoTests.Pages.mane_site.nintondo_profile import ProfilePage, Inscriptions
+from Nintondo.AutoTests.tests.mane_site_tests.test_connect import test_connect
+from Nintondo.AutoTests.pages.mane_site.nintondo_mane import NintondoUserMenu
+from Nintondo.AutoTests.pages.mane_site.nintondo_profile import ProfilePage, Inscriptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -15,8 +15,10 @@ from selenium.common import TimeoutException
 @allure.feature("Test valid inscription listing")
 # Проверяем публикацию и снятие инскрипций с продажи
 def test_valid_inscription_list(driver):
+
     test_connect(driver)
     time.sleep(0.5)
+
     menu = NintondoUserMenu(driver)
     inscription = Inscriptions(driver)
 
@@ -56,8 +58,10 @@ def test_valid_inscription_list(driver):
 @allure.feature("Test valid inscription unlisting")
 # Проверяем публикацию и снятие инскрипций с продажи
 def test_valid_inscription_unlist(driver):
+
     test_connect(driver)
     time.sleep(0.5)
+
     menu = NintondoUserMenu(driver)
     inscription = Inscriptions(driver)
 
@@ -91,8 +95,10 @@ def test_valid_inscription_unlist(driver):
 
 # Проверяем ввод невалидных значений в поле суммы инскрипции
 def test_invalid_inscription_list(driver, amount, expected_error, check_type):
+
     test_connect(driver)
     time.sleep(0.5)
+
     menu = NintondoUserMenu(driver)
     inscription = Inscriptions(driver)
 

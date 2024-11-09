@@ -1,13 +1,13 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.Pages.wallet.wallet_registration_page import CreateMnemonic
+from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
 from Nintondo.AutoTests.data import Data
-from Nintondo.AutoTests.Pages.mane_site.nintondo_mane import NintondoPage
+from Nintondo.AutoTests.pages.mane_site.nintondo_mane import NintondoPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.Pages.wallet.wallet_mane_page import ManePage
+from Nintondo.AutoTests.pages.wallet.wallet_mane_page import ManePage
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Test Connect wallet_tests")
@@ -18,7 +18,8 @@ def test_connect(driver):
     connect = NintondoPage(driver)
     change_network = ManePage(driver)
 
-    driver.get(f'chrome-extension:{Data.EX_ID}/index.html')
+    ex_id = restore_by_private_key.exec_id()
+    restore_by_private_key.use_id()
 
     time.sleep(0.5)
     restore_by_private_key.enter_password(Data.PASS)  # Ввод пароля
@@ -33,7 +34,7 @@ def test_connect(driver):
     restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
 
     change_network.get_balance()
-    change_network.change_network()
+    change_network.change_network(ex_id)
 
     driver.get("https://nintondo.io/")
 

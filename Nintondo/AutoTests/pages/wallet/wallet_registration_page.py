@@ -1,9 +1,11 @@
+import time
+
 import pyperclip
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from Nintondo.AutoTests.Pages.base_page import BasePage
+from Nintondo.AutoTests.pages.base_page import BasePage
 
 wait = WebDriverWait
 
@@ -18,7 +20,7 @@ class LoginPageSelectors:
     PRIVAT_KEY = (By.LINK_TEXT, "Restore from private key")
 
     COPY_MNEMONIC = (By.XPATH, "//div[@id='root']//button")
-    CONF_MNEMONIC = (By.ID, "headlessui-control-:r0:")
+    CONF_MNEMONIC = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[2]/div/button")
     CREATE_BUTTON = (By.XPATH, "//button[text()='Continue']")
     RECOVER_BUTTON = (By.XPATH, "//button[text()='Recover']")
 
@@ -76,12 +78,20 @@ class CreateMnemonic(BasePage):
         )
 
         for word in mnemonic:
-            input_field.send_keys(word)  # Вводим слово
-            input_field.send_keys(Keys.TAB)  # Переходим к следующему полю
-            input_field = self.driver.switch_to.active_element  # Обновляем ссылку на текущее поле
+            # Имитируем ввод слова посимвольно
+            for char in word:
+                input_field.send_keys(char)
+                time.sleep(0.001)  # Пауза между символами для более реалистичного ввода
+
+            # Переход к следующему полю через TAB
+            input_field.send_keys(Keys.TAB)
+
+            # Обновляем ссылку на текущее активное поле
+            input_field = self.driver.switch_to.active_element
+
         print("- Ввели seed-фразы в поля")
 
-    def copy_mnem(self):
+    def show_words(self):
         copy_mnem = wait(self.driver, 10).until(
             EC.element_to_be_clickable(LoginPageSelectors.COPY_MNEMONIC))
         copy_mnem.click()
@@ -146,4 +156,15 @@ class CreateMnemonic(BasePage):
             EC.element_to_be_clickable(LoginPageSelectors.RESTORE_BUTTON))
         click_restore_button.click()
         print("- Кликнули на кнопку: Continue")
+
+    def exec_id(self):
+        self.ex_id = self.driver.execute_script("return window.location.host;")
+        # Выводим результат
+        print("\nCurrent ID:", self.ex_id)
+        return self.ex_id
+
+    def use_id(self):
+        self.driver.get(f'chrome-extension:{self.ex_id}/index.html')
+
+
 
