@@ -9,11 +9,11 @@ import allure
 def driver(request):
 
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1280,720")
     options.add_argument('--disable-dev-shm-usage')
-    # options.add_argument('--disable-gpu')  # Для использования в headless режиме
+    options.add_argument('--disable-gpu')
 
     project_path = os.path.dirname(os.path.abspath(__file__))
     extension_path = f"{project_path}/extension/dist/chrome"
@@ -25,11 +25,6 @@ def driver(request):
     print("Драйвер инициализирован")  # Для отладки
 
     driver.get('chrome://newtab')
-    # Выполняем JavaScript для получения хоста
-
-    # ex_id = driver.execute_script("return window.location.host;")
-    # # Выводим результат
-    # print("Current ID:", ex_id)
 
     # Директория для скриншотов
     screenshot_dir = "screenshots"
@@ -37,15 +32,15 @@ def driver(request):
 
     yield driver
 
-    # # Пробуем создать скриншот для аллюра
-    # screenshot_path = f"{screenshot_dir}/{request.node.name}.png"
-    # try:
-    #     if len(driver.window_handles) > 0:
-    #         driver.save_screenshot(screenshot_path)
-    #         allure.attach.file(screenshot_path, name="Screenshot", attachment_type=allure.attachment_type.PNG)
-    #     else:
-    #         print("Скриншот не сделан, так как все окна были закрыты")
-    # except NoSuchWindowException:
-    #     print("Окно было закрыто, скриншот не сделан")
-    # finally:
-    driver.quit()
+    # Пробуем создать скриншот для аллюра
+    screenshot_path = f"{screenshot_dir}/{request.node.name}.png"
+    try:
+        if len(driver.window_handles) > 0:
+            driver.save_screenshot(screenshot_path)
+            allure.attach.file(screenshot_path, name="Screenshot", attachment_type=allure.attachment_type.PNG)
+        else:
+            print("Скриншот не сделан, так как все окна были закрыты")
+    except NoSuchWindowException:
+        print("Окно было закрыто, скриншот не сделан")
+    finally:
+        driver.quit()
