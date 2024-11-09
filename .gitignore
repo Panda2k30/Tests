@@ -4,3 +4,5 @@
 .env
 report
 allure-results
+
+/Nintondo/AutoTests/extension/

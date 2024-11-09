@@ -88,7 +88,7 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
     send_invalid_amount = SendPage(driver)
     change_network = ManePage(driver)
 
-    restore_by_private_key.exec_id()
+    ex_id = restore_by_private_key.exec_id()
     restore_by_private_key.use_id()
 
     time.sleep(0.5)
@@ -102,7 +102,7 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
     # Выбираем: Native по умолчанию"
     restore_by_private_key.conf_recover_wallet() # Подтверждаем создание кошелька
     change_network.get_balance()
-    change_network.change_network()
+    change_network.change_network(ex_id)
     time.sleep(0.5)
     change_network.get_balance()
     change_network.send_page_btn()

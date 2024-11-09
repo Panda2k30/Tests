@@ -1,11 +1,8 @@
 class Data:
 
-    # ID Расширения
-    EX_ID = "akkmagafhjjjjclaejjomkeccmjhdkpa"
-
     # Данные для реги
-    PASS = "333111Aa"
-    CONFPASS = "333111Aa"
+    PASS = "password123"
+    CONFPASS = "password123"
 
     NOTVALID_PASS = ""
     NOTVALID_CONFPASS = ""

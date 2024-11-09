@@ -55,8 +55,6 @@ RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_am
 RUN pip3 install --upgrade pip
 RUN pip3 install selenium pytest
 
-RUN apt-get update && apt-get install -y xclip x11-utils && apt-get clean && \
-    dpkg -l | grep xclip
 # Копируем requirements.txt в контейнер
 COPY requirements.txt /app/
 
