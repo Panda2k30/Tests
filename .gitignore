@@ -5,5 +5,4 @@ __pycache__/
 .env
 report
 allure-results
-
 /Nintondo/AutoTests/extension/
