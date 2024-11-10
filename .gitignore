@@ -1,6 +1,7 @@
-.pytest_cache
-.idea
 *.iml
+__pycache__/
+*.pyc
+*.pyo
 .env
 report
 allure-results

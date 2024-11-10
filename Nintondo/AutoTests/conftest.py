@@ -16,7 +16,8 @@ def driver(request):
     options.add_argument('--disable-gpu')
 
     project_path = os.path.dirname(os.path.abspath(__file__))
-    extension_path = f"{project_path}/extension/dist/chrome"
+    # extension_path = f"{project_path}/extension/dist/chrome"
+    extension_path = "/app/extension"
     options.add_argument(f"--load-extension={extension_path}")
 
     # Инициализируем драйвер

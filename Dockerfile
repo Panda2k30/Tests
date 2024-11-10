@@ -72,6 +72,7 @@ RUN pip3 install -r requirements.txt
 COPY --from=builder /app/dist/chrome /app/extension
 
 # Добавляем пути к браузерам в переменные среды
+ENV CHROMIUM_PATH="/usr/bin/chromium"
 ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 
 # Запускаем pytest для тестов
