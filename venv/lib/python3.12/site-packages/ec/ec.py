@@ -1,0 +1,84 @@
+r"""
+ec
+==
+
+The main module, that allows the configuration of the importing script.
+"""
+from modules.state import Settings
+from modules.helpers import getCallingModule
+from modules.config import task, arg, group, module, member, exit_hook
+from modules.classes import CustomType
+from modules import hooks
+
+# Exports
+__all__ = [
+  'task', 'arg', 'group',
+  'module', 'member', 'exit_hook', 'throw', 'make_type',
+  'settings', 'call',
+]
+
+def settings(**NewSettings):
+  r"""Sets the settings of ec.
+
+  Settings:
+    * helper_tasks (bool): Allow helper tasks ($/\*) in the shell (defaults to True).
+    * dev_mode (bool): Enables the logging of a detailed traceback on exceptions (defaults to False).
+    * clean (bool): cleans the existing settings before applying new settings.
+  """
+
+  if 'clean' in Settings:
+    Settings.clear()
+
+  Settings.update(**NewSettings)
+
+def call(__ec_func__, *Args, **KwArgs):
+  r"""Helps with calling the tasks with partial arguments (within the script being configured).
+
+  The unavailable args will be collected before calling the function.
+
+  Args:
+    __ec_func__: A function that has been configured for ec.
+    \*Args: Partial args for the function.
+    \*\*KwArgs: Partial kwargs for the function.
+
+  Notes:
+    * The param name **__ec_func__** is chosen, in order to avoid collision with the **KwArgs**.
+  """
+  return __ec_func__.__ec_member__.__collect_n_call__(*Args, **KwArgs)
+
+def throw(message=''):
+  r"""A simple function that throws the passed exception, so that lambdas could be used as custom types.
+
+  #ToDo: Allow passing readable errors as strings, instead of Exceptions.
+
+  Ex:
+    @arg(type=lambda p: abspath(p) if exists(dirname(path)) else throw('Error message.'))
+  """
+  raise ValueError(message)
+
+def make_type(**Config):
+  CT = CustomType(**Config)
+  CT.__call__ = Config['func']
+
+  return CT
+
+# Main
+hooks.EcModuleName = __name__
+
+FirstCaller = getCallingModule()
+
+def registerFirstCaller(): # Note: the FirstCaller should be registered separately as the import wouldn't be hooked yet.
+  from modules import core
+
+  core.setActiveModule(FirstCaller)
+
+def main():
+  from modules.hooks import isImportHooked, registerExitCall, hookIntoImport
+
+  registerExitCall()
+
+  if not isImportHooked():
+    hookIntoImport()
+    registerFirstCaller()
+
+main()
