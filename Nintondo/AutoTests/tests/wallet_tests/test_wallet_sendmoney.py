@@ -77,8 +77,8 @@ def test_valid_sendmoney(driver):
 @pytest.mark.parametrize("amount, blank, expected_error", [
     ("555555555", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
     ("", f"{Data.VALID_RECEIVE_ADDRESS}", "Minimum amount is 0.00000001 BEL"),
-    ("0.1", "", "Insert receiver's address"),
-    ("", "", "Insert receiver's address"),
+    ("0.1", "", "Invalid receiver's address"),
+    ("", "", "Invalid receiver's address"),
     ("", f"{Data.NOT_VALID_ADDRESS}", "Invalid receiver's address")])
 
 # Проверяем отправку с невалидным балансом и негативные сценарии
