@@ -1,0 +1,10 @@
+*.iml
+__pycache__/
+*.pyc
+*.pyo
+.env
+git push origin mainreport
+allure-results
+/Nintondo/AutoTests/extension/
+venv/
+screenshots/
