@@ -89,7 +89,7 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
         error_message = WebDriverWait(driver, 5).until(
             EC.element_to_be_clickable((By.CLASS_NAME, "error"))
         )
-        assert error_message.is_displayed(), "Сообщение об ошибке не отображается"
-        assert error_message.text == expected_error, f"Ожидалось сообщение об ошибке: '{expected_error}', но получено: '{error_message.text}'"
+        assert error_message.is_displayed(), "The error message is not displayed"
+        assert error_message.text == expected_error, f"An error message was expected: '{expected_error}', but received: '{error_message.text}'"
     except Exception as e:
-        pytest.fail(f"Ошибка при проверке сообщения: {e}")
+        pytest.fail(f"Error during message validation: {e}")

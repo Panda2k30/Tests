@@ -15,15 +15,15 @@ class ReceivePageSelector:
 
 class ReceivePage(BasePage):
     def __init__(self, driver):
-        self.driver = driver  # Сохраняем переданный драйвер
+        self.driver = driver
 
     def receive_address_text(self):
         receive_address_text = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ReceivePageSelector.WALLET_ADDRESS_TEXT))
         receive_address_text.click()
-        print("- Забираем адрес из строки ")
+        print("- Taking the address from the line")
         text_address = receive_address_text.text
-        print("Адрес из строки:", text_address)
+        print("The address from the string:", text_address)
         return text_address
 
     def receive_address_btn(self):
@@ -31,16 +31,14 @@ class ReceivePage(BasePage):
             EC.element_to_be_clickable(ReceivePageSelector.WALLET_ADDRESS_COPY_BTN)
         )
         receive_address_btn.click()
-        print("- Кликнули на: Copy Address ")
+        print("- Clicked on: Copy Address")
 
-        address_selector = ".text-xs"  # Замените на ваш селектор адреса
+        address_selector = ".text-xs"
 
-        # Ожидаем появления элемента с адресом
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, address_selector))
         )
 
-        # Используем JavaScript для копирования текста
         self.driver.execute_script(f"""
             var addressElement = document.querySelector('{address_selector}');
             if (addressElement) {{
@@ -51,20 +49,19 @@ class ReceivePage(BasePage):
                 document.execCommand('copy');  
                 document.body.removeChild(tempInput);  
             }} else {{
-                console.error('Элемент адреса не найден!');
+                console.error('Address element not found!');
             }}
         """)
 
-        # Получаем адрес
         btn_address = self.driver.execute_script(
             f"return document.querySelector('{address_selector}') ? document.querySelector('{address_selector}').textContent : '';"
         ).strip()
 
         if not btn_address:
             print("Адрес не найден!")
-            print(self.driver.page_source)  # Выводим HTML-содержимое для диагностики
+            print(self.driver.page_source)  # Output HTML content for diagnostics
         else:
-            print("Адрес из кнопки:", btn_address)
+            print("Address from the button:", btn_address)
 
         return btn_address
 
@@ -72,4 +69,4 @@ class ReceivePage(BasePage):
         receive_address_qr = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ReceivePageSelector.WALLET_ADDRESS_QR))
         receive_address_qr.click()
-        print("- Кликнули на: QR copy image")
+        print("- Clicked on: QR copy image")
