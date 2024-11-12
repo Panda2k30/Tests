@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.conftest import driver
 from Nintondo.AutoTests.pages.base_page import BasePage
+import time
 
 wait = WebDriverWait
 
@@ -16,6 +17,7 @@ class NFTPageSelector:
     INSCRIPTION_ADDRESS_INPUT = (By.XPATH, "//div/input")
     INSCRIPTION_CONT_BTN = (By.XPATH, "//button[text()='Continue']")
     INSCRIPTION_CONF_BTN = (By.XPATH, "//button[text()='Confirm']")
+    INSCRIPTION_BACK_BTN = (By.XPATH, "//a[text()='Back']")
 
     INSCRIPTION_ID_CARD = (By.XPATH, "//label[text()='Inscription id']/following-sibling::div")
     INSCRIPTION_ID_CONF = (By.XPATH, "//div[text()='Inscription Id']/following-sibling::div")
@@ -89,5 +91,12 @@ class NFTPage(BasePage):
         to_address_tabl = to_address_tabl.text
         print("- The recipient's address in the table:", to_address_tabl)
         return to_address_tabl
+
+    def back_btn(self):
+        time.sleep(0.5)
+        back_btn = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.INSCRIPTION_BACK_BTN))
+        back_btn.click()
+        print("- Clicked on: Back")
 
 

@@ -22,10 +22,8 @@ def test_valid_sendmoney(driver):
     ex_id = test_restore_by_private_key(driver)
 
     change_network = ManePage(driver)
-    time.sleep(0.5)
-    change_network.get_balance()
+
     change_network.change_network(ex_id)
-    time.sleep(0.5)
     change_network.get_balance()
 
     old_transaction_verify = change_network.verify_transaction()
@@ -35,14 +33,14 @@ def test_valid_sendmoney(driver):
     # Sending funds
     sendmoney = SendPage(driver)
 
-    sendmoney.enter_address(Data.VALID_RECEIVE_ADDRESS)
+    sendmoney.enter_address(Data.VALID_ADDRESS_FOR_CHECK)
     sendmoney.enter_amount(valid_amount=0.1)
     sendmoney.include_fee()
     sendmoney.save_address()
     sendmoney.cont_send_money()
     sendmoney.conf_send_money()
     sendmoney.back_to_home()
-    time.sleep(0.5)
+    time.sleep(4)
 
     # Receive new balance and TXID
     change_network.get_balance()
@@ -58,12 +56,12 @@ def test_valid_sendmoney(driver):
 @pytest.mark.usefixtures("driver")
 @allure.feature("Sending money with an invalid balance")
 @pytest.mark.parametrize("amount, blank, expected_error", [
-    ("555555555", f"{Data.VALID_RECEIVE_ADDRESS}", "There's not enough money in your account"),
-    ("", f"{Data.VALID_RECEIVE_ADDRESS}", "Minimum amount is 0.00000001 BEL"),
+    ("555555555", f"{Data.VALID_ADDRESS_FOR_CHECK}", "There's not enough money in your account"),
+    ("", f"{Data.VALID_ADDRESS_FOR_CHECK}", "Minimum amount is 0.00000001 BEL"),
     ("0.1", "", "Invalid receiver's address"),
     ("", "", "Invalid receiver's address"),
     ("", f"{Data.NOT_VALID_ADDRESS}", "Invalid receiver's address"),
-    ("0.00000001", f"{Data.VALID_RECEIVE_ADDRESS}", "Fee exceeds amount")
+    ("0.00000001", f"{Data.VALID_ADDRESS_FOR_CHECK}", "Fee exceeds amount")
     ])
 
 def test_invalid_sendmoney(driver, amount, blank, expected_error):
@@ -72,9 +70,7 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
 
     change_network = ManePage(driver)
 
-    change_network.get_balance()
     change_network.change_network(ex_id)
-    time.sleep(0.5)
     change_network.get_balance()
     change_network.send_page_btn()
 

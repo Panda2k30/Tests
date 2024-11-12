@@ -4,6 +4,7 @@ import pytest
 from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.conftest import driver
 from Nintondo.AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
+from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
 from Nintondo.AutoTests.pages.wallet.wallet_mane_page import ManePage
 from Nintondo.AutoTests.pages.wallet.wallet_nft_page import NFTPage
 
@@ -11,35 +12,69 @@ from Nintondo.AutoTests.pages.wallet.wallet_nft_page import NFTPage
 @allure.feature("Valid sending inscriptions from the wallet")
 def test_valid_sending_inscriptions(driver):
 
+    def are_txids_same(txid1, txid2):
+        return txid1 == txid2
+
+    # Private key authentication
     ex_id = test_restore_by_private_key(driver)
 
     change_network = ManePage(driver)
-    time.sleep(0.2)
-    change_network.change_network(ex_id)
-    time.sleep(0.5)
+
+    change_network.change_network(ex_id) # change network to Testnet
     change_network.get_balance()
 
-    account_address = change_network.account_address_btn()
+    account_address = change_network.account_address_btn() # get a wallet address
     change_network.nft_page_btn()
 
     nft_page = NFTPage(driver)
 
     nft_page.select_inscription()
-    id_card = nft_page.id_card()
+    id_card = nft_page.id_card() # get the inscription id
 
     nft_page.send_btn()
 
-    valid_address = nft_page.enter_address(Data.VALID_RECEIVE_ADDRESS)
+    valid_address = nft_page.enter_address(Data.VALID_ADDRESS_FOR_CHECK) # get the recipient's address
     nft_page.continue_btn()
 
+    # output all data
     to_address_tabl = nft_page.to_address_tabl()
     from_address_tabl = nft_page.from_address_tabl()
     id_tabl = nft_page.id_tabl()
 
     print("\nData collation ...")
 
+    # compare all the data
     assert account_address == from_address_tabl, f"Address mismatch: {account_address} != {from_address_tabl}"
     assert valid_address == to_address_tabl, f"Address mismatch: {valid_address} != {to_address_tabl}"
     assert id_card == id_tabl, f"ID mismatch: {id_card} != {id_tabl}"
 
     print("\nSuccessfully !")
+
+    nft_page.confirm_btn()
+    print("\nSent the transcript to a different address !\n")
+
+    nft_page.back_btn()
+
+    first_wallet_txid = change_network.verify_transaction()
+    change_network.wallet_page_btn()
+    change_network.add_wallet_btn()
+
+    restore_by_private_key = CreateMnemonic(driver)
+
+    restore_by_private_key.type_reg_privacy_key()
+    restore_by_private_key.restore_input(Data.KEY_WALLET_FOR_CHECK)
+    restore_by_private_key.conf_create_wallet()
+    restore_by_private_key.conf_recover_wallet()
+
+    change_network.trans_cont()
+
+    second_wallet_txid = change_network.verify_transaction()
+
+    print("\nCheck that the TXIDs are the same ...")
+    # Check that the TXIDs are the same
+    assert are_txids_same(second_wallet_txid, first_wallet_txid), (
+        f"TXID has changed! Old value: {first_wallet_txid}, "
+        f"New value: {second_wallet_txid}"
+    )
+    print("\nSuccessfully !")
+

@@ -30,21 +30,22 @@ class ProfilePageSelector:
 
     INSCRIPTIONS_UNLIST_BTN = (By.XPATH, "//button[text()='Unlist']")
 
+
 class ProfilePage(BasePage):
     def __init__(self, driver):
-        self.driver = driver  # Сохраняем переданный драйвер
+        self.driver = driver
 
     def profile_btn(self):
         avatar_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.AVATAR))
         avatar_btn.click()
-        print("- Кликнули на: User Photo")
+        print("- Clicked on: User Photo")
 
     def nickname_btn(self):
         nickname_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.NICKNAME))
         nickname_btn.click()
-        print("- Кликнули на: Change nickname")
+        print("- Clicked on: Change nickname")
 
     def nickname_field(self, nickname):
         nickname_field = wait(self.driver, 10).until(
@@ -53,72 +54,73 @@ class ProfilePage(BasePage):
         nickname_field.clear()
         nickname_field.send_keys(nickname)
 
-        print("- Кликнули на: Поле ввода")
+        print("- Clicked on: Input field")
 
     def nickname_save_btn(self):
         nickname_save_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.NICKNAME_SAVE_BTN))
         nickname_save_btn.click()
-        print("- Кликнули на: Change nickname")
+        print("- Clicked on: Change nickname")
+
 
 class Inscriptions(BasePage):
 
     def select_inscription(self):
-        # Ожидание кликабельности элемента
+        # Waiting for the item to be clickable
         select_inscription = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS)
         )
 
-        # Используем ActionChains для наведения и клика по элементу
+        # Use ActionChains to point and click on an item
         actions = ActionChains(self.driver)
         actions.move_to_element(select_inscription).click(select_inscription).perform()
 
-        print("- Кликнули на: Первую инскрипцию")
+        print("- Clicked on: The First Inscription")
 
     def inscription_list(self):
         inscription_list = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_LIST))
         inscription_list.click()
-        print("- Кликнули на: List")
+        print("- Clicked on: List")
 
     def inscription_send(self):
         inscription_send = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_SEND))
         inscription_send.click()
-        print("- Кликнули на: Send")
+        print("- Clicked on: Send")
 
     def inscription_unlist(self):
         inscription_unlist = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_UNLIST))
         inscription_unlist.click()
-        print("- Кликнули на: Unlist")
+        print("- Clicked on: Unlist")
 
     def inscription_field_price(self):
         inscription_field_price = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_FIELD_PRICE))
         inscription_field_price.send_keys("1")
-        print("- Ввели в поле стоимость")
+        print("- Entered the cost in the field")
 
     def inscription_field_invalid_price(self, amount):
         inscription_field_invalid_price = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_FIELD_PRICE))
         inscription_field_invalid_price.send_keys(amount)
-        print("- Ввели в поле невалидную стоимость")
+        print("- Entered a non-valid value in the field")
 
     def inscription_list_btn(self):
         inscription_list_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_LIST_BTN))
         inscription_list_btn.click()
-        print("- Кликнули на: List")
+        print("- Clicked on: List")
 
     def inscription_unlist_btn(self):
         inscription_unlist_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_UNLIST_BTN))
         inscription_unlist_btn.click()
-        print("- Кликнули на: Unlist")
+        print("- Clicked on: Unlist")
 
     def sign_btn(self):
         sign_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_SIGN_BTN))
         sign_btn.click()
-        print("- Во втором окне кликнули: Sign")
+        print("- In the second window clicked: Sign")

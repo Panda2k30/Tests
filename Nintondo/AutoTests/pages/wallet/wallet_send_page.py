@@ -8,19 +8,19 @@ wait = WebDriverWait
 class SendPageSelector:
 
     # INPUTS
-    ADDRESS_INPUT = (By.XPATH, '/html/body/div/div/div[2]/div[1]/div[2]/div/form/div[1]/div[1]/div/div/input')
-    AMOUNT_INPUT = (By.XPATH, '/html/body/div/div/div[2]/div[1]/div[2]/div/form/div[1]/div[2]/div/div/input')
+    ADDRESS_INPUT = (By.XPATH, "//span[text()='Address']/ancestor::div//input")
+    AMOUNT_INPUT = (By.XPATH, "//input[@placeholder='Amount to send']")
 
     # BUTTONS
-    FEE_SLOW_BTN = (By.XPATH, '/html/body/div/div/div[2]/div[1]/div[2]/div/form/div[2]/div[1]/div/div/div[1]')
-    FEE_FAST_BTN = (By.XPATH, '/html/body/div/div/div[2]/div[1]/div[2]/div/form/div[2]/div[1]/div/div/div[2]')
-    FEE_CUSTOM_BTN = (By.XPATH, '/html/body/div/div/div[2]/div[1]/div[2]/div/form/div[2]/div[1]/div/div/div[3]')
+    FEE_SLOW_BTN = (By.XPATH, "//div[text()='Slow']")
+    FEE_FAST_BTN = (By.XPATH, "//div[text()='Fast']")
+    FEE_CUSTOM_BTN = (By.XPATH, "//div[text()='Custom']")
     CONTINUE_BUTTON = (By.XPATH, "//button[text()='Continue']")
     CONFIRM_BUTTON = (By.XPATH, "//button[text()='Confirm']")
-    BACK_BUTTON = (By.LINK_TEXT, "Back")
+    BACK_BUTTON = (By.XPATH, "//a[text()='Back']")
 
-    INCLUDE_FEE = (By.XPATH, '/html/body/div/div/div[2]/div[1]/div[2]/div/form/div[2]/div[2]/div/button')
-    SAVE_ADDRESS = (By.XPATH, '/html/body/div/div/div[2]/div[1]/div[2]/div/form/div[2]/div[3]/div/button')
+    INCLUDE_FEE = (By.XPATH, "//button[following-sibling::label[contains(text(), 'Include fee in the amount')]]")
+    SAVE_ADDRESS = (By.XPATH, "//button[following-sibling::label[contains(text(), 'Save address for the next payments')]]")
 
 class SendPage(BasePage):
     def __init__(self, driver):

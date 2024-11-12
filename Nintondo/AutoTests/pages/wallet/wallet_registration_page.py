@@ -17,10 +17,10 @@ class LoginPageSelectors:
     # Types of wallet recovery
     NEW_MNEMONIC = (By.LINK_TEXT, "New mnemonic")
     RESTORE_MNEMONIC = (By.LINK_TEXT, "Restore mnemonic")
-    PRIVAT_KEY = (By.LINK_TEXT, "Restore from private key")
+    PRIVATE_KEY = (By.LINK_TEXT, "Restore from private key")
 
     COPY_MNEMONIC = (By.XPATH, "//div[@id='root']//button")
-    CONF_MNEMONIC = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[2]/div/button")
+    CONF_MNEMONIC = INCLUDE_FEE = (By.XPATH, "//button[following-sibling::label[contains(text(), 'I saved this phrase')]]")
     CREATE_BUTTON = (By.XPATH, "//button[text()='Continue']")
     RECOVER_BUTTON = (By.XPATH, "//button[text()='Recover']")
 
@@ -28,8 +28,8 @@ class LoginPageSelectors:
     RESTORE_MNEMONIC_INPUT = (By.XPATH, "//input[@class='_input_u2hpt_1']")
     RESTORE_BUTTON = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[2]/button")
 
-    LEGACY_TYPE = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[1]/div/div[2]")
-    NATIVE_SEGWIT = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[1]/div[1]")
+    LEGACY_TYPE = (By.XPATH, "//div[text()='Legacy']")
+    NATIVE_SEGWIT = (By.XPATH, "//div[text()='Taproot']")
 
 
 class CreateMnemonic(BasePage):
@@ -62,7 +62,7 @@ class CreateMnemonic(BasePage):
 
     def type_reg_privacy_key(self):
         type_reg_privacy_key = wait(self.driver, 10).until(
-            EC.element_to_be_clickable(LoginPageSelectors.PRIVAT_KEY))
+            EC.element_to_be_clickable(LoginPageSelectors.PRIVATE_KEY))
         type_reg_privacy_key.click()
         print("- Clicked recovery via private key")
 

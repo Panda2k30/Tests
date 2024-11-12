@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from Nintondo.AutoTests.conftest import driver
 from Nintondo.AutoTests.pages.base_page import BasePage
+import time
 
 wait = WebDriverWait
 
@@ -23,8 +24,12 @@ class ManePageSelector:
     INSCRIPTION_ALLERT = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[1]/div/a[1]")
     TRANSACTION_LIST = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[3]/div[1]/a[1]/div[1]/div[2]")
     TESTNET_BTN = (By.XPATH, "//div[text()='TESTNET']")
-
+    TRANSACTION_CONT = (By.XPATH, "//*[contains(@class, 'transactionsDiv')]")
     ACCOUNT_ADDRESS = (By.CSS_SELECTOR, "._walletDiv_1nrdb_1 ._accPanel_1nrdb_4 ._accPubAddress_1nrdb_13")
+
+    # Wallets
+    ADD_WALLET_BTN = (By.XPATH, "//a[@href='#/pages/create-new-wallet']")
+    PRIVATE_KEY_BTN = (By.LINK_TEXT, "Restore from private key")
 
 class ManePage(BasePage):
     def __init__(self, driver):
@@ -66,7 +71,16 @@ class ManePage(BasePage):
         nft_page_btn.click()
         print("- Go to: NFT")
 
+    def add_wallet_btn(self):
+        add_wallet_btn = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(ManePageSelector.ADD_WALLET_BTN))
+        add_wallet_btn.click()
+        print("- Clicked: Add Wallet")
+
     def get_balance(self):
+
+        time.sleep(0.4)
+
         # Gets and returns the user's current balance.
         get_balance_mane = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.BALANCE_WALLET_MANE))
@@ -89,11 +103,17 @@ class ManePage(BasePage):
         return total_balance
 
     def change_network(self, ex_id):
+
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located(
+                (By.XPATH, "//p[text()='No transactions']")))
+
         self.driver.get(f"chrome-extension://{ex_id}/index.html#/pages/network-settings")
         print("- Go to the page for changing the network type")
 
-        change_network = wait(self.driver, 10).until(
-            EC.element_to_be_clickable(ManePageSelector.TESTNET_BTN))
+        change_network = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(ManePageSelector.TESTNET_BTN)
+        )
         change_network.click()
         print("- Changed the network to TESTNET")
 
@@ -121,3 +141,8 @@ class ManePage(BasePage):
 
         print("The address of the account is on the home page:", account_address)
         return account_address
+
+    def trans_cont(self):
+        trans_cont = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(ManePageSelector.TRANSACTION_CONT))
+        print("- Wait for the transaction list to load")

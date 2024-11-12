@@ -50,7 +50,7 @@ def test_restore_by_invalid_private_key(driver, data, expected_error):
     test_restore_by_invalid_private_key.type_reg_privacy_key()
     test_restore_by_invalid_private_key.restore_input(data)
     test_restore_by_invalid_private_key.conf_create_wallet()
-    print("Choose wallet type: Native, default")
+    print("// Choose wallet type: Native, by default //")
     test_restore_by_invalid_private_key.conf_recover_wallet()
 
     try:

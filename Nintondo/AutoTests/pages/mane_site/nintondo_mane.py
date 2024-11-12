@@ -18,45 +18,46 @@ class NintondoPageSelector:
 
 class NintondoPage(BasePage):
     def __init__(self, driver):
-        self.driver = driver  # Сохраняем переданный драйвер
+        self.driver = driver
 
     def connect_btn(self):
         connect_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NintondoPageSelector.CONNECT_BTN))
         connect_btn.click()
-        print("- Кликнули на кнопку: Connect")
+        print("- Clicked on the button: Connect")
 
     def sign_btn(self):
         sign_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NintondoPageSelector.SIGN_BTN))
         sign_btn.click()
-        print("- Во втором окне кликнули: Sign")
+        print("- In the second window clicked: Sign")
 
     def change_network_btn(self):
         change_network_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NintondoPageSelector.CHANGE_NETWORK))
         change_network_btn.click()
-        print("- Поменяли сеть")
+        print("- Changed the network")
 
     def switch_network_btn(self):
         switch_network_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NintondoPageSelector.SWITCH_NETWORK))
         switch_network_btn.click()
-        print("- Поменяли сеть")
+        print("- Changed the network")
+
 
 class NintondoUserMenu(BasePage):
     def __init__(self, driver):
-        self.driver = driver  # Сохраняем переданный драйвер
+        self.driver = driver
 
     def open_menu(self):
         open_menu = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NintondoPageSelector.OPEN_MENU))
         open_menu.click()
-        print("- Кликнули на раскрытие меню")
+        print("- Clicked to expand the menu")
 
     def menu_profile_btn(self):
         menu_profile_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NintondoPageSelector.PROFILE_BNT))
         menu_profile_btn.click()
-        print("- Кликнули на: Profile")
+        print("- Clicked on: Profile")
 
