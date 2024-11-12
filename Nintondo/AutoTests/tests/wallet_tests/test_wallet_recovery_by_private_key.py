@@ -3,39 +3,39 @@ import allure
 import pytest
 from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
 from Nintondo.AutoTests.data import Data
-from Nintondo.AutoTests.pages.wallet.wallet_registration_page import LoginPageSelectors
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Restore wallet by private key")
-# Проверяем восстановление кошелька приватником
+
 def test_restore_by_private_key(driver):
 
     test_restore_by_private_key = CreateMnemonic(driver)
 
-    test_restore_by_private_key.exec_id()
+    ex_id = test_restore_by_private_key.exec_id()
     test_restore_by_private_key.use_id()
 
     time.sleep(0.5)
-    test_restore_by_private_key.enter_password(Data.PASS) # Ввод пароля
-    test_restore_by_private_key.conf_password(Data.CONFPASS) # Подтверждение пароля
-    test_restore_by_private_key.click_reg_button() # Жмем на кнопку продолжения
-    test_restore_by_private_key.type_reg_privacy_key() # Выбираем восстановление через приватник
-    test_restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET) # Вводим приватник
-    test_restore_by_private_key.conf_create_wallet() # Подтверждаем создание кошелька
-    print("Выбираем тип кошелька: Native, по умолчанию")
-    # Выбираем: Native по умолчанию"
-    test_restore_by_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
+    test_restore_by_private_key.enter_password(Data.PASS) # Enter password
+    test_restore_by_private_key.conf_password(Data.CONFPASS) # Confirm password
+    test_restore_by_private_key.click_reg_button() # Press the continue button
+    test_restore_by_private_key.type_reg_privacy_key() # Select private key recovery
+    test_restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET) # Enter private key
+    test_restore_by_private_key.conf_create_wallet() # Confirm wallet creation
+    print("Choose wallet type: Native, by default")
+    test_restore_by_private_key.conf_recover_wallet()  # Confirm wallet creation
+
+    return ex_id
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Restore wallet by invalid private key")
 @pytest.mark.parametrize("data, expected_error", [
-    ("", "Invalid private key"), #пустая строка
-    (Data.INVALID_KEY_WALLET, "Invalid private key"), #невалидные данные
-    ("-", "Invalid private key")]) #один символ
-# Проверяем восстановление кошелька невалидным приватником
+    ("", "Invalid private key"),
+    (Data.INVALID_KEY_WALLET, "Invalid private key"),
+    ("-", "Invalid private key")])
+
 def test_restore_by_invalid_private_key(driver, data, expected_error):
 
     test_restore_by_invalid_private_key = CreateMnemonic(driver)
@@ -44,22 +44,20 @@ def test_restore_by_invalid_private_key(driver, data, expected_error):
     test_restore_by_invalid_private_key.use_id()
 
     time.sleep(0.5)
-    test_restore_by_invalid_private_key.enter_password(Data.PASS) # Ввод пароля
-    test_restore_by_invalid_private_key.conf_password(Data.CONFPASS) # Подтверждение пароля
-    test_restore_by_invalid_private_key.click_reg_button() # Жмем на кнопку продолжения
-    test_restore_by_invalid_private_key.type_reg_privacy_key() # Выбираем восстановление через приватник
-    test_restore_by_invalid_private_key.restore_input(data) # Вводим приватник
-    test_restore_by_invalid_private_key.conf_create_wallet() # Подтверждаем создание кошелька
-    print("Выбираем тип кошелька: Native, по умолчанию")
-    # Выбираем: Native по умолчанию"
-    test_restore_by_invalid_private_key.conf_recover_wallet()  # Подтверждаем создание кошелька
+    test_restore_by_invalid_private_key.enter_password(Data.PASS)
+    test_restore_by_invalid_private_key.conf_password(Data.CONFPASS)
+    test_restore_by_invalid_private_key.click_reg_button()
+    test_restore_by_invalid_private_key.type_reg_privacy_key()
+    test_restore_by_invalid_private_key.restore_input(data)
+    test_restore_by_invalid_private_key.conf_create_wallet()
+    print("Choose wallet type: Native, default")
+    test_restore_by_invalid_private_key.conf_recover_wallet()
 
     try:
-        # Ожидаем, что сообщение об ошибке станет видимым
         error_message = WebDriverWait(driver, 3).until(
             EC.visibility_of_element_located((By.CLASS_NAME, "error"))
         )
-        assert error_message.is_displayed(), "Сообщение об ошибке не отображается"
-        assert error_message.text == expected_error, f"Ожидалось сообщение об ошибке: '{expected_error}', но получено: '{error_message.text}'"
+        assert error_message.is_displayed(), "Error message is not displayed"
+        assert error_message.text == expected_error, f"An error message was expected: '{expected_error}', but received: '{error_message.text}'"
     except Exception as e:
-        pytest.fail(f"Ошибка при проверке сообщения: {e}")
+        pytest.fail(f"Error during message validation: {e}")

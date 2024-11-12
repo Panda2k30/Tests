@@ -3,7 +3,7 @@ import allure
 import pytest
 from Nintondo.AutoTests.data import Data
 from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
+from Nintondo.AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
 from Nintondo.AutoTests.pages.wallet.wallet_mane_page import ManePage
 from Nintondo.AutoTests.pages.wallet.wallet_send_page import SendPage
 from selenium.webdriver.support import expected_conditions as EC
@@ -12,46 +12,29 @@ from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Send money and verify balance")
-# Проверяем отправку с валидным балансом
 def test_valid_sendmoney(driver):
 
-    # Функция для проверки отличий в TXID
+    # Function to check for differences in TXID
     def are_txids_different(txid1, txid2):
         # Проверяем, отличаются ли TXID хотя бы одним символом
         return any(char1 != char2 for char1, char2 in zip(txid1, txid2)) or len(txid1) != len(txid2)
 
-    restore_by_private_key = CreateMnemonic(driver)
-    sendmoney = SendPage(driver)
+    ex_id = test_restore_by_private_key(driver)
+
     change_network = ManePage(driver)
-
-    ex_id = restore_by_private_key.exec_id()
-    restore_by_private_key.use_id()
-
-    time.sleep(0.5)
-
-    # Ввод пароля и восстановление кошелька
-    restore_by_private_key.enter_password(Data.PASS)
-    restore_by_private_key.conf_password(Data.CONFPASS)
-    restore_by_private_key.click_reg_button()
-
-    restore_by_private_key.type_reg_privacy_key()
-    restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)
-    restore_by_private_key.conf_create_wallet()
-    print("Выбираем тип кошелька: Native, по умолчанию") # Выбираем: Native по умолчанию"
-    restore_by_private_key.conf_recover_wallet()
-
     time.sleep(0.5)
     change_network.get_balance()
-    change_network.change_network(ex_id) # Смена сети и получение старого баланса
+    change_network.change_network(ex_id)
     time.sleep(0.5)
     change_network.get_balance()
 
-    # Получение старого TXID
     old_transaction_verify = change_network.verify_transaction()
 
     change_network.send_page_btn()
 
-    # Отправка средств
+    # Sending funds
+    sendmoney = SendPage(driver)
+
     sendmoney.enter_address(Data.VALID_RECEIVE_ADDRESS)
     sendmoney.enter_amount(valid_amount=0.1)
     sendmoney.include_fee()
@@ -61,14 +44,14 @@ def test_valid_sendmoney(driver):
     sendmoney.back_to_home()
     time.sleep(0.5)
 
-    # Получение нового баланса и TXID
+    # Receive new balance and TXID
     change_network.get_balance()
     new_transaction_verify = change_network.verify_transaction()
 
-    # Проверка, что TXID изменился
+    # Check that the TXID has changed
     assert are_txids_different(new_transaction_verify, old_transaction_verify), (
-        f"TXID не изменился! Старое значение: {old_transaction_verify}, "
-        f"Новое значение: {new_transaction_verify}"
+        f"TXID has not changed! Old value: {old_transaction_verify}, "
+        f"New meaning: {new_transaction_verify}"
     )
     time.sleep(0.2)
 
@@ -83,31 +66,19 @@ def test_valid_sendmoney(driver):
     ("0.00000001", f"{Data.VALID_RECEIVE_ADDRESS}", "Fee exceeds amount")
     ])
 
-# Проверяем отправку с невалидным балансом и негативные сценарии
 def test_invalid_sendmoney(driver, amount, blank, expected_error):
 
-    restore_by_private_key = CreateMnemonic(driver)
-    send_invalid_amount = SendPage(driver)
+    ex_id = test_restore_by_private_key(driver)
+
     change_network = ManePage(driver)
 
-    ex_id = restore_by_private_key.exec_id()
-    restore_by_private_key.use_id()
-
-    time.sleep(0.5)
-    restore_by_private_key.enter_password(Data.PASS)  # Ввод пароля
-    restore_by_private_key.conf_password(Data.CONFPASS)  # Подтверждение пароля
-    restore_by_private_key.click_reg_button()  # Жмем на кнопку продолжения
-    restore_by_private_key.type_reg_privacy_key()  # Выбираем восстановление через приватник
-    restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET)  # Вводим приватник
-    restore_by_private_key.conf_create_wallet()  # Подтверждаем создание кошелька
-    print("Выбираем тип кошелька: Native, по умолчанию")
-    # Выбираем: Native по умолчанию"
-    restore_by_private_key.conf_recover_wallet() # Подтверждаем создание кошелька
     change_network.get_balance()
     change_network.change_network(ex_id)
     time.sleep(0.5)
     change_network.get_balance()
     change_network.send_page_btn()
+
+    send_invalid_amount = SendPage(driver)
 
     send_invalid_amount.enter_address(blank)
     send_invalid_amount.enter_amount(amount)

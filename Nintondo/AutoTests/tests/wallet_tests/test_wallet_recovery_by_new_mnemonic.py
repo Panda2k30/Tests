@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Valid Create wallet with new Mnemonic")
-# Проверяем создание кошелька новым мнемоником
+
 def test_valid_create_mnemonic(driver):
 
     test_create_mnemonic = CreateMnemonic(driver)
@@ -32,7 +32,7 @@ def test_valid_create_mnemonic(driver):
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Invalid Create wallet with new Mnemonic")
-# Проверяем невозможность создания кошелька, если пользователь не подтв. сохр. фраз
+
 def test_invalid_create_mnemonic(driver):
 
     test_invalid_create_mnemonic = CreateMnemonic(driver)
@@ -55,7 +55,7 @@ def test_invalid_create_mnemonic(driver):
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Restore wallet by private key")
-# Проверяем восстановление кошелька приватником
+
 def test_restore_by_private_key(driver):
 
     test_restore_by_private_key = CreateMnemonic(driver)
@@ -77,10 +77,10 @@ def test_restore_by_private_key(driver):
 @pytest.mark.usefixtures("driver")
 @allure.feature("Restore wallet by invalid private key")
 @pytest.mark.parametrize("data, expected_error", [
-    ("", "Invalid private key"), #пустая строка
-    (Data.INVALID_KEY_WALLET, "Invalid private key"), #невалидные данные
-    ("-", "Invalid private key")]) #один символ
-# Проверяем восстановление кошелька невалидным приватником
+    ("", "Invalid private key"),
+    (Data.INVALID_KEY_WALLET, "Invalid private key"),
+    ("-", "Invalid private key")])
+
 def test_restore_by_invalid_private_key(driver, data, expected_error):
 
     test_restore_by_invalid_private_key = CreateMnemonic(driver)
@@ -111,7 +111,7 @@ def test_restore_by_invalid_private_key(driver, data, expected_error):
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Restore wallet by valid mnemonic")
-# Проверяем восстановление кошелька мнемоником
+
 def test_restore_by_mnemonic(driver):
 
     test_restore_by_mnemonic = CreateMnemonic(driver)

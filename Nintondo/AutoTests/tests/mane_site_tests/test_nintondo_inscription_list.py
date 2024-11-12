@@ -8,12 +8,11 @@ from Nintondo.AutoTests.pages.mane_site.nintondo_profile import ProfilePage, Ins
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.common import TimeoutException
 
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Test valid inscription listing")
-# Проверяем публикацию и снятие инскрипций с продажи
+# Checking the publication and withdrawal of inscriptions from sale
 def test_valid_inscription_list(driver):
 
     test_connect(driver)
@@ -42,21 +41,21 @@ def test_valid_inscription_list(driver):
 
     driver.switch_to.window(windows[0])
 
-    # Проверка сообщения об ошибке после публикации инскрипции
+    # Checking for an error message after publishing an inscription
     expected_sign_error = "Inscription(s) listed successfully"
     try:
         error_message = WebDriverWait(driver, 5).until(
             EC.visibility_of_element_located((By.CLASS_NAME, "go3958317564"))
         )
-        assert error_message.is_displayed(), "Сообщение об ошибке не отображается"
-        assert error_message.text == expected_sign_error, f"Ожидалось сообщение об ошибке: '{expected_sign_error}', но получено: '{error_message.text}'"
+        assert error_message.is_displayed(), "The error message is not displayed"
+        assert error_message.text == expected_sign_error, f"An error message was expected: '{expected_sign_error}', но получено: '{error_message.text}'"
     except Exception as e:
-        pytest.fail(f"Ошибка при проверке сообщения об ошибке после публикации: {e}")
+        pytest.fail(f"Error when checking error message after publication: {e}")
 
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Test valid inscription unlisting")
-# Проверяем публикацию и снятие инскрипций с продажи
+
 def test_valid_inscription_unlist(driver):
 
     test_connect(driver)
@@ -73,16 +72,15 @@ def test_valid_inscription_unlist(driver):
     time.sleep(0.5)
     inscription.inscription_unlist_btn()
 
-    # Проверка сообщения об ошибке после аннулирования инскрипции
     expected_unlist_error = "Inscription(s) listed successfully"
     try:
         error_message = WebDriverWait(driver, 5).until(
             EC.visibility_of_element_located((By.CLASS_NAME, "go3958317564"))
         )
-        assert error_message.is_displayed(), "Сообщение об ошибке не отображается"
-        assert error_message.text == expected_unlist_error, f"Ожидалось сообщение об ошибке: '{expected_unlist_error}', но получено: '{error_message.text}'"
+        assert error_message.is_displayed(), "The error message is not displayed"
+        assert error_message.text == expected_unlist_error, f"An error message was expected: '{expected_unlist_error}', but received: '{error_message.text}'"
     except Exception as e:
-        pytest.fail(f"Ошибка при проверке сообщения об ошибке после аннулирования: {e}")
+        pytest.fail(f"Error when checking error message after cancelation: {e}")
 
 
 @pytest.mark.usefixtures("driver")
@@ -93,7 +91,6 @@ def test_valid_inscription_unlist(driver):
     ("0.00000001", "Price must be at least 1000 satoshi", "group1"),
 ])
 
-# Проверяем ввод невалидных значений в поле суммы инскрипции
 def test_invalid_inscription_list(driver, amount, expected_error, check_type):
 
     test_connect(driver)
@@ -110,14 +107,13 @@ def test_invalid_inscription_list(driver, amount, expected_error, check_type):
     inscription.inscription_field_invalid_price(amount)
 
     try:
-        # Проверка для первой группы параметров
         if check_type == "group1":
             inscription.inscription_list_btn()
             error_message = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.CLASS_NAME, "go3958317564"))
             )
-            assert error_message.is_displayed(), "Сообщение об ошибке не отображается"
-            assert error_message.text == expected_error, f"Ожидалось сообщение об ошибке: '{expected_error}', но получено: '{error_message.text}'"
+            assert error_message.is_displayed(), "No error message is displayed"
+            assert error_message.text == expected_error, f"An error message was expected: '{expected_error}', but received: '{error_message.text}'"
 
         # Проверка для второй группы параметров
         elif check_type == "group2":
@@ -125,8 +121,8 @@ def test_invalid_inscription_list(driver, amount, expected_error, check_type):
                 EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'styles_errorText__')]"))
             )
             print(error_message_under_field)
-            assert error_message_under_field.is_displayed(), "Сообщение об ошибке под полем ввода не отображается"
-            assert error_message_under_field.text == expected_error, f"Ожидалось сообщение об ошибке: '{expected_error}', но получено: '{error_message_under_field.text}'"
+            assert error_message_under_field.is_displayed(), "The error message below the input field is not displayed"
+            assert error_message_under_field.text == expected_error, f"An error message was expected: '{expected_error}', but received: '{error_message_under_field.text}'"
 
     except Exception as e:
-        pytest.fail(f"Ошибка при проверке сообщения: {e}")
+        pytest.fail(f"Message validation error: {e}")
