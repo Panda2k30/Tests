@@ -1,12 +1,12 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.data import Data
-from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
-from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
-from Nintondo.AutoTests.pages.wallet.wallet_mane_page import ManePage
-from Nintondo.AutoTests.pages.wallet.wallet_nft_page import NFTPage
+from AutoTests.data import Data
+from AutoTests.conftest import driver
+from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
+from AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
+from AutoTests.pages.wallet.wallet_mane_page import ManePage
+from AutoTests.pages.wallet.wallet_nft_page import NFTPage
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Valid sending inscriptions from the wallet")

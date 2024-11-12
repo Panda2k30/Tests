@@ -1,11 +1,11 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.data import Data
-from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
-from Nintondo.AutoTests.pages.wallet.wallet_mane_page import ManePage
-from Nintondo.AutoTests.pages.wallet.wallet_send_page import SendPage
+from AutoTests.data import Data
+from AutoTests.conftest import driver
+from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
+from AutoTests.pages.wallet.wallet_mane_page import ManePage
+from AutoTests.pages.wallet.wallet_send_page import SendPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By

@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.pages.base_page import BasePage
+from AutoTests.conftest import driver
+from AutoTests.pages.base_page import BasePage
 
 wait = WebDriverWait
 
@@ -36,12 +36,6 @@ class NintondoPage(BasePage):
         change_network_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NintondoPageSelector.CHANGE_NETWORK))
         change_network_btn.click()
-        print("- Changed the network")
-
-    def switch_network_btn(self):
-        switch_network_btn = wait(self.driver, 10).until(
-            EC.element_to_be_clickable(NintondoPageSelector.SWITCH_NETWORK))
-        switch_network_btn.click()
         print("- Changed the network")
 
 

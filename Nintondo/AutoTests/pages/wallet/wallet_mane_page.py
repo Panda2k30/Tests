@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.pages.base_page import BasePage
+from AutoTests.conftest import driver
+from AutoTests.pages.base_page import BasePage
 import time
 
 wait = WebDriverWait
@@ -14,7 +14,7 @@ class ManePageSelector:
     RECEIVE_PAGE_BTN = (By.LINK_TEXT, "Receive")
     WALLET_PAGE_BTN = (By.XPATH, "//a[@href='#/pages/switch-wallet']")
     SETTINGS_PAGE_BTN = (By.XPATH, "//a[@href='#/pages/settings']")
-    ACCOUNT_PAGE_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div[3]/a")
+    ACCOUNT_PAGE_BTN = (By.XPATH, "//a[@href='#/pages/switch-account']")
     NFT_PAGE_BTN = (By.XPATH, "//a/img")
     BACK_BTN = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[1]/div[1]")
 

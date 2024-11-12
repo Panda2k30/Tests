@@ -1,9 +1,9 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from Nintondo.AutoTests.data import Data
-from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.pages.base_page import BasePage
+from AutoTests.data import Data
+from AutoTests.conftest import driver
+from AutoTests.pages.base_page import BasePage
 import time
 
 wait = WebDriverWait

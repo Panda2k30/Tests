@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from Nintondo.AutoTests.pages.base_page import BasePage
+from AutoTests.pages.base_page import BasePage
 
 wait = WebDriverWait
 
@@ -25,8 +25,8 @@ class LoginPageSelectors:
     RECOVER_BUTTON = (By.XPATH, "//button[text()='Recover']")
 
     RESTORE_INPUT = (By.XPATH, "//input[@id='privKey']")
-    RESTORE_MNEMONIC_INPUT = (By.XPATH, "//input[@class='_input_u2hpt_1']")
-    RESTORE_BUTTON = (By.XPATH, "/html/body/div/div/div[2]/div[1]/div[2]/div/div[2]/div[2]/button")
+    RESTORE_MNEMONIC_INPUT = (By.XPATH, "//input[contains(@class, '_input_')]")
+    RESTORE_BUTTON = (By.XPATH, "//button[text()='Continue']")
 
     LEGACY_TYPE = (By.XPATH, "//div[text()='Legacy']")
     NATIVE_SEGWIT = (By.XPATH, "//div[text()='Taproot']")

@@ -1,8 +1,8 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
-from Nintondo.AutoTests.data import Data
+from AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
+from AutoTests.data import Data
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -16,6 +16,7 @@ def test_restore_by_private_key(driver):
 
     ex_id = test_restore_by_private_key.exec_id()
     test_restore_by_private_key.use_id()
+    
 
     time.sleep(0.5)
     test_restore_by_private_key.enter_password(Data.PASS) # Enter password
@@ -27,7 +28,14 @@ def test_restore_by_private_key(driver):
     print("// Choose wallet type: Native, by default //")
     test_restore_by_private_key.conf_recover_wallet()  # Confirm wallet creation
 
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//a[span='Receive']"))
+    )
+
+    assert element is not None, "Element with the specified class was not found."
+    
     return ex_id
+
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Restore wallet by invalid private key")

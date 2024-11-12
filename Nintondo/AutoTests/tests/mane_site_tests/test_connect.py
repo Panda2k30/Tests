@@ -1,12 +1,13 @@
 import time
 import allure
 import pytest
-from Nintondo.AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
-from Nintondo.AutoTests.pages.mane_site.nintondo_mane import NintondoPage
+from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
+from AutoTests.pages.mane_site.nintondo_mane import NintondoPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from Nintondo.AutoTests.conftest import driver
-from Nintondo.AutoTests.pages.wallet.wallet_mane_page import ManePage
+from AutoTests.conftest import driver
+from AutoTests.pages.wallet.wallet_mane_page import ManePage
+
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Test Connect wallet_tests")
