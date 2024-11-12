@@ -79,7 +79,9 @@ def test_valid_sendmoney(driver):
     ("", f"{Data.VALID_RECEIVE_ADDRESS}", "Minimum amount is 0.00000001 BEL"),
     ("0.1", "", "Invalid receiver's address"),
     ("", "", "Invalid receiver's address"),
-    ("", f"{Data.NOT_VALID_ADDRESS}", "Invalid receiver's address")])
+    ("", f"{Data.NOT_VALID_ADDRESS}", "Invalid receiver's address"),
+    ("0.00000001", f"{Data.VALID_RECEIVE_ADDRESS}", "Fee exceeds amount")
+    ])
 
 # Проверяем отправку с невалидным балансом и негативные сценарии
 def test_invalid_sendmoney(driver, amount, blank, expected_error):
@@ -109,6 +111,7 @@ def test_invalid_sendmoney(driver, amount, blank, expected_error):
 
     send_invalid_amount.enter_address(blank)
     send_invalid_amount.enter_amount(amount)
+    send_invalid_amount.include_fee()
     send_invalid_amount.cont_send_money()
 
     try:

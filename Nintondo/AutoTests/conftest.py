@@ -9,7 +9,7 @@ import allure
 def driver(request):
 
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1280,720")
     options.add_argument('--disable-dev-shm-usage')
