@@ -1,5 +1,5 @@
 *.iml
-venv/
+.venv/
 __pycache__/
 *.pyc
 *.pyo
@@ -9,3 +9,5 @@ git push origin mainreport
 allure-results/
 /Nintondo/AutoTests/extension/
 screenshots/
+path/
+.vscode/

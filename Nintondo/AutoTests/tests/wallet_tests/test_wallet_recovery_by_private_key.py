@@ -68,4 +68,4 @@ def test_restore_by_invalid_private_key(driver, data, expected_error):
         assert error_message.is_displayed(), "Error message is not displayed"
         assert error_message.text == expected_error, f"An error message was expected: '{expected_error}', but received: '{error_message.text}'"
     except Exception as e:
-        pytest.fail(f"Error during message validation: {e}")
+        pytest.fail(f"Error during message validation: {e}") 

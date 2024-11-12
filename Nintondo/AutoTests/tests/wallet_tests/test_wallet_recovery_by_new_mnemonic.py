@@ -50,4 +50,4 @@ def test_invalid_create_mnemonic(driver):
     is_disabled_class = "disabled:cursor-not-allowed" in createbtn_mnemonic.get_attribute("class")
 
     assert is_disabled_class, "The button was expected to be inactive, but it is available."
-    print("- The button is indeed inactive and has class disabled:cursor-not-allowed")
+    print("- The button is indeed inactive and has class disabled:cursor-not-allowed") 

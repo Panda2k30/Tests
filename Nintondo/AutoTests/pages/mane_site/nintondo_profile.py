@@ -8,7 +8,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 wait = WebDriverWait
 
 class ProfilePageSelector:
-
+ 
     AVATAR = (By.XPATH, "/html/body/main/div/div[1]/div[1]")
     NICKNAME = (By.XPATH, "/html/body/main/div/div[1]/div[2]/div[1]/div/div[2]")
     NICKNAME_FIELD = (By.XPATH, "//*[@id='input-form']/input")
