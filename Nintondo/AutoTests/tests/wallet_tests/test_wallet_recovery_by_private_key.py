@@ -24,7 +24,7 @@ def test_restore_by_private_key(driver):
     test_restore_by_private_key.type_reg_privacy_key() # Select private key recovery
     test_restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET) # Enter private key
     test_restore_by_private_key.conf_create_wallet() # Confirm wallet creation
-    print("Choose wallet type: Native, by default")
+    print("// Choose wallet type: Native, by default //")
     test_restore_by_private_key.conf_recover_wallet()  # Confirm wallet creation
 
     return ex_id

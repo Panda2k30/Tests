@@ -131,7 +131,7 @@ class CreateMnemonic(BasePage):
         conf_recover_wallet = wait(self.driver, 10).until(
             EC.element_to_be_clickable(LoginPageSelectors.RECOVER_BUTTON))
         conf_recover_wallet.click()
-        print("- Clicked on: Recover")
+        print("- Clicked on: Recover\n")
 
     def restore_input(self, privat_key):
 

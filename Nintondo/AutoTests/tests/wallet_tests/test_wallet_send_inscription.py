@@ -26,14 +26,20 @@ def test_valid_sending_inscriptions(driver):
 
     nft_page.select_inscription()
     id_card = nft_page.id_card()
+
     nft_page.send_btn()
+
     valid_address = nft_page.enter_address(Data.VALID_RECEIVE_ADDRESS)
     nft_page.continue_btn()
+
     to_address_tabl = nft_page.to_address_tabl()
     from_address_tabl = nft_page.from_address_tabl()
     id_tabl = nft_page.id_tabl()
-    print("Data collation")
+
+    print("\nData collation ...")
+
     assert account_address == from_address_tabl, f"Address mismatch: {account_address} != {from_address_tabl}"
     assert valid_address == to_address_tabl, f"Address mismatch: {valid_address} != {to_address_tabl}"
     assert id_card == id_tabl, f"ID mismatch: {id_card} != {id_tabl}"
-    print("Successfully")
+
+    print("\nSuccessfully !")

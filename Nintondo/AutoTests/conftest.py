@@ -1,7 +1,6 @@
 import os
 import pytest
 from selenium import webdriver
-import time
 from selenium.common.exceptions import NoSuchWindowException
 import allure
 
@@ -21,28 +20,28 @@ def driver(request):
     # extension_path = "/app/extension"
     options.add_argument(f"--load-extension={extension_path}")
 
-    # Инициализируем драйвер
+    # Initialize the driver
     driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(4)
-    print("Драйвер инициализирован")  # Для отладки
+    print("Driver initialized")
 
     driver.get('chrome://newtab')
 
-    # Директория для скриншотов
+    # Directory for screenshots
     screenshot_dir = "screenshots"
     os.makedirs(screenshot_dir, exist_ok=True)
 
     yield driver
 
-    # Пробуем создать скриншот для аллюра
+    # Trying to create a screenshot for the gait
     screenshot_path = f"{screenshot_dir}/{request.node.name}.png"
     try:
         if len(driver.window_handles) > 0:
             driver.save_screenshot(screenshot_path)
             allure.attach.file(screenshot_path, name="Screenshot", attachment_type=allure.attachment_type.PNG)
         else:
-            print("Скриншот не сделан, так как все окна были закрыты")
+            print("Screenshot not saved, as all windows were closed")
     except NoSuchWindowException:
-        print("Окно было закрыто, скриншот не сделан")
+        print("Window closed, screenshot not done")
     finally:
         driver.quit()
