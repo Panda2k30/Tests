@@ -3,7 +3,7 @@ import allure
 import pytest
 from AutoTests.data import Data
 from AutoTests.conftest import driver
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
+from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
 from AutoTests.pages.wallet.wallet_mane_page import ManePage
 from AutoTests.pages.wallet.wallet_send_page import SendPage
 from selenium.webdriver.support import expected_conditions as EC
@@ -16,10 +16,9 @@ def test_valid_sendmoney(driver):
 
     # Function to check for differences in TXID
     def are_txids_different(txid1, txid2):
-        # Проверяем, отличаются ли TXID хотя бы одним символом
         return any(char1 != char2 for char1, char2 in zip(txid1, txid2)) or len(txid1) != len(txid2)
 
-    ex_id = test_restore_by_private_key(driver)
+    ex_id, password = restore_by_private_key_proc(driver)
 
     change_network = ManePage(driver)
 
@@ -66,7 +65,7 @@ def test_valid_sendmoney(driver):
 
 def test_invalid_sendmoney(driver, amount, blank, expected_error):
 
-    ex_id = test_restore_by_private_key(driver)
+    ex_id, password = restore_by_private_key_proc(driver)
 
     change_network = ManePage(driver)
 

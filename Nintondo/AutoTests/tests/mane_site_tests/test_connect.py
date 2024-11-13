@@ -1,10 +1,11 @@
 import time
 import allure
 import pytest
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
+from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
 from AutoTests.pages.mane_site.nintondo_mane import NintondoPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 from AutoTests.conftest import driver
 from AutoTests.pages.wallet.wallet_mane_page import ManePage
 
@@ -13,7 +14,7 @@ from AutoTests.pages.wallet.wallet_mane_page import ManePage
 @allure.feature("Test Connect wallet_tests")
 def test_connect(driver):
 
-    ex_id = test_restore_by_private_key(driver)
+    ex_id, password = restore_by_private_key_proc(driver)
 
     change_network = ManePage(driver)
 
@@ -39,6 +40,14 @@ def test_connect(driver):
     print(driver.title)
 
     connect.sign_btn()
-    time.sleep(0.2)
+    time.sleep(0.5)
+    
     driver.switch_to.window(windows[0])
     driver.set_window_size(1280, 720)
+    
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//button[contains(@id, 'headlessui-popover-button')]"))
+    )
+
+    assert element is not None, "Element with the specified class was not found."
+    

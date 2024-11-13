@@ -1,12 +1,14 @@
 import time
-
 import pyperclip
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from AutoTests.pages.base_page import BasePage
- 
+from faker import Faker
+import random
+
+fake = Faker()
 wait = WebDriverWait
 
 class LoginPageSelectors:
@@ -35,12 +37,27 @@ class LoginPageSelectors:
 class CreateMnemonic(BasePage):
     def __init__(self, driver):
         self.driver = driver
+        self.fake = Faker()
 
-    def enter_password(self, password):
+    # def enter_password(self, password):
+    #     password_field = wait(self.driver, 10).until(
+    #         EC.element_to_be_clickable(LoginPageSelectors.PASSWORD_FIELD))
+    #     password_field.send_keys(password)
+    #     print("- Enter a valid password")
+    
+    def enter_password(self):
+        
+        password_length = random.randint(10, 50)
+        password = self.fake.password(length=password_length, special_chars=True, digits=True, upper_case=True)
+
         password_field = wait(self.driver, 10).until(
             EC.element_to_be_clickable(LoginPageSelectors.PASSWORD_FIELD))
+
         password_field.send_keys(password)
-        print("- Enter a valid password")
+        
+        print(f"- Entered a password of length {password_length}: {password}")
+
+        return password
 
     def conf_password(self, confpassword):
         confpassword_field = wait(self.driver, 10).until(
@@ -86,16 +103,6 @@ class CreateMnemonic(BasePage):
             input_field = self.driver.switch_to.active_element
 
         print("- Entered seed phrases into the fields")
-
-    def show_words(self):
-        copy_mnem = wait(self.driver, 10).until(
-            EC.element_to_be_clickable(LoginPageSelectors.COPY_MNEMONIC))
-        copy_mnem.click()
-        print("- Copied the phrases to the clipboard")
-
-    def paste_mnen(self):
-        clipboard_text = pyperclip.paste()
-        print("Your phrases:", clipboard_text)
 
     def conf_save(self):
         conf_save = wait(self.driver, 10).until(

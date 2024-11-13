@@ -18,8 +18,8 @@ def test_restore_by_mnemonic(driver):
     test_restore_by_mnemonic.use_id()
 
     time.sleep(0.5)
-    test_restore_by_mnemonic.enter_password(Data.PASS)  # Enter password
-    test_restore_by_mnemonic.conf_password(Data.CONFPASS)  # Confirm password
+    password = test_restore_by_mnemonic.enter_password() # Enter password
+    test_restore_by_mnemonic.conf_password(password) # Confirm password
     test_restore_by_mnemonic.click_reg_button()  # Press the continue button
     test_restore_by_mnemonic.type_reg_mnemonic()  # Choose recovery through mnemonics
     test_restore_by_mnemonic.type_reg_restore_mnem(Data.VALID_MNEMONIC_DATA)  # Inserting mnemonics
@@ -41,8 +41,8 @@ def test_invalid_restore_by_mnemonic(driver, data, expected_error):
     test_invalid_restore_by_mnemonic.use_id()
 
     time.sleep(0.5)
-    test_invalid_restore_by_mnemonic.enter_password(Data.PASS)  # Enter password
-    test_invalid_restore_by_mnemonic.conf_password(Data.CONFPASS)  # Confirm password
+    password = test_invalid_restore_by_mnemonic.enter_password() # Enter password
+    test_invalid_restore_by_mnemonic.conf_password(password) # Confirm password
     test_invalid_restore_by_mnemonic.click_reg_button()  # Press the continue button
     test_invalid_restore_by_mnemonic.type_reg_mnemonic()  # Choose recovery through mnemonics
     test_invalid_restore_by_mnemonic.type_reg_restore_mnem(data)  # Inserting mnemonics

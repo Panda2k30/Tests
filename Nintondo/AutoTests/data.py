@@ -1,8 +1,11 @@
 class Data:
 
     # Данные для реги
-    PASS = "password123"
-    CONFPASS = "password123"
+    # WALLET_PASSWORD = "ThisIsVal1dPassw0rd"
+    WALLET_CONFPASSWORD = "ThisIsVal1dPassw0rd"
+    
+    WALLET_NEWPASSWORD = "Nint0ndoWa11et"
+    WALLET_NEWPASSWORD_CONF = "Nint0ndoWa11et"
 
     NOTVALID_PASS = ""
     NOTVALID_CONFPASS = ""

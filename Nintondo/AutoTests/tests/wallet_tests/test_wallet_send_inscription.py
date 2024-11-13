@@ -1,22 +1,21 @@
-import time
 import allure
 import pytest
+from selenium.webdriver.chrome.webdriver import WebDriver
 from AutoTests.data import Data
-from AutoTests.conftest import driver
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import test_restore_by_private_key
+from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
 from AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
 from AutoTests.pages.wallet.wallet_mane_page import ManePage
 from AutoTests.pages.wallet.wallet_nft_page import NFTPage
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Valid sending inscriptions from the wallet")
-def test_valid_sending_inscriptions(driver):
+def test_valid_sending_inscriptions(driver: WebDriver):
 
     def are_txids_same(txid1, txid2):
         return txid1 == txid2
 
     # Private key authentication
-    ex_id = test_restore_by_private_key(driver)
+    ex_id, password = restore_by_private_key_proc(driver)
 
     change_network = ManePage(driver)
 

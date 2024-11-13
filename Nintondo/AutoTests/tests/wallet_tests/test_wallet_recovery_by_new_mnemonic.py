@@ -17,13 +17,12 @@ def test_valid_create_mnemonic(driver):
 
     test_create_mnemonic.exec_id()
     test_create_mnemonic.use_id()
+    
     time.sleep(0.5)
-    test_create_mnemonic.enter_password(Data.PASS) # Enter password
-    test_create_mnemonic.conf_password(Data.CONFPASS) # Confirm password
+    password = test_create_mnemonic.enter_password() # Enter password
+    test_create_mnemonic.conf_password(password) # Confirm password
     test_create_mnemonic.click_reg_button() # Hit the continue button
     test_create_mnemonic.type_reg_new_mnem() # Select authorization type: New mnemonic
-    # test_create_mnemonic.copy_mnem() # Копируем фразы
-    # test_create_mnemonic.paste_mnen() # Выводим фразы
     test_create_mnemonic.conf_save() # Confirm that the mnemonic has been saved
     test_create_mnemonic.conf_create_wallet() # Confirm wallet creation
     print("// Choose wallet type: Native, by default //")
@@ -38,9 +37,10 @@ def test_invalid_create_mnemonic(driver):
 
     test_invalid_create_mnemonic.exec_id()
     test_invalid_create_mnemonic.use_id()
+    
     time.sleep(0.5)
-    test_invalid_create_mnemonic.enter_password(Data.PASS)
-    test_invalid_create_mnemonic.conf_password(Data.CONFPASS)
+    password = test_invalid_create_mnemonic.enter_password() # Enter password
+    test_invalid_create_mnemonic.conf_password(password) # Confirm password
     test_invalid_create_mnemonic.click_reg_button()
     test_invalid_create_mnemonic.type_reg_new_mnem()
 
