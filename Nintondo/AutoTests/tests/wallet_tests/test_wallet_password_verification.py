@@ -20,7 +20,7 @@ def test_create_valid_password(driver):
     time.sleep(0.5)
     password = test_create_valid_password.enter_password() # Enter password
     test_create_valid_password.conf_password(password) # Confirm password
-    test_create_valid_password.click_reg_button() # Жмем на кнопку продолжения
+    test_create_valid_password.click_reg_button() # Click on the continue button
 
     try:
         dashboard_element = WebDriverWait(driver, 2).until(
