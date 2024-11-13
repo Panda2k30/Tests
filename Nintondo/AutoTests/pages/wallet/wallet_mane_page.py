@@ -96,7 +96,7 @@ class ManePage(BasePage):
         formatted_balance_sec = f"{balance_sec:.4f}"
 
         # Combine two values with a dot between them
-        total_balance = f"{formatted_balance_mane}{formatted_balance_sec[1:]}"  # Убираем ведущий ноль у второго значения
+        total_balance = f"{formatted_balance_mane}{formatted_balance_sec[1:]}"
 
         # Output the result
         print("The user's current balance:", total_balance)
