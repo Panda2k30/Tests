@@ -39,18 +39,18 @@ class CreateMnemonic(BasePage):
         self.driver = driver
         self.fake = Faker()
 
-    # def enter_password(self, password):
-    #     password_field = wait(self.driver, 10).until(
-    #         EC.element_to_be_clickable(LoginPageSelectors.PASSWORD_FIELD))
-    #     password_field.send_keys(password)
-    #     print("- Enter a valid password")
+    def enter_invalid_password(self, password):
+        password_field = wait(self.driver, 2).until(
+            EC.element_to_be_clickable(LoginPageSelectors.PASSWORD_FIELD))
+        password_field.send_keys(password)
+        print("- Enter a valid password")
     
     def enter_password(self):
         
         password_length = random.randint(10, 50)
         password = self.fake.password(length=password_length, special_chars=True, digits=True, upper_case=True)
 
-        password_field = wait(self.driver, 10).until(
+        password_field = wait(self.driver, 5).until(
             EC.element_to_be_clickable(LoginPageSelectors.PASSWORD_FIELD))
 
         password_field.send_keys(password)
@@ -60,7 +60,7 @@ class CreateMnemonic(BasePage):
         return password
 
     def conf_password(self, confpassword):
-        confpassword_field = wait(self.driver, 10).until(
+        confpassword_field = wait(self.driver, 2).until(
             EC.element_to_be_clickable(LoginPageSelectors.CONF_PASSWORD_FIELD))
         confpassword_field.send_keys(confpassword)
         print("- Confirmed password")

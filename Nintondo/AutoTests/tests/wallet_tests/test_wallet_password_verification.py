@@ -9,10 +9,8 @@ from selenium.common.exceptions import TimeoutException
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Create valid wallet password")
-@pytest.mark.parametrize("password, conf_password", [
-    ("ItsA_ValidPassw0rd", "ItsA_ValidPassw0rd") ])
 
-def test_create_valid_password(driver, password, conf_password):
+def test_create_valid_password(driver):
 
     test_create_valid_password = CreateMnemonic(driver)
 
@@ -20,8 +18,8 @@ def test_create_valid_password(driver, password, conf_password):
     test_create_valid_password.use_id()
 
     time.sleep(0.5)
-    test_create_valid_password.enter_password(password) # Ввод пароля
-    test_create_valid_password.conf_password(conf_password) # Подтверждение пароля
+    password = test_create_valid_password.enter_password() # Enter password
+    test_create_valid_password.conf_password(password) # Confirm password
     test_create_valid_password.click_reg_button() # Жмем на кнопку продолжения
 
     try:
@@ -47,13 +45,13 @@ def test_create_invalid_password(driver, password, conf_password, expected_error
     test_create_invalid_password.use_id()
 
     time.sleep(0.5)
-    test_create_invalid_password.enter_password(password)
+    test_create_invalid_password.enter_invalid_password(password)
     test_create_invalid_password.conf_password(conf_password)
     test_create_invalid_password.click_reg_button()
 
     if password and conf_password:
         try:
-            error_message = WebDriverWait(driver, 1.2).until(
+            error_message = WebDriverWait(driver, 2).until(
                 EC.visibility_of_element_located((By.CLASS_NAME, "error"))
             )
             assert error_message.is_displayed(), "The error message is not displayed"

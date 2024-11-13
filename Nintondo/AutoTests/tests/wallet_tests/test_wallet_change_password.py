@@ -1,14 +1,11 @@
 import allure
 import pytest
-from AutoTests.data import Data
-from AutoTests.conftest import driver
 from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
 from AutoTests.pages.wallet.wallet_mane_page import ManePage
 from AutoTests.pages.wallet.wallet_settings_page import SettingsSecurity, ChangePassword
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-import time
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Valid: Changing the password in the wallet")
@@ -23,7 +20,7 @@ def test_valid_changing_password(driver):
     security_page.security_page()
     
     change_password = ChangePassword(driver)
-    
+
     change_password.change_password_page()
     change_password.old_password(password)
     new_password = change_password.new_password()
