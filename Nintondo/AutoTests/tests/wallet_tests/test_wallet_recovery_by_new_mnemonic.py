@@ -27,6 +27,12 @@ def test_valid_create_mnemonic(driver):
     test_create_mnemonic.conf_create_wallet() # Confirm wallet creation
     print("// Choose wallet type: Native, by default //")
     test_create_mnemonic.conf_create_wallet() # Confirm wallet creation
+    
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//a[span='Receive']"))
+    )
+
+    assert element is not None, "Element with the specified class was not found."
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Invalid Create wallet with new Mnemonic")

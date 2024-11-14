@@ -26,6 +26,12 @@ def test_restore_by_mnemonic(driver):
     test_restore_by_mnemonic.click_restore_button()  # Press the continue button
     test_restore_by_mnemonic.choose_type_native()   # Select: Native Segwit
     test_restore_by_mnemonic.conf_create_wallet() # Confirm wallet creation
+    
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//a[span='Receive']"))
+    )
+
+    assert element is not None, "Element with the specified class was not found."
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Restore wallet by idvalid mnemonic")
