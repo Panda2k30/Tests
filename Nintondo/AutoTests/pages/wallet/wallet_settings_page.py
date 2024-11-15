@@ -23,15 +23,19 @@ class SettingsPageSelector:
     OLD_PASSWORD = (By.XPATH, "//input[@id='oldPassword']")
     NEW_PASSWORD = (By.XPATH, "//input[@id='password']")
     CONFIRM_PASSWORD = (By.XPATH, "//input[@id='confirmPassword']")
-    
     CHANGE_PASSWORD_BTN = (By.XPATH, "//button[text()='Change password']")
     
     # Wallet Settings
     NETWORK_SETTINGS = (By.XPATH, "//div[text()='Network Settings']")
+    ADDRESS_TYPE = (By.XPATH, "//div[text()='Address Type']")
     
     # Network Settings
     TESTNET_BTN = (By.XPATH, "//div[text()='TESTNET']")
     MAINNET_BTN = (By.XPATH, "//div[text()='MAINNET']")
+    
+    # Address Type
+    SEGWIT = (By.XPATH, "//div[text()='Native Segwit']")
+    LEGACY = (By.XPATH, "//div[text()='Legacy']")
     
 
 class SettingsSecurity(BasePage):
@@ -44,10 +48,9 @@ class SettingsSecurity(BasePage):
             EC.element_to_be_clickable(SettingsPageSelector.SECURITY_SETTINGS))
         security_page.click()
         print("- Go to the page: Security Settings")
-
-        
+  
+       
 class ChangePassword(BasePage):
-
     def __init__(self, driver):
         self.driver = driver
         self.fake = Faker()
@@ -95,3 +98,40 @@ class ChangePassword(BasePage):
             EC.element_to_be_clickable(SettingsPageSelector.CHANGE_PASSWORD_BTN))
         conf_btn.click()
         print("- Clicked: Change Password")
+
+        
+class WalletSettings(BasePage):
+    def __init__(self, driver):
+        self.driver = driver
+        
+    def change_network(self, ex_id):
+
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located(
+                (By.XPATH, "//p[text()='No transactions']")))
+
+        self.driver.get(f"chrome-extension://{ex_id}/index.html#/pages/network-settings")
+        print("- Go to the page for changing the network type")
+
+        change_network = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(SettingsPageSelector.TESTNET_BTN)
+        )
+        change_network.click()
+        print("- Changed the network to TESTNET")
+        
+    def change_type_legacy(self):
+        
+        wallet_settings = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(SettingsPageSelector.WALLET_SETTINGS))
+        wallet_settings.click()
+        
+        address_type = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(SettingsPageSelector.ADDRESS_TYPE))
+        address_type.click()
+        
+        segwit_type = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(SettingsPageSelector.LEGACY))
+        segwit_type.click()
+        print("- Choose: Legacy")
+
+    

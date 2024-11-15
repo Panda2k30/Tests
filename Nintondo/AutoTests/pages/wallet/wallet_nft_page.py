@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from AutoTests.data import Data
 from AutoTests.conftest import driver
 from AutoTests.pages.base_page import BasePage
+import requests
 import time
 
 wait = WebDriverWait
@@ -24,13 +25,18 @@ class NFTPageSelector:
     INSCRIPTION_TO_ADDRESS_CONF = (By.XPATH, "//div[text()='To address']/following-sibling::div")
     INSCRIPTION_FROM_ADDRESS_CONF = (By.XPATH, "//div[text()='From address']/following-sibling::div")
     
-    
     # Bel20 page
     
     BEL = (By.XPATH, "//div[span='Inscriptions']")
+    SELECT_TRANSFER = (By.XPATH, "//div[span='ONDO']")
     
+    SEND_BTN = (By.XPATH, "//button[text()='Send']")
+    MINT_BTN = (By.XPATH, "//button[text()='Mint transfer']")
     
+    AMOUNT_BTN = (By.XPATH, "//input[@placeholder='Amount to mint']")
+    INSCRIBE_BTN = (By.XPATH, "//button[text()='Inscribe']")
     
+        
 class SendInscription(BasePage):
     def __init__(self, driver):
         self.driver = driver
@@ -115,15 +121,49 @@ class SendInscription(BasePage):
 
 class TransfersPage(BasePage):
     def __init__(self, driver):
-    self.driver = driver
+        self.driver = driver
     
+    def bel_btn(self):
+        bel_btn = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.BEL))
+        bel_btn.click()
+        print("- Opened BEL-20")
+
+    def select_transfer(self):
+        select_transfer = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.SELECT_TRANSFER))
+        select_transfer.click()
+        print("- Selected an transfer")
+
+    def mint_btn(self):
+        mint_btn = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.MINT_BTN))
+        mint_btn.click()
+        print("- Clicked: Mint transfer")
+        
+    def amount(self, count):
+        amount = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.AMOUNT_BTN))
+        amount.send_keys(count)
+        print("- Enter:", count)
+        
+    def inscribe_btn(self):
+        inscribe_btn = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.INSCRIBE_BTN))
+        inscribe_btn.click()
+        print("- Clicked: Inscribe")
     
-    def select_inscription(self):
-        select_inscription = wait(self.driver, 10).until(
-            EC.element_to_be_clickable(NFTPageSelector.INSCRIPTION))
-        select_inscription.click()
-        print("- Opened the inscription")
-    
-    
+    def check_balance(self):
+        
+        url = "https://testnet.nintondo.io/electrs/address/EMpxzi7FujHsQHbrZy7wsuiRHFsvxKZSaB/tokens"
+
+        response = requests.get(url)
+
+        data = response.json()
+
+        for item in data:
+            if item['tick'] == 'ondo':  # Check if the tick is 'ondo'
+                print(item['transferable_balance'])
+            
 
 

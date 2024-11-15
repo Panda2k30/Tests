@@ -31,6 +31,7 @@ class ManePageSelector:
     ADD_WALLET_BTN = (By.XPATH, "//a[@href='#/pages/create-new-wallet']")
     PRIVATE_KEY_BTN = (By.LINK_TEXT, "Restore from private key")
 
+
 class ManePage(BasePage):
     def __init__(self, driver):
         self.driver = driver
