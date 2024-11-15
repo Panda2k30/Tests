@@ -93,3 +93,28 @@ def restore_by_private_key_proc(driver):
     assert element is not None, "Element with the specified class was not found."
     
     return ex_id, password
+
+def restore_zero_balance_wallet (driver):
+
+    restore_zero_balance_wallet = CreateMnemonic(driver)
+
+    ex_id = restore_zero_balance_wallet.exec_id()
+    restore_zero_balance_wallet.use_id()
+
+    time.sleep(0.5)
+    password = restore_zero_balance_wallet.enter_password() # Enter password
+    restore_zero_balance_wallet.conf_password(password) # Confirm password
+    restore_zero_balance_wallet.click_reg_button() # Press the continue button
+    restore_zero_balance_wallet.type_reg_privacy_key() # Select private key recovery
+    restore_zero_balance_wallet.restore_input(Data.ZERO_WALLET_FOR_CHECK) # Enter private key
+    restore_zero_balance_wallet.conf_create_wallet() # Confirm wallet creation
+    print("// Choose wallet type: Native, by default //")
+    restore_zero_balance_wallet.conf_recover_wallet()  # Confirm wallet creation
+
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//a[span='Receive']"))
+    )
+
+    assert element is not None, "Element with the specified class was not found."
+    
+    return ex_id, password

@@ -1,11 +1,13 @@
 import allure
 import pytest
+import time
 from selenium.webdriver.chrome.webdriver import WebDriver
 from AutoTests.data import Data
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
+from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc, restore_zero_balance_wallet
 from AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
 from AutoTests.pages.wallet.wallet_mane_page import ManePage
 from AutoTests.pages.wallet.wallet_nft_page import NFTPage
+from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Valid sending inscriptions from the wallet")
@@ -77,3 +79,72 @@ def test_valid_sending_inscriptions(driver: WebDriver):
     )
     print("\nSuccessfully !")
 
+# incorrect address
+@pytest.mark.usefixtures("driver")
+@allure.feature("Verification of sending an inscription with an incorrectly specified address")
+def test_invalid_sending_inscriptions(driver: WebDriver):
+
+    # Private key authentication
+    ex_id, password = restore_by_private_key_proc(driver)
+
+    change_network = ManePage(driver)
+
+    change_network.change_network(ex_id) # change network to Testnet
+    change_network.get_balance()
+
+    change_network.account_address_btn()
+    change_network.nft_page_btn()
+
+    nft_page = NFTPage(driver)
+
+    nft_page.select_inscription()
+    nft_page.id_card()
+
+    nft_page.send_btn()
+
+    nft_page.enter_address(Data.NOT_VALID_ADDRESS)
+    nft_page.continue_btn()
+    
+    time.sleep(0.3)
+    error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
+    assert error_message.is_displayed(), "Expected an error, but no error was displayed."
+    error_text = error_message.text
+    print(f"\nError message: {error_text}")
+    
+    
+# insufficient balance
+@pytest.mark.usefixtures("driver")
+@allure.feature("Verification of sending an inscription with an incorrectly specified address")
+def test_valid_sending_inscriptions_zero_wallet(driver: WebDriver):
+
+    # Private key authentication
+    ex_id, password = restore_zero_balance_wallet(driver)
+
+    change_network = ManePage(driver)
+
+    change_network.change_network(ex_id) # change network to Testnet
+    change_network.get_balance()
+
+    change_network.account_address_btn()
+    change_network.nft_page_btn()
+
+    nft_page = NFTPage(driver)
+
+    nft_page.select_inscription()
+    nft_page.id_card()
+
+    nft_page.send_btn()
+
+    nft_page.enter_address(Data.VALID_ADDRESS_FOR_CHECK)
+    nft_page.continue_btn()
+    
+    time.sleep(0.3)
+    error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
+    assert error_message.is_displayed(), "Expected an error, but no error was displayed."
+    
+    error_text = error_message.text
+    
+    print(f"\nError message: {error_text}")
+    
+    expected_error = "Balance not enough to pay network fee." 
+    assert expected_error in error_text, f"Expected error message '{expected_error}', but got '{error_text}'"

@@ -9,6 +9,7 @@ import random
 fake = Faker()
 wait = WebDriverWait
 
+
 class SettingsPageSelector:
     
     # Settings
@@ -67,7 +68,13 @@ class ChangePassword(BasePage):
         
         print(f"- Entered a password of length {password_length}: {new_password}")
 
-        return new_password        
+        return new_password
+    
+    def test_password(self, new_pass):
+        test_password = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(SettingsPageSelector.NEW_PASSWORD))
+        test_password.send_keys(new_pass)
+        print("- Entered conf password")        
     
     def conf_password(self, confpassword):
         conf_password = wait(self.driver, 10).until(
