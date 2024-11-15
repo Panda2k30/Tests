@@ -23,8 +23,15 @@ class NFTPageSelector:
     INSCRIPTION_ID_CONF = (By.XPATH, "//div[text()='Inscription Id']/following-sibling::div")
     INSCRIPTION_TO_ADDRESS_CONF = (By.XPATH, "//div[text()='To address']/following-sibling::div")
     INSCRIPTION_FROM_ADDRESS_CONF = (By.XPATH, "//div[text()='From address']/following-sibling::div")
-
-class NFTPage(BasePage):
+    
+    
+    # Bel20 page
+    
+    BEL = (By.XPATH, "//div[span='Inscriptions']")
+    
+    
+    
+class SendInscription(BasePage):
     def __init__(self, driver):
         self.driver = driver
 
@@ -44,9 +51,10 @@ class NFTPage(BasePage):
         enter_address = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NFTPageSelector.INSCRIPTION_ADDRESS_INPUT))
         enter_address.send_keys(valid_address)
+        
         print("- Entered a valid address:", valid_address)
+        
         return valid_address
-
 
     def continue_btn(self):
         continue_btn = wait(self.driver, 10).until(
@@ -60,36 +68,41 @@ class NFTPage(BasePage):
         confirm_btn.click()
         print("- Clicked on: Confirm")
 
-    def id_card(self):
+    def return_id_card(self):
         id_card = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NFTPageSelector.INSCRIPTION_ID_CARD))
 
         id_card = id_card.text
+        
         print("- ID in the description:", id_card)
+        
         return id_card
 
-    def id_tabl(self):
+    def return_id_tabl(self):
         id_tabl = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NFTPageSelector.INSCRIPTION_ID_CONF))
 
         id_tabl = id_tabl.text
         print("- Table ID:", id_tabl)
+        
         return id_tabl
 
-    def from_address_tabl(self):
+    def return_from_address_tabl(self):
         from_address_tabl = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NFTPageSelector.INSCRIPTION_FROM_ADDRESS_CONF))
 
         from_address_tabl = from_address_tabl.text
         print("- The address of the sender in the table:", from_address_tabl)
+        
         return from_address_tabl
 
-    def to_address_tabl(self):
+    def return_to_address_tabl(self):
         to_address_tabl = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NFTPageSelector.INSCRIPTION_TO_ADDRESS_CONF))
 
         to_address_tabl = to_address_tabl.text
         print("- The recipient's address in the table:", to_address_tabl)
+        
         return to_address_tabl
 
     def back_btn(self):
@@ -98,5 +111,19 @@ class NFTPage(BasePage):
             EC.element_to_be_clickable(NFTPageSelector.INSCRIPTION_BACK_BTN))
         back_btn.click()
         print("- Clicked on: Back")
+        
+
+class TransfersPage(BasePage):
+    def __init__(self, driver):
+    self.driver = driver
+    
+    
+    def select_inscription(self):
+        select_inscription = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.INSCRIPTION))
+        select_inscription.click()
+        print("- Opened the inscription")
+    
+    
 
 

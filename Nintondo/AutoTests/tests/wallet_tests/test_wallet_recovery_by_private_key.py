@@ -7,9 +7,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 
+
 @pytest.mark.usefixtures("driver")
 @allure.feature("Restore wallet by private key")
-
 def test_restore_by_private_key(driver):
 
     test_restore_by_private_key = CreateMnemonic(driver)
@@ -35,14 +35,12 @@ def test_restore_by_private_key(driver):
     
     return ex_id, password
 
-
 @pytest.mark.usefixtures("driver")
 @allure.feature("Restore wallet by invalid private key")
 @pytest.mark.parametrize("data, expected_error", [
     ("", "Invalid private key"),
     (Data.INVALID_KEY_WALLET, "Invalid private key"),
     ("-", "Invalid private key")])
-
 def test_restore_by_invalid_private_key(driver, data, expected_error):
 
     test_restore_by_invalid_private_key = CreateMnemonic(driver)
@@ -68,7 +66,10 @@ def test_restore_by_invalid_private_key(driver, data, expected_error):
         assert error_message.text == expected_error, f"An error message was expected: '{expected_error}', but received: '{error_message.text}'"
     except Exception as e:
         pytest.fail(f"Error during message validation: {e}")
-        
+      
+# SETUPS
+
+# Authorization function without launching an unnecessary web driver       
 def restore_by_private_key_proc(driver):
 
     restore_by_private_key_proc = CreateMnemonic(driver)
@@ -93,7 +94,8 @@ def restore_by_private_key_proc(driver):
     assert element is not None, "Element with the specified class was not found."
     
     return ex_id, password
-
+ 
+# Zero balance wallet         
 def restore_zero_balance_wallet (driver):
 
     restore_zero_balance_wallet = CreateMnemonic(driver)

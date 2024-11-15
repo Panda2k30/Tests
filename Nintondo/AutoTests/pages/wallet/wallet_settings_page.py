@@ -14,6 +14,7 @@ class SettingsPageSelector:
     
     # Settings
     SECURITY_SETTINGS = (By.XPATH, "//div[text()='Security Settings']")
+    WALLET_SETTINGS = (By.XPATH, "//div[text()='Wallet Settings']")
     
     # Security
     CHANGE_PASSWORD = (By.XPATH, "//div[text()='Change Password']")
@@ -24,6 +25,13 @@ class SettingsPageSelector:
     CONFIRM_PASSWORD = (By.XPATH, "//input[@id='confirmPassword']")
     
     CHANGE_PASSWORD_BTN = (By.XPATH, "//button[text()='Change password']")
+    
+    # Wallet Settings
+    NETWORK_SETTINGS = (By.XPATH, "//div[text()='Network Settings']")
+    
+    # Network Settings
+    TESTNET_BTN = (By.XPATH, "//div[text()='TESTNET']")
+    MAINNET_BTN = (By.XPATH, "//div[text()='MAINNET']")
     
 
 class SettingsSecurity(BasePage):

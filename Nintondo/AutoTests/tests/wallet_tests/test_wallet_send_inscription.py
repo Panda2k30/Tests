@@ -6,12 +6,13 @@ from AutoTests.data import Data
 from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc, restore_zero_balance_wallet
 from AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
 from AutoTests.pages.wallet.wallet_mane_page import ManePage
-from AutoTests.pages.wallet.wallet_nft_page import NFTPage
+from AutoTests.pages.wallet.wallet_nft_page import SendInscription
 from selenium.webdriver.common.by import By
+
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Valid sending inscriptions from the wallet")
-def test_valid_sending_inscriptions(driver: WebDriver):
+def test_valid_sending_inscriptions(driver):
 
     def are_txids_same(txid1, txid2):
         return txid1 == txid2
@@ -27,10 +28,10 @@ def test_valid_sending_inscriptions(driver: WebDriver):
     account_address = change_network.account_address_btn() # get a wallet address
     change_network.nft_page_btn()
 
-    nft_page = NFTPage(driver)
+    nft_page = SendInscription(driver)
 
     nft_page.select_inscription()
-    id_card = nft_page.id_card() # get the inscription id
+    id_card = nft_page.return_id_card() # get the inscription id
 
     nft_page.send_btn()
 
@@ -38,9 +39,9 @@ def test_valid_sending_inscriptions(driver: WebDriver):
     nft_page.continue_btn()
 
     # output all data
-    to_address_tabl = nft_page.to_address_tabl()
-    from_address_tabl = nft_page.from_address_tabl()
-    id_tabl = nft_page.id_tabl()
+    to_address_tabl = nft_page.return_to_address_tabl()
+    from_address_tabl = nft_page.return_from_address_tabl()
+    id_tabl = nft_page.return_id_tabl()
 
     print("\nData collation ...")
 
@@ -79,10 +80,11 @@ def test_valid_sending_inscriptions(driver: WebDriver):
     )
     print("\nSuccessfully !")
 
+
 # incorrect address
 @pytest.mark.usefixtures("driver")
 @allure.feature("Verification of sending an inscription with an incorrectly specified address")
-def test_invalid_sending_inscriptions(driver: WebDriver):
+def test_invalid_sending_inscriptions(driver):
 
     # Private key authentication
     ex_id, password = restore_by_private_key_proc(driver)
@@ -95,10 +97,10 @@ def test_invalid_sending_inscriptions(driver: WebDriver):
     change_network.account_address_btn()
     change_network.nft_page_btn()
 
-    nft_page = NFTPage(driver)
+    nft_page = SendInscription(driver)
 
     nft_page.select_inscription()
-    nft_page.id_card()
+    nft_page.return_id_card()
 
     nft_page.send_btn()
 
@@ -115,7 +117,7 @@ def test_invalid_sending_inscriptions(driver: WebDriver):
 # insufficient balance
 @pytest.mark.usefixtures("driver")
 @allure.feature("Verification of sending an inscription with an incorrectly specified address")
-def test_valid_sending_inscriptions_zero_wallet(driver: WebDriver):
+def test_valid_sending_inscriptions_zero_wallet(driver):
 
     # Private key authentication
     ex_id, password = restore_zero_balance_wallet(driver)
@@ -128,10 +130,10 @@ def test_valid_sending_inscriptions_zero_wallet(driver: WebDriver):
     change_network.account_address_btn()
     change_network.nft_page_btn()
 
-    nft_page = NFTPage(driver)
+    nft_page = SendInscription(driver)
 
     nft_page.select_inscription()
-    nft_page.id_card()
+    nft_page.return_id_card()
 
     nft_page.send_btn()
 
