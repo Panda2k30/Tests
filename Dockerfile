@@ -70,6 +70,9 @@ RUN pip3 install selenium pytest
 # Install allure command line interface
 RUN npm install -g allure-commandline --save-dev
 
+# Ensure allure is available in the PATH
+ENV PATH="/usr/local/bin:${PATH}"
+
 # Set the environment variable for PYTHONPATH
 ENV PYTHONPATH=/usr/workspace/Nintondo
 
