@@ -14,7 +14,7 @@ services:
     environment:
       - LOGIN=${LOGIN}
       - PASSWORD=${PASSWORD}
-      - DISPLAY=${DISPLAY}
+      - DISPLAY=${DISPLAY} 
 
   # Добавляем сервис для генерации отчета Allure
   allure:

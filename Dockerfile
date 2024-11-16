@@ -92,4 +92,4 @@ ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 # Set the working directory for the tests
 WORKDIR /usr/workspace/Nintondo/AutoTests/tests
 
-CMD ["pytest", "-s"]
+CMD ["pytest", "-s"] 
