@@ -1,21 +1,3 @@
-# Stage 1: Clone and build the Chrome extension
-FROM node:18 AS builder
-
-# Set the working directory
-WORKDIR /app
-
-# Клонируем репозиторий
-RUN git clone --branch dev https://github.com/Nintondo/extension.git .
-RUN ls -l /app
-
-# Install dependencies for the extension build
-RUN npm install -g bun && bun i
-
-# Build the Chrome extension
-RUN bun run test
-
-RUN ls -la /app/dist
-
 # Stage 2: Set up the main environment
 FROM ubuntu:20.04
 
@@ -56,7 +38,8 @@ RUN apt-get update && apt-get install -y \
     xfonts-75dpi \
     libxmu6 \
     nodejs \
-    npm && apt-get clean
+    npm \
+    openjdk-11-jdk && apt-get clean  # Установка OpenJDK
 
 # Install Google Chrome
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P /tmp && \
@@ -85,9 +68,16 @@ RUN pip3 install -r requirements.txt
 COPY --from=builder /app/dist/chrome /app/extension
 RUN ls -l /app/extension
 
+# Set permissions on the Allure report directory
+RUN chmod -R 777 /app/allure-docker-api/static/projects/default
+
 # Add browser paths to environment variables
 ENV CHROMIUM_PATH="/usr/bin/chromium"
 ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
+
+# Set JAVA_HOME for Allure
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV PATH=${JAVA_HOME}/bin:${PATH}
 
 # Set the working directory for the tests
 WORKDIR /usr/workspace/Nintondo/AutoTests/tests
