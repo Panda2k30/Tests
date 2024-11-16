@@ -10,7 +10,7 @@ from AutoTests.pages.wallet.wallet_mane_page import ManePage
 @pytest.mark.scripts("driver")
 @allure.feature("Add a large number of wallets")
 
-def test_add_wallets(driver):
+def add_wallets(driver):
     
     restore_by_private_key_proc(driver)
     

@@ -1,17 +1,17 @@
 # Stage 1: Clone and build the Chrome extension
 FROM node:18 AS builder
 
-# Устанавливаем рабочую директорию
+# Set the working directory
 WORKDIR /app
 
 # Клонируем репозиторий
 RUN git clone --branch dev https://github.com/Nintondo/extension.git .
 RUN ls -l /app
 
-# Устанавливаем зависимости
+# Install dependencies
 RUN npm install -g bun && bun i
 
-# Собираем Chrome-расширение
+# Build the Chrome extension
 RUN bun run test
 
 RUN ls -la /app/dist
@@ -19,10 +19,10 @@ RUN ls -la /app/dist
 # Stage 2: Set up the main environment
 FROM ubuntu:20.04
 
-# Устанавливаем переменную окружения для подавления интерактивных запросов
+# Set an environment variable to suppress interactive requests
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Обновляем систему и устанавливаем необходимые зависимости
+# Upgrade the system and install the required dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
@@ -57,33 +57,32 @@ RUN apt-get update && apt-get install -y \
     libxmu6 \
     && apt-get clean
 
-# Устанавливаем Google Chrome
+# Install Google Chrome
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P /tmp && \
     dpkg -i /tmp/google-chrome-stable_current_amd64.deb || apt-get -f install -y && \
     rm /tmp/google-chrome-stable_current_amd64.deb
 
-# Устанавливаем Selenium и pytest
+# Install Selenium and pytest
 RUN pip3 install --upgrade pip
 RUN pip3 install selenium pytest
 
-# Устанавливаем переменную окружения для PYTHONPATH
+# Set the environment variable for PYTHONPATH
 ENV PYTHONPATH=/usr/workspace/Nintondo
 
-# Копируем requirements.txt и устанавливаем зависимости
+# Copy requirements.txt and install the dependencies
 COPY requirements.txt /app/
 WORKDIR /app
 RUN pip3 install -r requirements.txt
 
-# Копируем собранное расширение из builder стадии
+# Copy the built extension from the builder stage
 COPY --from=builder /app/dist/chrome /app/extension
 RUN ls -l /app/extension
 
-# Добавляем пути к браузерам в переменные среды
+# Add browser paths to environment variables
 ENV CHROMIUM_PATH="/usr/bin/chromium"
 ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 
-# Устанавливаем рабочую директорию для тестов
+# Set the working directory for the tests
 WORKDIR /usr/workspace/Nintondo/AutoTests/tests
 
-# Запускаем pytest для тестов
-CMD ["pytest -s", "mane_site_tests/test_connect.py"]
+CMD ["pytest", "-s"]

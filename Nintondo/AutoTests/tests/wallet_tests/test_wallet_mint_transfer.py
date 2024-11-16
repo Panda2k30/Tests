@@ -85,7 +85,7 @@ def test_mint_transfer_zero_wallet(driver):
     bel_page.amount(2)
     bel_page.inscribe_btn()
     
-    time.sleep(0.3)
+    time.sleep(0.5)
     error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
     assert error_message.is_displayed(), "Expected an error, but no error was displayed."
     
