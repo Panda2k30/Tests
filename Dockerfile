@@ -8,7 +8,7 @@ WORKDIR /app
 RUN git clone --branch dev https://github.com/Nintondo/extension.git .
 RUN ls -l /app
 
-# Install dependencies
+# Install dependencies for the extension build
 RUN npm install -g bun && bun i
 
 # Build the Chrome extension
@@ -55,7 +55,8 @@ RUN apt-get update && apt-get install -y \
     xfonts-100dpi \
     xfonts-75dpi \
     libxmu6 \
-    && apt-get clean
+    nodejs \
+    npm && apt-get clean
 
 # Install Google Chrome
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P /tmp && \
@@ -66,10 +67,8 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
 RUN pip3 install --upgrade pip
 RUN pip3 install selenium pytest
 
-# Install Allure
-RUN curl -o allure.zip -L "https://github.com/allure-framework/allure2/releases/download/2.22.0/allure-2.22.0.tgz" \
-    && tar -zxvf allure.zip -C /opt/ \
-    && ln -s /opt/allure-2.22.0/allure /usr/bin/allure
+# Install allure command line interface
+RUN npm install -g allure-commandline --save-dev
 
 # Set the environment variable for PYTHONPATH
 ENV PYTHONPATH=/usr/workspace/Nintondo
@@ -90,4 +89,5 @@ ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 # Set the working directory for the tests
 WORKDIR /usr/workspace/Nintondo/AutoTests/tests
 
-CMD ["pytest", "-s", "/usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py"]
+# Run pytest on a specific test file and then generate an Allure report
+CMD pytest /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py && allure generate allure-results --clean -o allure-report
