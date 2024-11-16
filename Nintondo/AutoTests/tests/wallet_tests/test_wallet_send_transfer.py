@@ -1,6 +1,7 @@
 import allure
 import pytest
 import time
+from AutoTests.data import Data
 from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc, restore_zero_balance_wallet
 from AutoTests.pages.wallet.wallet_mane_page import ManePage
 from AutoTests.pages.wallet.wallet_settings_page import WalletSettings
@@ -9,8 +10,8 @@ from selenium.webdriver.common.by import By
 
 
 @pytest.mark.usefixtures("driver")
-@allure.feature("Valid minting transfers from the wallet")
-def test_valid_minting_transfers(driver):
+@allure.feature("Valid sending transfers from the wallet")
+def test_valid_sending_transfers(driver):
 
     mane_page = ManePage(driver)
     settings = WalletSettings(driver)
@@ -25,15 +26,16 @@ def test_valid_minting_transfers(driver):
 
     settings.change_type_legacy()
     
-    first_check = bel_page.check_transfer_balance()
+    first_check = bel_page.check_balance()
     
     mane_page.nft_page_btn()
     
     bel_page.bel_btn()
     bel_page.select_transfer()
-    bel_page.mint_btn()
-    bel_page.amount(2)
-    bel_page.inscribe_btn()
+    bel_page.send_btn()
+    bel_page.address_input(Data.VALID_ADDRESS_FOR_CHECK)
+    bel_page.select_amount()
+    bel_page.send_btn()
     
     # Check for success message
     time.sleep(0.3)
@@ -46,25 +48,27 @@ def test_valid_minting_transfers(driver):
     success_text = success_message.text
     print(f"\nSuccess message: {success_text}")
     
-    expected_success = "Transfer inscribed successfully" 
+    expected_success = "Successfully sended transfer(s)" 
     assert expected_success in success_text, (
         f"Expected success message '{expected_success}', but got '{success_text}'"
     )
     
-    second_check = bel_page.check_transfer_balance()
+    second_check = bel_page.check_balance()
     
-    # assert second_check == first_check + 2, (
-    #     f"Transferable balance didn't increase correctly. "
-    #     f"Initial balance: {first_check}, "
-    #     f"New balance: {second_check}, "
-    #     f"Amount added: 2"
+    #  # Assert the balance has decreased
+    # assert second_check < first_check, (
+    #     f"Balance did not decrease after transfer. "
+    #     f"Initial: {first_check}, After: {second_check}"
     # )
-
+ 
     
-# insufficient balance   
+# incorrect address
+
+
+# insufficient balance
 @pytest.mark.usefixtures("driver")
-@allure.feature("Verification of transfer mint from a wallet without balance")
-def test_mint_transfer_zero_wallet(driver):
+@allure.feature("Сheck of transfer sending from a wallet without balance")
+def test_valid_sending_transfers_zero_wallet(driver):
 
     mane_page = ManePage(driver)
     settings = WalletSettings(driver)
@@ -75,15 +79,16 @@ def test_mint_transfer_zero_wallet(driver):
 
     settings.change_network(ex_id) # change network to Testnet
     
-    first_check = bel_page.check_transfer_balance()
+    first_check = bel_page.check_balance()
     
     mane_page.nft_page_btn()
     
     bel_page.bel_btn()
     bel_page.select_transfer()
-    bel_page.mint_btn()
-    bel_page.amount(2)
-    bel_page.inscribe_btn()
+    bel_page.send_btn()
+    bel_page.address_input(Data.VALID_ADDRESS_FOR_CHECK)
+    bel_page.select_amount()
+    bel_page.send_btn()
     
     time.sleep(0.3)
     error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
@@ -93,9 +98,9 @@ def test_mint_transfer_zero_wallet(driver):
     
     print(f"\nError message: {error_text}")
     
-    expected_error = "Insufficient balance. Non-Inscription balance" 
+    expected_error = "Balance not enough to pay network fee." 
     assert expected_error in error_text, f"Expected error message '{expected_error}', but got '{error_text}'"
     
-    second_check = bel_page.check_transfer_balance()
-
     
+    
+        

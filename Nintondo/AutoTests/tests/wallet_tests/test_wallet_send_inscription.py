@@ -116,7 +116,7 @@ def test_invalid_sending_inscriptions(driver):
     
 # insufficient balance
 @pytest.mark.usefixtures("driver")
-@allure.feature("Verification of sending an inscription with an incorrectly specified address")
+@allure.feature("Verification of sending inscription from a wallet without a balance")
 def test_valid_sending_inscriptions_zero_wallet(driver):
 
     # Private key authentication

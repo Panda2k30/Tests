@@ -36,6 +36,9 @@ class NFTPageSelector:
     AMOUNT_BTN = (By.XPATH, "//input[@placeholder='Amount to mint']")
     INSCRIBE_BTN = (By.XPATH, "//button[text()='Inscribe']")
     
+    ADDRESS_INPUT = (By.XPATH, "//input")
+    SELECT_AMOUNT = (By.XPATH, "//*[contains(@class, '_transfer_')]")
+    
         
 class SendInscription(BasePage):
     def __init__(self, driver):
@@ -153,7 +156,7 @@ class TransfersPage(BasePage):
         inscribe_btn.click()
         print("- Clicked: Inscribe")
     
-    def check_balance(self):
+    def check_transfer_balance(self):
         
         url = "https://testnet.nintondo.io/electrs/address/EMpxzi7FujHsQHbrZy7wsuiRHFsvxKZSaB/tokens"
 
@@ -164,6 +167,34 @@ class TransfersPage(BasePage):
         for item in data:
             if item['tick'] == 'ondo':  # Check if the tick is 'ondo'
                 print(item['transferable_balance'])
-            
+                
+    def check_balance(self):
+        
+        url = "https://testnet.nintondo.io/electrs/address/EMpxzi7FujHsQHbrZy7wsuiRHFsvxKZSaB/tokens"
 
+        response = requests.get(url)
+
+        data = response.json()
+
+        for item in data:
+            if item['tick'] == 'ondo':  # Check if the tick is 'ondo'
+                print(item['balance'])
+            
+    def send_btn(self):
+        send_btn = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.SEND_BTN))
+        send_btn.click()
+        print("- Clicked: Send")
+
+    def address_input(self, address):
+        address_input = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.ADDRESS_INPUT))
+        address_input.send_keys(address)
+        print("- Enter:", address)
+        
+    def select_amount(self):
+        select_amount = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(NFTPageSelector.SELECT_AMOUNT))
+        select_amount.click()
+        print("- Select Transfer amount")
 
