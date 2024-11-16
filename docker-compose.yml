@@ -1,32 +1,24 @@
-version: '3.7'
+version: '3.8'
 
 services:
-  regression:
-    image: python:3.12.0a4-alpine3.17
+  web:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: selenium-tests
     volumes:
-      - ./:/usr/workspace
-      - allure-results:/usr/workspace/allure-results
-    command: /bin/sh -c "pytest -sv --alluredir=/usr/workspace/allure-results"
-    working_dir: /usr/workspace
+      - ./Nintondo:/usr/workspace/Nintondo  # Том для проекта
+      - /tmp/.X11-unix:/tmp/.X11-unix  # Проброс X11
+    working_dir: /usr/workspace/Nintondo/AutoTests/tests
+    command:
+      - pytest
     environment:
-      - LOGIN=${LOGIN}
-      - PASSWORD=${PASSWORD}
-      - DISPLAY=${DISPLAY} 
+      - DISPLAY=${DISPLAY}  # Использование переменной окружения DISPLAY для подключения X11
+    ports:
+      - "4444:4444"  # Selenium WebDriver порт
+    networks:
+      - selenium_network
 
-  # Добавляем сервис для генерации отчета Allure
-  allure:
-    image: python:3.12.0a4-alpine3.17
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - allure-results:/usr/workspace/allure-results
-      - ./allure-report:/usr/workspace/allure-report
-    command: /bin/sh -c "allure generate /usr/workspace/allure-results --clean -o /usr/workspace/allure-report"
-    working_dir: /usr/workspace
-
-volumes:
-  allure-results:
+networks:
+  selenium_network:
+    driver: bridge
