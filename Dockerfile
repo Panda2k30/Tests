@@ -89,6 +89,9 @@ RUN pip3 install -r requirements.txt
 COPY --from=builder /app/dist/chrome /app/extension
 RUN ls -l /app/extension
 
+# Create Allure report directories to avoid permission errors
+RUN mkdir -p /app/allure-docker-api/static/projects/default/results /app/allure-docker-api/static/projects/default/reports
+
 # Set permissions on the Allure report directory to avoid permission issues
 RUN chmod -R 777 /app/allure-docker-api/static/projects/default
 
