@@ -64,7 +64,7 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
 
 # Install Selenium, pytest and Allure pytest plugin
 RUN pip3 install --upgrade pip
-RUN pip3 install selenium pytest pytest-allure-adaptor
+RUN pip3 install selenium pytest allure-pytest --upgrade
 
 # Set the environment variable for PYTHONPATH
 ENV PYTHONPATH=/usr/workspace/Nintondo
