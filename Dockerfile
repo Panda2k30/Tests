@@ -86,4 +86,4 @@ ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 WORKDIR /usr/workspace/Nintondo/AutoTests/tests
 
 # CMD updated to run tests with allure reporting
-CMD ["pytest", "--alluredir=/app/allure-results", "-s"]
+CMD ["pytest", "-s", "--alluredir=/app/allure-results", "--maxfail=0", "--continue-on-collection-errors"]

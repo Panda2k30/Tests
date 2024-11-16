@@ -13,7 +13,10 @@ services:
     working_dir: /usr/workspace/Nintondo/AutoTests/tests  # Рабочая директория для тестов
     command:
       - pytest
-      - --alluredir=/app/allure-results  # Указываем директорию для отчетов
+      - -s
+      - --alluredir=/app/allure-results
+      - --maxfail=0
+      - --continue-on-collection-errors
     environment:
       - DISPLAY=${DISPLAY}  # Используем переменную DISPLAY для X11
       - PYTHONPATH=/usr/workspace/Nintondo  # Указываем PYTHONPATH

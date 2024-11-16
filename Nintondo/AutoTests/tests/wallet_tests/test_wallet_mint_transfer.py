@@ -36,7 +36,7 @@ def test_valid_minting_transfers(driver):
     bel_page.inscribe_btn()
     
     # Check for success message
-    time.sleep(0.3)
+    time.sleep(0.5)
     
     # Locate success message
     success_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
