@@ -5,13 +5,16 @@ FROM node:18 AS builder
 WORKDIR /app
 
 # Клонируем репозиторий
-RUN git clone https://github.com/Nintondo/extension.git .
+RUN git clone --branch dev https://github.com/Nintondo/extension.git .
+RUN ls -l /app
 
 # Устанавливаем зависимости
 RUN npm install -g bun && bun i
 
 # Собираем Chrome-расширение
-RUN bun chrome
+RUN bun run test
+
+RUN ls -la /app/dist
 
 # Stage 2: Set up the main environment
 FROM ubuntu:20.04
@@ -63,6 +66,9 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
 RUN pip3 install --upgrade pip
 RUN pip3 install selenium pytest
 
+# Устанавливаем переменную окружения для PYTHONPATH
+ENV PYTHONPATH=/usr/workspace/Nintondo
+
 # Копируем requirements.txt и устанавливаем зависимости
 COPY requirements.txt /app/
 WORKDIR /app
@@ -70,10 +76,14 @@ RUN pip3 install -r requirements.txt
 
 # Копируем собранное расширение из builder стадии
 COPY --from=builder /app/dist/chrome /app/extension
+RUN ls -l /app/extension
 
 # Добавляем пути к браузерам в переменные среды
 ENV CHROMIUM_PATH="/usr/bin/chromium"
 ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 
+# Устанавливаем рабочую директорию для тестов
+WORKDIR /usr/workspace/Nintondo/AutoTests/tests
+
 # Запускаем pytest для тестов
-CMD ["pytest"]
+CMD ["pytest -s", "mane_site_tests/test_connect.py"]
