@@ -14,28 +14,42 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-          
+          sudo usermod -aG docker $USER
+          newgrp docker
+
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-          
+
       - name: Verify Docker Compose installation
         run: |
           docker-compose --version
+
+      - name: List files in working directory
+        run: |
+          ls -la /usr/workspace
 
       - name: Build and run tests with Docker Compose
         run: |
           docker-compose up --build --exit-code-from regression || true
 
+      - name: Display Docker logs
+        run: |
+          docker-compose logs --tail=10
+
       - name: Copy history from gh-pages to allure-results
         run: |
-          sudo mkdir -p allure-results/history  # Создает директорию для истории Allure
+          sudo mkdir -p allure-results/history
           sudo cp -R ./.github/gh-pages/history/* allure-results/history/
 
       - name: Generate Allure report
         run: |
           sudo docker-compose run regression /bin/sh -c "allure generate allure-results --clean -o allure-report"
+
+      - name: Check allure results directory
+        run: |
+          ls -la allure-results
 
       - name: Update Allure history
         run: |
@@ -47,4 +61,4 @@ jobs:
           token: ${{ secrets.CI_TOKEN }}
           branch: gh-pages
           folder: allure-report
-          clean: true 
+          clean: true
