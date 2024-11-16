@@ -23,8 +23,7 @@ jobs:
             ca-certificates \
             curl \
             gnupg \
-            lsb-release \
-            openjdk-11-jdk # Для Allure
+            lsb-release
 
       - name: Add Docker’s official GPG key
         run: |
@@ -50,22 +49,26 @@ jobs:
 
       - name: Install Allure commandline
         run: |
-          wget https://github.com/allure-framework/allure2/releases/download/2.17.2/allure-2.17.2.tgz
-          tar -zxvf allure-2.17.2.tgz
-          sudo mv allure-2.17.2 /opt/allure
-          sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
-          
-      - name: Build and run tests with Docker Compose
+          curl -o allure-2.19.0.tgz -L https://github.com/allure-framework/allure2/releases/download/2.19.0/allure-2.19.0.tgz
+          tar -zxvf allure-2.19.0.tgz
+          sudo mv allure-2.19.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+
+      - name: Build and run tests
         run: |
           docker-compose up --build -d
-          docker-compose exec selenium-tests pytest --alluredir=/app/allure-results
-
+          docker exec selenium-tests pytest --alluredir=/app/allure-results
+          
       - name: Generate Allure report
         run: |
-          allure serve /app/allure-results
-
-      - name: Upload Allure report as artifact (optional)
+          docker exec selenium-tests allure generate /app/allure-results --clean -o /app/allure-report
+          
+      - name: Upload Allure Report as artifact
         uses: actions/upload-artifact@v3
         with:
           name: allure-report
-          path: /app/allure-results
+          path: /app/allure-report
+
+      - name: Post Allure report link
+        run: |
+          echo "Allure Report available at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts"

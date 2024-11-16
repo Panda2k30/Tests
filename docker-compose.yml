@@ -7,15 +7,16 @@ services:
       dockerfile: Dockerfile
     container_name: selenium-tests
     volumes:
-      - ./Nintondo:/usr/workspace/Nintondo  
-      - /tmp/.X11-unix:/tmp/.X11-unix  
-    working_dir: /usr/workspace/Nintondo/AutoTests/tests  # Working directory for tests
+      - ./Nintondo:/usr/workspace/Nintondo  # Оставляем текущий volume для кода
+      - /tmp/.X11-unix:/tmp/.X11-unix  # Для X11
+      - ./allure-results:/app/allure-results  # Добавляем volume для хранения отчетов Allure
+    working_dir: /usr/workspace/Nintondo/AutoTests/tests  # Рабочая директория для тестов
     command:
-      - pytest 
-      - -s
+      - pytest
+      - --alluredir=/app/allure-results  # Указываем директорию для отчетов
     environment:
-      - DISPLAY=${DISPLAY}  # Using the DISPLAY environment variable to connect X11
-      - PYTHONPATH=/usr/workspace/Nintondo  # Specifying PYTHONPATH
+      - DISPLAY=${DISPLAY}  # Используем переменную DISPLAY для X11
+      - PYTHONPATH=/usr/workspace/Nintondo  # Указываем PYTHONPATH
     ports:
       - "4444:4444"  # Selenium WebDriver порт
     networks:
