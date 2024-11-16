@@ -62,9 +62,16 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
     dpkg -i /tmp/google-chrome-stable_current_amd64.deb || apt-get -f install -y && \
     rm /tmp/google-chrome-stable_current_amd64.deb
 
-# Install Selenium, pytest and Allure pytest plugin
+# Install Selenium and pytest
 RUN pip3 install --upgrade pip
-RUN pip3 install selenium pytest allure-pytest --upgrade
+RUN pip3 install selenium pytest
+
+RUN apt-get update && \
+    apt-get install -y openjdk-11-jre curl tar && \
+    curl -o allure-2.13.8.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.13.8/allure-commandline-2.13.8.tgz && \
+    tar -zxvf allure-2.13.8.tgz -C /opt/ && \
+    ln -s /opt/allure-2.13.8/bin/allure /usr/bin/allure && \
+    rm allure-2.13.8.tgz
 
 # Set the environment variable for PYTHONPATH
 ENV PYTHONPATH=/usr/workspace/Nintondo
@@ -85,5 +92,4 @@ ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 # Set the working directory for the tests
 WORKDIR /usr/workspace/Nintondo/AutoTests/tests
 
-# CMD updated to run tests with allure reporting
-CMD ["pytest", "-s", "--alluredir=/app/allure-results", "--maxfail=0", "--continue-on-collection-errors"]
+CMD ["pytest", "-s"]

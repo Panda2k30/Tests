@@ -1,26 +1,32 @@
-version: '3.8'
+version: '3.7'
 
 services:
-  selenium-tests:
+  regression:
+    image: python:3.12.0a4-alpine3.17
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: selenium-tests
     volumes:
-      - ./Nintondo:/usr/workspace/Nintondo  # Оставляем текущий volume для кода
-      - /tmp/.X11-unix:/tmp/.X11-unix  # Для X11
-      - ./allure-results:/app/allure-results  # Добавляем volume для хранения отчетов Allure
-    working_dir: /usr/workspace/Nintondo/AutoTests/tests  # Рабочая директория для тестов
-    command: >
-      /bin/sh -c "pytest -s --alluredir=/app/allure-results --maxfail=0 --continue-on-collection-errors || true && tail -f /dev/null"
+      - ./:/usr/workspace
+      - allure-results:/usr/workspace/allure-results
+    command: /bin/sh -c "pytest -sv --alluredir=/usr/workspace/allure-results"
+    working_dir: /usr/workspace
     environment:
-      - DISPLAY=${DISPLAY}  # Используем переменную DISPLAY для X11
-      - PYTHONPATH=/usr/workspace/Nintondo  # Указываем PYTHONPATH
-    ports:
-      - "4444:4444"  # Selenium WebDriver порт
-    networks:
-      - selenium_network
+      - LOGIN=${LOGIN}
+      - PASSWORD=${PASSWORD}
+      - DISPLAY=${DISPLAY}
 
-networks:
-  selenium_network:
-    driver: bridge
+  # Добавляем сервис для генерации отчета Allure
+  allure:
+    image: python:3.12.0a4-alpine3.17
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - allure-results:/usr/workspace/allure-results
+      - ./allure-report:/usr/workspace/allure-report
+    command: /bin/sh -c "allure generate /usr/workspace/allure-results --clean -o /usr/workspace/allure-report"
+    working_dir: /usr/workspace
+
+volumes:
+  allure-results:

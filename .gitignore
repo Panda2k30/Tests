@@ -6,6 +6,7 @@ __pycache__/
 .env
 .idea/
 git push origin mainreport
+allure-report/
 allure-results/
 /Nintondo/AutoTests/extension/
 screenshots/
