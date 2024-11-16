@@ -11,12 +11,7 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix  # Для X11
       - ./allure-results:/app/allure-results  # Добавляем volume для хранения отчетов Allure
     working_dir: /usr/workspace/Nintondo/AutoTests/tests  # Рабочая директория для тестов
-    command:
-      - pytest
-      - -s
-      - --alluredir=/app/allure-results
-      - --maxfail=0
-      - --continue-on-collection-errors
+    command: "/bin/sh -c "pytest -s --alluredir=/app/allure-results --maxfail=0 --continue-on-collection-errors || true && tail -f /dev/null"
     environment:
       - DISPLAY=${DISPLAY}  # Используем переменную DISPLAY для X11
       - PYTHONPATH=/usr/workspace/Nintondo  # Указываем PYTHONPATH

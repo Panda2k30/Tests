@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - main  # Основная ветка
+      - main
   pull_request:
     branches:
-      - main  # Основная ветка
+      - main
 
 jobs:
   build:
@@ -58,19 +58,23 @@ jobs:
 
       - name: Run tests with pytest
         run: |
-          docker exec selenium-tests pytest --maxfail=0 --continue-on-collection-errors --alluredir=/app/allure-results
+          docker exec selenium-tests pytest -s --alluredir=/app/allure-results --maxfail=0 --continue-on-collection-errors
         continue-on-error: true  # Позволяет продолжить выполнение даже при ошибках тестов
 
       - name: Generate Allure report
         run: |
-          docker exec selenium-tests allure generate /app/allure-results --clean -o /app/allure-report
+          docker run --rm \
+            -v $(pwd)/allure-results:/app/allure-results \
+            -v $(pwd)/allure-report:/app/allure-report \
+            selenium-tests \
+            /bin/sh -c "allure generate /app/allure-results --clean -o /app/allure-report"
         if: always()  # Убедитесь, что отчет создается даже при ошибках тестов
 
       - name: Upload Allure Report as artifact
         uses: actions/upload-artifact@v3
         with:
           name: allure-report
-          path: ./allure-report
+          path: allure-report
 
       - name: Post Allure report link
         run: |
@@ -78,4 +82,4 @@ jobs:
 
       - name: Stop Docker containers
         run: docker-compose down
-        if: always()  # Убедитесь, что контейнеры останавливаются всегда
+        if: always()
