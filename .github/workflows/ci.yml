@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Install Docker Compose
         run: |
@@ -16,17 +17,17 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
 
-      - name: Checkout (copy) gh-pages repository to GitHub runner
+      - name: Checkout gh-pages repository to GitHub runner
         uses: actions/checkout@v2
         with:
           ref: gh-pages
-          path: ./.github/gh-pages
+          path: ./gh-pages
 
-      - name: Run UI-tests via docker-compose
+      - name: Run UI tests via docker-compose
         run: |
           docker-compose up --build --exit-code-from web || true
 
-      - name: Check Allure results
+      - name: Check if Allure results exist
         run: |
           if [ ! -d "allure-results" ] || [ -z "$(ls -A allure-results)" ]; then
             echo "No test results found in allure-results. Ensure tests are running correctly."
@@ -37,19 +38,19 @@ jobs:
         run: |
           docker-compose run web /bin/sh -c "allure generate allure-results --clean -o allure-report"
 
-      - name: Update Allure history
+      - name: Update Allure history (if any)
         run: |
-          sudo mkdir -p ./.github/gh-pages/history
+          sudo mkdir -p ./gh-pages/history
           if [ -d allure-report/history ] && [ "$(ls -A allure-report/history)" ]; then
-              sudo cp -R allure-report/history/* ./.github/gh-pages/history/
+              sudo cp -R allure-report/history/* ./gh-pages/history/
           else
               echo "No history files to copy to gh-pages."
           fi
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Allure report to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           token: ${{ secrets.CI_TOKEN }}
           branch: gh-pages
           folder: allure-report
-          clean: true
+          clean: false
