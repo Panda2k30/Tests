@@ -74,4 +74,8 @@ ENV PATH=${JAVA_HOME}/bin:${PATH}
 WORKDIR /usr/workspace/Nintondo/AutoTests/tests
 
 # Ensure the tests and allure report generation runs correctly
-CMD echo "Running tests..." && pytest /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report
+CMD mkdir -p /app/allure-results /app/allure-report && \
+    chmod -R 777 /app/allure-results /app/allure-report && \
+    echo "Running tests..." && \
+    pytest /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/app/allure-results && \
+    allure generate /app/allure-results --clean -o /app/allure-report
