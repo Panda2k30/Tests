@@ -1,12 +1,7 @@
 name: UI Test Wallet
 
 on:
-  workflow_dispatch: # Оставляем только запуск вручную
-    inputs:
-      test_script:
-        description: 'Test script to run'
-        required: true
-        default: 'pytest -s /usr/workspace/Nintondo/AutoTests/tests/'
+  workflow_dispatch:
 
 jobs:
   allure:
