@@ -90,7 +90,7 @@ def test_valid_sending_transfers_zero_wallet(driver):
     bel_page.select_amount()
     bel_page.send_btn()
     
-    time.sleep(0.3)
+    time.sleep(0.5)
     error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
     assert error_message.is_displayed(), "Expected an error, but no error was displayed."
     
