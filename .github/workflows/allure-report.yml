@@ -7,6 +7,12 @@ on:
   push:
     branches-ignore:
       - '!mane'
+  workflow_dispatch: # Добавляем возможность запуска вручную через кнопку
+    inputs:
+      test_script:
+        description: 'Test script to run'
+        required: true
+        default: '/usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py'
 
 jobs:
   allure:
@@ -35,11 +41,8 @@ jobs:
       - name: Allure Report action from marketplace
         uses: simple-elf/allure-report-action@master
         if: always()
-        #id: allure-report
         with:
           allure_results: allure-results
-          #gh_pages: gh-pages
-          #allure_report: allure-report
           allure_history: allure-history
           keep_reports: 20
 
