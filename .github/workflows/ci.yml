@@ -23,7 +23,7 @@ jobs:
 
       - name: Run UI-tests via docker-compose
         run: |
-          docker-compose up --exit-code-from web || true  # Заменил 'regression' на 'web'
+          docker-compose up --exit-code-from web || true
 
       - name: Copy history from gh-pages to allure-results (if exists)
         run: |
@@ -36,12 +36,14 @@ jobs:
 
       - name: Generate Allure report
         run: |
-          sudo docker-compose run web /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"  # Заменил 'regression' на 'web'
+          sudo docker-compose run web /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"
+          # Проверяем создание отчета Allure
+          sudo ls -la /app/allure-report  # Выводим содержимое отчета
 
       - name: Update Allure history (after generating report)
         run: |
           sudo mkdir -p ./.github/gh-pages/history  # Создаем директорию для истории Allure на хосте
-          sudo cp -R allure-report/history/* ./.github/gh-pages/history/  # Копируем историю отчетов в gh-pages
+          sudo cp -R /app/allure-report/history/* ./.github/gh-pages/history/  # Копируем историю отчетов в gh-pages
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
