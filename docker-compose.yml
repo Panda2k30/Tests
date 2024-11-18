@@ -13,9 +13,10 @@ services:
       - ./allure-results:/app/allure-results
       - ./allure-report:/app/allure-report
     working_dir: /usr/workspace/Nintondo/AutoTests/tests
-    command: /bin/sh -c "mkdir -p /app/allure-results /app/allure-report && pytest -s /usr/workspace/Nintondo/AutoTests/tests/ --alluredir=/app/allure-results"
+    command: /bin/sh -c "mkdir -p /app/allure-results /app/allure-report && ${TEST_SCRIPT} --alluredir=/app/allure-results"
     environment:
       - DISPLAY=${DISPLAY}
+      - TEST_SCRIPT=${{ github.event.inputs.test_script }}
     ports:
       - "4444:4444"
     networks:
