@@ -20,7 +20,7 @@ services:
       - selenium_network
 
   allure:
-    image: frankescobar/allure-docker-service
+    image: frankescobar/allure-docker-service:latest
     container_name: allure-report
     volumes:
       - ./allure-results:/app/allure-results
