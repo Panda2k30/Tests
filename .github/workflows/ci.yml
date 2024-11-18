@@ -1,63 +1,41 @@
 name: UI Tests
 
-on: 
-  workflow_dispatch:
+on: workflow_dispatch
 
 jobs:
   ui-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
-      - name: Checkout gh-pages repository to GitHub runner
+      - name: Checkout (copy) gh-pages repository to GitHub runner
         uses: actions/checkout@v2
         with:
           ref: gh-pages
-          path: ./gh-pages
+          path: ./.github/gh-pages
 
-      - name: Run UI tests via docker-compose
+      - name: Run UI-tests via docker-compose
         run: |
-          docker-compose up --build --exit-code-from web || true
+          docker-compose up --exit-code-from regression || true
 
-      - name: Check if Allure results exist
+      - name: Copy history from gh-pages to allure-results
         run: |
-          if [ ! -d "allure-results" ] || [ -z "$(ls -A allure-results)" ]; then
-            echo "No test results found in allure-results. Ensure tests are running correctly."
-            exit 1
-          fi
+          sudo mkdir -p allure-results/history  # Создает директорию для истории Allure
+          sudo cp -R ./.github/gh-pages/history/* allure-results/history/
 
       - name: Generate Allure report
         run: |
-          docker-compose run web /bin/sh -c "allure generate allure-results --clean -o allure-report"
+          sudo docker-compose run regression /bin/sh -c "allure generate allure-results --clean -o allure-report"
 
-      - name: Delete old Allure report in gh-pages
+      - name: Update Allure history
         run: |
-          sudo rm -rf ./gh-pages/*
+          sudo cp -R allure-report/history/* ./.github/gh-pages/history/
 
-      - name: Copy new Allure report to gh-pages
-        run: |
-          sudo cp -R allure-report/* ./gh-pages/
-
-      - name: Commit and push Allure report to gh-pages
-        run: |
-          git config user.name "Panda2k30"
-          git config user.email "Panda2k30@users.noreply.github.com"
-          git add .
-          git commit -m "Deploy Allure report" || echo "No changes to commit"
-          git push origin gh-pages
-
-      - name: Deploy Allure report to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           token: ${{ secrets.CI_TOKEN }}
           branch: gh-pages
-          folder: ./gh-pages
+          folder: allure-report
           clean: true
