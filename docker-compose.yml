@@ -9,8 +9,9 @@ services:
     volumes:
       - ./Nintondo:/usr/workspace/Nintondo  # Том для проекта
       - /tmp/.X11-unix:/tmp/.X11-unix  # Проброс X11
+      - ./allure-results:/usr/workspace/allure-results  # Монтируем том с результатами тестов
     working_dir: /usr/workspace/Nintondo/AutoTests/tests
-    command: /bin/sh -c "ls -la && pytest -sv /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=allure-results"  # Запуск только одного теста  # Запуск тестов и сохранение отчетов
+    command: /bin/sh -c "ls -la && pytest -sv /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/usr/workspace/allure-results"  # Запуск тестов и сохранение отчетов в allure-results
     environment:
       - DISPLAY=${DISPLAY}  # Использование переменной окружения DISPLAY для подключения X11
     ports:
@@ -23,10 +24,12 @@ services:
     container_name: allure-report
     volumes:
       - ./allure-results:/app/allure-results  # Монтируем том с результатами
+      - ./allure-report:/app/allure-report  # Монтируем папку для финального отчета
     ports:
       - "4040:4040"  # Порт для доступа к отчету через браузер
     networks:
       - selenium_network
+    entrypoint: /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"  # Генерация отчета Allure после выполнения тестов
 
 networks:
   selenium_network:
