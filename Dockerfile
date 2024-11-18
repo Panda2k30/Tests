@@ -57,7 +57,9 @@ COPY --from=builder /app/dist/chrome /app/extension
 RUN ls -l /app/extension
 
 # Create directories for Allure reports
+USER root
 RUN mkdir -p /app/allure-results /app/allure-report && chmod -R 777 /app/allure-results /app/allure-report
+USER user
 
 # Add browser paths
 ENV CHROMIUM_PATH="/usr/bin/chromium"

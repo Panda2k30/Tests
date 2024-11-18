@@ -27,7 +27,7 @@ services:
       - ./allure-report:/app/allure-report    # Папка для финального отчета
     ports:
       - "4040:4040"  # Порт для доступа к отчету через браузер
-    entrypoint: /bin/sh -c "mkdir -p /app/allure-results && chmod -R 777 /app/allure-results /app/allure-report && /app/allure-docker-api/app.py"
+    entrypoint: /bin/sh -c "mkdir -p /app/allure-results /app/allure-report && chmod -R 777 /app/allure-results /app/allure-report && /app/allure-docker-api/app.py"
     networks:
       - selenium_network
 
