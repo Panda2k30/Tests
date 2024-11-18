@@ -27,8 +27,6 @@ services:
       - ./allure-report:/app/allure-report  # Монтируем папку для финального отчета
     ports:
       - "4040:4040"  # Порт для доступа к отчету через браузер
-    networks:
-      - selenium_network
     entrypoint: /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"  # Генерация отчета Allure после выполнения тестов
 
 networks:
