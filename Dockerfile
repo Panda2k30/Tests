@@ -57,7 +57,11 @@ COPY --from=builder /app/dist/chrome /app/extension
 RUN ls -l /app/extension
 
 # Create directories for Allure reports
+USER root
 RUN mkdir -p /app/allure-results /app/allure-report && chmod -R 777 /app/allure-results /app/allure-report
+
+# Set proper ownership for allure directories
+RUN chown -R root:root /app/allure-results /app/allure-report
 
 # Add browser paths
 ENV CHROMIUM_PATH="/usr/bin/chromium"
@@ -69,4 +73,5 @@ ENV PATH=${JAVA_HOME}/bin:${PATH}
 
 WORKDIR /usr/workspace/Nintondo/AutoTests/tests
 
-CMD pytest /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py && allure generate /app/allure-results --clean -o /app/allure-report
+# Ensure the tests and allure report generation runs correctly
+CMD echo "Running tests..." && pytest /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py && allure generate /app/allure-results --clean -o /app/allure-report

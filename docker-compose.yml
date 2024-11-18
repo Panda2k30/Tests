@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: selenium-tests
+    user: root  # Запуск контейнера от имени root
     volumes:
       - ./Nintondo:/usr/workspace/Nintondo
       - /tmp/.X11-unix:/tmp/.X11-unix
