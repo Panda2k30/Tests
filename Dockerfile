@@ -14,7 +14,7 @@ RUN bun run test
 RUN ls -la /app/dist
 
 # Stage 2: Set up the main environment
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
