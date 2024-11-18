@@ -1,52 +1,52 @@
-name: UI Tests
+# name: UI Tests
 
-on: workflow_dispatch
+# on: workflow_dispatch
 
-jobs:
-  ui-tests:
-    runs-on: ubuntu-latest
+# jobs:
+#   ui-tests:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+#     steps:
+#       - uses: actions/checkout@v2
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
+#       - name: Install Docker Compose
+#         run: |
+#           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#           sudo chmod +x /usr/local/bin/docker-compose
 
-      - name: Run UI-tests via docker-compose
-        run: |
-          docker-compose up --exit-code-from web || true
+#       - name: Run UI-tests via docker-compose
+#         run: |
+#           docker-compose up --exit-code-from web || true
 
-      - name: Copy history from gh-pages to allure-results (if exists)
-        run: |
-          sudo mkdir -p allure-results/history
-          if [ -d ./.github/gh-pages/history ]; then
-            sudo cp -R ./.github/gh-pages/history/* allure-results/history/
-          fi
+#       - name: Copy history from gh-pages to allure-results (if exists)
+#         run: |
+#           sudo mkdir -p allure-results/history
+#           if [ -d ./.github/gh-pages/history ]; then
+#             sudo cp -R ./.github/gh-pages/history/* allure-results/history/
+#           fi
 
-      - name: Fix permissions for allure results
-        run: |
-          sudo chmod -R 777 ./allure-results ./allure-report
+#       - name: Fix permissions for allure results
+#         run: |
+#           sudo chmod -R 777 ./allure-results ./allure-report
 
-      - name: Verify Allure report generation
-        run: |
-          sudo docker-compose run web /bin/sh -c "ls -la /app/allure-report"
+#       - name: Verify Allure report generation
+#         run: |
+#           sudo docker-compose run web /bin/sh -c "ls -la /app/allure-report"
 
-      - name: Generate Allure report
-        run: |
-          sudo docker-compose run web /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"
-          sudo ls -la /app/allure-report
+#       - name: Generate Allure report
+#         run: |
+#           sudo docker-compose run web /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"
+#           sudo ls -la /app/allure-report
 
-      - name: Update Allure history (after generating report)
-        run: |
-          sudo mkdir -p ./.github/gh-pages/history
-          sudo cp -R /app/allure-report/history/* ./.github/gh-pages/history/
+#       - name: Update Allure history (after generating report)
+#         run: |
+#           sudo mkdir -p ./.github/gh-pages/history
+#           sudo cp -R /app/allure-report/history/* ./.github/gh-pages/history/
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.5
-        with:
-          token: ${{ secrets.CI_TOKEN }}
-          branch: gh-pages
-          folder: allure-report
-          clean: true
+#       - name: Deploy to GitHub Pages
+#         uses: JamesIves/github-pages-deploy-action@4.1.5
+#         with:
+#           token: ${{ secrets.CI_TOKEN }}
+#           branch: gh-pages
+#           folder: allure-report
+#           clean: true

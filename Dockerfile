@@ -37,7 +37,7 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
 
 # Install Python dependencies
 RUN pip3 install --upgrade pip
-RUN pip3 install selenium pytest allure-pytest
+RUN pip3 install selenium pytest
 
 # Install Allure CLI
 RUN npm install -g allure-commandline --save-dev
@@ -46,10 +46,6 @@ ENV PATH="/usr/local/bin:${PATH}"
 
 # Set PYTHONPATH
 ENV PYTHONPATH=/usr/workspace/Nintondo
-
-# Set Allure directories
-ENV ALLURE_RESULTS_DIR=/app/allure-results
-ENV ALLURE_REPORT_DIR=/app/allure-report
 
 # Copy requirements and install them
 COPY requirements.txt /app/
@@ -71,9 +67,6 @@ ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH=${JAVA_HOME}/bin:${PATH}
 
-# Set working directory for tests
 WORKDIR /usr/workspace/Nintondo/AutoTests/tests
 
-# CMD for running tests and generating Allure report
-CMD pytest /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py && \
-    allure generate ${ALLURE_RESULTS_DIR} --clean -o ${ALLURE_REPORT_DIR}
+CMD pytest /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py && allure generate /app/allure-results --clean -o /app/allure-report
