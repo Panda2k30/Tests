@@ -1,6 +1,7 @@
 name: UI Tests
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
 
 jobs:
   ui-tests:
@@ -11,9 +12,9 @@ jobs:
 
       - name: Install Docker Compose
         run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version  # Проверка успешной установки
+          docker-compose --version
 
       - name: Checkout (copy) gh-pages repository to GitHub runner
         uses: actions/checkout@v2
@@ -23,35 +24,27 @@ jobs:
 
       - name: Run UI-tests via docker-compose
         run: |
-          docker-compose up --exit-code-from web || true
+          docker-compose up --build --exit-code-from web || true
 
-      - name: Copy history from gh-pages to allure-results (if exists)
+      - name: Check Allure results
         run: |
-          sudo mkdir -p allure-results/history  # Создаем директорию для истории Allure
-          if [ -d ./.github/gh-pages/history ]; then
-            sudo cp -R ./.github/gh-pages/history/* allure-results/history/
-          else
-            echo "No history found in gh-pages."
+          if [ ! -d "allure-results" ] || [ -z "$(ls -A allure-results)" ]; then
+            echo "No test results found in allure-results. Ensure tests are running correctly."
+            exit 1
           fi
-
-      - name: Fix permissions for allure results
-        run: |
-          sudo chmod -R 777 ./allure-results ./allure-report  # Обеспечиваем правильные права доступа
-
-      - name: Verify Allure report generation
-        run: |
-          sudo docker-compose run web /bin/sh -c "ls -la /app/allure-report"  # Проверка наличия отчета в контейнере
 
       - name: Generate Allure report
         run: |
-          sudo docker-compose run web /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"
-          # Проверяем создание отчета Allure
-          sudo ls -la /app/allure-report  # Выводим содержимое отчета
+          docker-compose run web /bin/sh -c "allure generate allure-results --clean -o allure-report"
 
-      - name: Update Allure history (after generating report)
+      - name: Update Allure history
         run: |
-          sudo mkdir -p ./.github/gh-pages/history  # Создаем директорию для истории Allure на хосте
-          sudo cp -R /app/allure-report/history/* ./.github/gh-pages/history/  # Копируем историю отчетов в gh-pages
+          sudo mkdir -p ./.github/gh-pages/history
+          if [ -d allure-report/history ] && [ "$(ls -A allure-report/history)" ]; then
+              sudo cp -R allure-report/history/* ./.github/gh-pages/history/
+          else
+              echo "No history files to copy to gh-pages."
+          fi
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
