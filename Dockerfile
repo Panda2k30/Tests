@@ -77,5 +77,5 @@ WORKDIR /usr/workspace/Nintondo/AutoTests/tests
 CMD mkdir -p /app/allure-results /app/allure-report && \
     chmod -R 777 /app/allure-results /app/allure-report && \
     echo "Running tests..." && \
-    pytest /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/app/allure-results && \
+    pytest -s /usr/workspace/Nintondo/AutoTests/tests/ --alluredir=/app/allure-results && \
     allure generate /app/allure-results --clean -o /app/allure-report
