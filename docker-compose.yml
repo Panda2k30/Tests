@@ -13,7 +13,7 @@ services:
       - ./allure-results:/app/allure-results
       - ./allure-report:/app/allure-report
     working_dir: /usr/workspace/Nintondo/AutoTests/tests
-    command: /bin/sh -c "mkdir -p /app/allure-results /app/allure-report && pytest -s /usr/workspace/Nintondo/AutoTests/tests/ --alluredir=/app/allure-results"
+    command: /bin/sh -c "mkdir -p /app/allure-results /app/allure-report && pytest -s /usr/workspace/Nintondo/AutoTests/tests/ --alluredir=/app/allure-results && ls -al /app/allure-results && sleep 10"
     environment:
       - DISPLAY=${DISPLAY}
     ports:
@@ -29,7 +29,7 @@ services:
       - ./allure-report:/app/allure-report
     ports:
       - "4040:4040"
-    entrypoint: /bin/sh -c "allure generate /app/allure-results --clean -o /app/allure-report"
+    entrypoint: /bin/sh -c "while true; do sleep 60; done"  # Ожидание работы Allure, чтобы не завершался раньше времени
 
 networks:
   selenium_network:
