@@ -1,4 +1,4 @@
-name: allure-report
+name: UI Test Wallet
 
 on:
   workflow_dispatch: # Оставляем только запуск вручную
