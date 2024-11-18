@@ -18,7 +18,7 @@ jobs:
       - name: Run UI-tests via docker-compose
         run: |
           docker-compose up --exit-code-from web || true
-
+      
       - name: Get Allure history
         uses: actions/checkout@v2
         if: always()
