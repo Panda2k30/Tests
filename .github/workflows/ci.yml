@@ -38,6 +38,10 @@ jobs:
         run: |
           sudo chmod -R 777 ./allure-results ./allure-report  # Обеспечиваем правильные права доступа
 
+      - name: Verify Allure report generation
+        run: |
+          sudo docker-compose run web /bin/sh -c "ls -la /app/allure-report"  # Проверка наличия отчета в контейнере
+
       - name: Generate Allure report
         run: |
           sudo docker-compose run web /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"
