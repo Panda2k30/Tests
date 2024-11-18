@@ -23,16 +23,20 @@ jobs:
 
       - name: Run UI-tests via docker-compose
         run: |
-          sudo docker-compose up --exit-code-from web || true
+          docker-compose up --exit-code-from web || true  # Заменил 'regression' на 'web'
 
-      - name: Copy history from gh-pages to allure-results
+      - name: Copy history from gh-pages to allure-results (if exists)
         run: |
-          sudo mkdir -p allure-results/history
-          sudo docker-compose run web /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"
+          sudo mkdir -p allure-results/history  # Создаем директорию для истории Allure
+          if [ -d ./.github/gh-pages/history ]; then
+            sudo cp -R ./.github/gh-pages/history/* allure-results/history/
+          else
+            echo "No history found in gh-pages."
+          fi
 
       - name: Generate Allure report
         run: |
-          sudo docker-compose run regression /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"
+          sudo docker-compose run web /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"  # Заменил 'regression' на 'web'
 
       - name: Update Allure history (after generating report)
         run: |
