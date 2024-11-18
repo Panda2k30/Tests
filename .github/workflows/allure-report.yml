@@ -1,53 +1,53 @@
-name: allure-report
+# name: allure-report
 
-on:
-  release:
-    types:
-      - created
-  push:
-    branches-ignore:
-      - '!mane'
+# on:
+#   release:
+#     types:
+#       - created
+#   push:
+#     branches-ignore:
+#       - '!mane'
 
-jobs:
-  allure:
-    name: Generate Allure Report
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+# jobs:
+#   allure:
+#     name: Generate Allure Report
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
+#       - name: Install Docker Compose
+#         run: |
+#           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#           sudo chmod +x /usr/local/bin/docker-compose
+#           docker-compose --version
 
-      - name: Run UI-tests via docker-compose
-        run: |
-          docker-compose up --exit-code-from web || true
+#       - name: Run UI-tests via docker-compose
+#         run: |
+#           docker-compose up --exit-code-from web || true
       
-      - name: Get Allure history
-        uses: actions/checkout@v2
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
+#       - name: Get Allure history
+#         uses: actions/checkout@v2
+#         if: always()
+#         continue-on-error: true
+#         with:
+#           ref: gh-pages
+#           path: gh-pages
 
-      - name: Allure Report action from marketplace
-        uses: simple-elf/allure-report-action@master
-        if: always()
-        #id: allure-report
-        with:
-          allure_results: allure-results
-          #gh_pages: gh-pages
-          #allure_report: allure-report
-          allure_history: allure-history
-          keep_reports: 20
+#       - name: Allure Report action from marketplace
+#         uses: simple-elf/allure-report-action@master
+#         if: always()
+#         #id: allure-report
+#         with:
+#           allure_results: allure-results
+#           #gh_pages: gh-pages
+#           #allure_report: allure-report
+#           allure_history: allure-history
+#           keep_reports: 20
 
-      - name: Deploy report to Github Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.CI_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
+#       - name: Deploy report to Github Pages
+#         if: always()
+#         uses: peaceiris/actions-gh-pages@v2
+#         env:
+#           PERSONAL_TOKEN: ${{ secrets.CI_TOKEN }}
+#           PUBLISH_BRANCH: gh-pages
+#           PUBLISH_DIR: allure-history
