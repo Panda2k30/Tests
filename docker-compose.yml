@@ -7,27 +7,27 @@ services:
       dockerfile: Dockerfile
     container_name: selenium-tests
     volumes:
-      - ./Nintondo:/usr/workspace/Nintondo  # Том для проекта
-      - /tmp/.X11-unix:/tmp/.X11-unix  # Проброс X11
-      - ./allure-results:/usr/workspace/allure-results  # Монтируем том с результатами тестов
+      - ./Nintondo:/usr/workspace/Nintondo
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./allure-results:/usr/workspace/allure-results
     working_dir: /usr/workspace/Nintondo/AutoTests/tests
-    command: /bin/sh -c "ls -la && pytest -sv /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/usr/workspace/allure-results"  # Запуск тестов и сохранение отчетов в allure-results
+    command: /bin/sh -c "ls -la && pytest -sv /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/usr/workspace/allure-results"
     environment:
-      - DISPLAY=${DISPLAY}  # Использование переменной окружения DISPLAY для подключения X11
+      - DISPLAY=${DISPLAY}
     ports:
-      - "4444:4444"  # Selenium WebDriver порт
+      - "4444:4444"
     networks:
       - selenium_network
 
   allure:
-    image: frankescobar/allure-docker-service  # Официальный образ для Allure
+    image: frankescobar/allure-docker-service
     container_name: allure-report
     volumes:
-      - ./allure-results:/app/allure-results  # Монтируем том с результатами
-      - ./allure-report:/app/allure-report  # Монтируем папку для финального отчета
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/allure-report
     ports:
-      - "4040:4040"  # Порт для доступа к отчету через браузер
-    entrypoint: /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"  # Генерация отчета Allure после выполнения тестов
+      - "4040:4040"
+    entrypoint: /bin/sh -c "chmod -R 777 /app/allure-results /app/allure-report && allure generate /app/allure-results --clean -o /app/allure-report"
 
 networks:
   selenium_network:

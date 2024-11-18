@@ -34,6 +34,10 @@ jobs:
             echo "No history found in gh-pages."
           fi
 
+      - name: Fix permissions for allure results
+        run: |
+          sudo chmod -R 777 ./allure-results ./allure-report  # Обеспечиваем правильные права доступа
+
       - name: Generate Allure report
         run: |
           sudo docker-compose run web /bin/sh -c "mkdir -p /app/allure-results && allure generate /app/allure-results --clean -o /app/allure-report"
