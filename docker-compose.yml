@@ -13,7 +13,7 @@ services:
       - ./allure-results:/app/allure-results
       - ./allure-report:/app/allure-report
     working_dir: /usr/workspace/Nintondo/AutoTests/tests
-    command: /bin/sh -c "ls -la && pytest -sv /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/usr/workspace/allure-results"
+    # command: /bin/sh -c "ls -la && pytest -sv /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/app/allure-results"
     environment:
       - DISPLAY=${DISPLAY}
     ports:
