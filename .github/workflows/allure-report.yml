@@ -1,4 +1,4 @@
-name: allure-report
+name: UI Tests Wallet
 
 on:
   release:
