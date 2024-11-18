@@ -37,7 +37,7 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
 
 # Install Python dependencies
 RUN pip3 install --upgrade pip
-RUN pip3 install selenium pytest
+RUN pip3 install selenium pytest allure-pytest
 
 # Install Allure CLI
 RUN npm install -g allure-commandline --save-dev
