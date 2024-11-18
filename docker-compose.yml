@@ -29,7 +29,7 @@ services:
       - ./allure-report:/app/allure-report
     ports:
       - "4040:4040"
-    entrypoint: /bin/sh -c "while true; do sleep 60; done"  # Ожидание работы Allure, чтобы не завершался раньше времени
+    entrypoint: /bin/sh -c "allure generate /app/allure-results --clean -o /app/allure-report && while true; do sleep 60; done"  # Ожидание работы Allure, чтобы не завершался раньше времени
 
 networks:
   selenium_network:
