@@ -6,7 +6,7 @@ on:
       test_script:
         description: 'Test script to run'
         required: true
-        default: '/usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py'
+        default: '/usr/workspace/Nintondo/AutoTests/tests/'
 
 jobs:
   allure:
