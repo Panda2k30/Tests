@@ -26,13 +26,11 @@ jobs:
         run: |
           docker-compose up --build --exit-code-from web || true
 
-      - name: Copy history from gh-pages to allure-results
+      - name: Check Allure results
         run: |
-          sudo mkdir -p allure-results/history 
-          if [ -d ./.github/gh-pages/history ] && [ "$(ls -A ./.github/gh-pages/history)" ]; then
-              sudo cp -R ./.github/gh-pages/history/* allure-results/history/
-          else
-              echo "No history files to copy from gh-pages."
+          if [ ! -d "allure-results" ] || [ -z "$(ls -A allure-results)" ]; then
+            echo "No test results found in allure-results. Ensure tests are running correctly."
+            exit 1
           fi
 
       - name: Generate Allure report

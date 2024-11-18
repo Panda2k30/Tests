@@ -11,7 +11,7 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix  # Проброс X11
       - ./allure-results:/usr/workspace/allure-results  # Том для отчетов Allure
     working_dir: /usr/workspace/Nintondo/AutoTests/tests
-    command: /bin/sh -c "pytest -sv /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/usr/workspace/allure-results"  # Запуск только одного теста  # Запуск тестов и сохранение отчетов
+    command: /bin/sh -c "mkdir -p /usr/workspace/allure-results && pytest -sv /usr/workspace/Nintondo/AutoTests/tests/mane_site_tests/test_connect.py --alluredir=/usr/workspace/allure-results"  # Запуск тестов и сохранение отчетов
     environment:
       - DISPLAY=${DISPLAY}  # Использование переменной окружения DISPLAY для подключения X11
     ports:
@@ -24,6 +24,7 @@ services:
     container_name: allure-report
     volumes:
       - ./allure-results:/app/allure-results  # Монтируем том с результатами
+      - ./allure-report:/app/allure-report    # Папка для финального отчета
     ports:
       - "4040:4040"  # Порт для доступа к отчету через браузер
     networks:
