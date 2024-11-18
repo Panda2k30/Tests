@@ -1,13 +1,7 @@
-name: UI Tests Wallet
+name: allure-report
 
 on:
-  release:
-    types:
-      - created
-  push:
-    branches-ignore:
-      - '!mane'
-  workflow_dispatch: # Добавляем возможность запуска вручную через кнопку
+  workflow_dispatch: # Оставляем только запуск вручную
     inputs:
       test_script:
         description: 'Test script to run'
