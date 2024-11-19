@@ -1,0 +1,1 @@
+Success message: Successfully sended transfer(s)
