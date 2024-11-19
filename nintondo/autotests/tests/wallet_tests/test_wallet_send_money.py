@@ -1,11 +1,11 @@
 import time
 import allure
 import pytest
-from AutoTests.data import Data
-from AutoTests.conftest import driver
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
-from AutoTests.pages.wallet.wallet_mane_page import ManePage
-from AutoTests.pages.wallet.wallet_send_page import SendPage
+from autotests.data import Data
+from autotests.conftest import driver
+from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
+from autotests.pages.wallet.wallet_mane_page import ManePage
+from autotests.pages.wallet.wallet_send_page import SendPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By

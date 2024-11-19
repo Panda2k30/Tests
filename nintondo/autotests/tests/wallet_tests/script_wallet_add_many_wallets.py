@@ -1,10 +1,10 @@
 import time
 import allure
 import pytest
-from AutoTests.data import Data
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
-from AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
-from AutoTests.pages.wallet.wallet_mane_page import ManePage
+from autotests.data import Data
+from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
+from autotests.pages.wallet.wallet_registration_page import CreateMnemonic
+from autotests.pages.wallet.wallet_mane_page import ManePage
 
 # Check the functionality of the extension when creating a large number of wallets
 @pytest.mark.scripts("driver")

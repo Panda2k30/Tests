@@ -1,8 +1,8 @@
 import time
 import allure
 import pytest
-from AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
-from AutoTests.data import Data
+from autotests.pages.wallet.wallet_registration_page import CreateMnemonic
+from autotests.data import Data
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By

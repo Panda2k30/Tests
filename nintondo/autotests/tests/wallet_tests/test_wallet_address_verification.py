@@ -1,10 +1,10 @@
 import time
 import allure
 import pytest
-from AutoTests.conftest import driver
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
-from AutoTests.pages.wallet.wallet_mane_page import ManePage
-from AutoTests.pages.wallet.wallet_receive_page import ReceivePage
+from autotests.conftest import driver
+from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
+from autotests.pages.wallet.wallet_mane_page import ManePage
+from autotests.pages.wallet.wallet_receive_page import ReceivePage
 import os
 
 @pytest.mark.usefixtures("driver")

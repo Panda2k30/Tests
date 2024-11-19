@@ -2,11 +2,11 @@ import allure
 import pytest
 import time
 from selenium.webdriver.chrome.webdriver import WebDriver
-from AutoTests.data import Data
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc, restore_zero_balance_wallet
-from AutoTests.pages.wallet.wallet_registration_page import CreateMnemonic
-from AutoTests.pages.wallet.wallet_mane_page import ManePage
-from AutoTests.pages.wallet.wallet_nft_page import SendInscription
+from autotests.data import Data
+from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc, restore_zero_balance_wallet
+from autotests.pages.wallet.wallet_registration_page import CreateMnemonic
+from autotests.pages.wallet.wallet_mane_page import ManePage
+from autotests.pages.wallet.wallet_nft_page import SendInscription
 from selenium.webdriver.common.by import By
 
 

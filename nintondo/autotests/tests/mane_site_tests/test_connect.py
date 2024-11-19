@@ -1,12 +1,12 @@
 import time
 import allure
 import pytest
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
-from AutoTests.pages.mane_site.nintondo_mane import NintondoPage
+from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
+from autotests.pages.mane_site.nintondo_mane import NintondoPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from AutoTests.pages.wallet.wallet_mane_page import ManePage
+from autotests.pages.wallet.wallet_mane_page import ManePage
 
 
 @pytest.mark.usefixtures("driver")

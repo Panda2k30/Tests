@@ -1,9 +1,9 @@
 import allure
 import pytest
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
-from AutoTests.pages.wallet.wallet_mane_page import ManePage
-from AutoTests.data import Data
-from AutoTests.pages.wallet.wallet_settings_page import SettingsSecurity, ChangePassword
+from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
+from autotests.pages.wallet.wallet_mane_page import ManePage
+from autotests.data import Data
+from autotests.pages.wallet.wallet_settings_page import SettingsSecurity, ChangePassword
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By

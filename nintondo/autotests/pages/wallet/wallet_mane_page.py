@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from AutoTests.conftest import driver
-from AutoTests.pages.base_page import BasePage
+from autotests.conftest import driver
+from autotests.pages.base_page import BasePage
 import time
 import allure
 

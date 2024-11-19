@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from AutoTests.pages.base_page import BasePage
+from autotests.pages.base_page import BasePage
 from faker import Faker
 import random
 import allure

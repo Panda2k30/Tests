@@ -1,10 +1,10 @@
 import allure
 import pytest
 import time
-from AutoTests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc, restore_zero_balance_wallet
-from AutoTests.pages.wallet.wallet_mane_page import ManePage
-from AutoTests.pages.wallet.wallet_settings_page import WalletSettings
-from AutoTests.pages.wallet.wallet_nft_page import TransfersPage
+from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc, restore_zero_balance_wallet
+from autotests.pages.wallet.wallet_mane_page import ManePage
+from autotests.pages.wallet.wallet_settings_page import WalletSettings
+from autotests.pages.wallet.wallet_nft_page import TransfersPage
 from selenium.webdriver.common.by import By
 
 
@@ -36,7 +36,7 @@ def test_valid_minting_transfers(driver):
     bel_page.inscribe_btn()
     
     # Check for success message
-    time.sleep(0.5)
+    time.sleep(0.35)
     
     # Locate success message
     success_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
@@ -85,7 +85,7 @@ def test_mint_transfer_zero_wallet(driver):
     bel_page.amount(2)
     bel_page.inscribe_btn()
     
-    time.sleep(0.5)
+    time.sleep(0.4)
     # Locate error message
     error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
     assert error_message.is_displayed(), "Expected an error, but no error was displayed."

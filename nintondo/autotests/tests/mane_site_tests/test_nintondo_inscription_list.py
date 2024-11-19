@@ -1,9 +1,9 @@
 import time
 import allure
 import pytest
-from AutoTests.tests.mane_site_tests.test_connect import test_connect
-from AutoTests.pages.mane_site.nintondo_mane import NintondoUserMenu
-from AutoTests.pages.mane_site.nintondo_profile import Inscriptions
+from autotests.tests.mane_site_tests.test_connect import test_connect
+from autotests.pages.mane_site.nintondo_mane import NintondoUserMenu
+from autotests.pages.mane_site.nintondo_profile import Inscriptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
