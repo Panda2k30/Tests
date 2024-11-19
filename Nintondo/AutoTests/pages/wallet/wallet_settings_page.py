@@ -1,10 +1,10 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from AutoTests.conftest import driver
 from AutoTests.pages.base_page import BasePage
 from faker import Faker
 import random
+import allure
 
 fake = Faker()
 wait = WebDriverWait
@@ -47,7 +47,7 @@ class SettingsSecurity(BasePage):
         security_page = wait(self.driver, 10).until(
             EC.element_to_be_clickable(SettingsPageSelector.SECURITY_SETTINGS))
         security_page.click()
-        print("- Go to the page: Security Settings")
+        allure.attach("- Go to the page: Security Settings", name="Action", attachment_type=allure.attachment_type.TEXT)
   
        
 class ChangePassword(BasePage):
@@ -59,16 +59,15 @@ class ChangePassword(BasePage):
         change_password_page = wait(self.driver, 10).until(
             EC.element_to_be_clickable(SettingsPageSelector.CHANGE_PASSWORD))
         change_password_page.click()
-        print("- Go to the page: Change password")
+        allure.attach("- Go to the page: Change password", name="Action", attachment_type=allure.attachment_type.TEXT)
         
     def old_password(self, oldpassword):
         old_password = wait(self.driver, 10).until(
             EC.element_to_be_clickable(SettingsPageSelector.OLD_PASSWORD))
         old_password.send_keys(oldpassword)
-        print("- Inter old password")
+        allure.attach("- Entered old password", name="Action", attachment_type=allure.attachment_type.TEXT)
         
     def new_password(self):
-        
         password_length = random.randint(10, 50)
         new_password = self.fake.password(length=password_length, special_chars=True, digits=True, upper_case=True)
 
@@ -77,7 +76,7 @@ class ChangePassword(BasePage):
 
         password_field.send_keys(new_password)
         
-        print(f"- Entered a password of length {password_length}: {new_password}")
+        allure.attach(f"- Entered a password of length {password_length}: {new_password}", name="Action", attachment_type=allure.attachment_type.TEXT)
 
         return new_password
     
@@ -85,19 +84,19 @@ class ChangePassword(BasePage):
         test_password = wait(self.driver, 10).until(
             EC.element_to_be_clickable(SettingsPageSelector.NEW_PASSWORD))
         test_password.send_keys(new_pass)
-        print("- Entered conf password")        
+        allure.attach("- Entered conf password", name="Action", attachment_type=allure.attachment_type.TEXT)        
     
     def conf_password(self, confpassword):
         conf_password = wait(self.driver, 10).until(
             EC.element_to_be_clickable(SettingsPageSelector.CONFIRM_PASSWORD))
         conf_password.send_keys(confpassword)
-        print("- Inter conf password")
+        allure.attach("- Entered conf password", name="Action", attachment_type=allure.attachment_type.TEXT)
     
     def conf_btn(self):
         conf_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(SettingsPageSelector.CHANGE_PASSWORD_BTN))
         conf_btn.click()
-        print("- Clicked: Change Password")
+        allure.attach("- Clicked: Change Password", name="Action", attachment_type=allure.attachment_type.TEXT)
 
         
 class WalletSettings(BasePage):
@@ -105,22 +104,20 @@ class WalletSettings(BasePage):
         self.driver = driver
         
     def change_network(self, ex_id):
-
         WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located(
                 (By.XPATH, "//p[text()='No transactions']")))
 
         self.driver.get(f"chrome-extension://{ex_id}/index.html#/pages/network-settings")
-        print("- Go to the page for changing the network type")
+        allure.attach("- Go to the page for changing the network type", name="Action", attachment_type=allure.attachment_type.TEXT)
 
         change_network = WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(SettingsPageSelector.TESTNET_BTN)
         )
         change_network.click()
-        print("- Changed the network to TESTNET")
+        allure.attach("- Changed the network to TESTNET", name="Action", attachment_type=allure.attachment_type.TEXT)
         
     def change_type_legacy(self):
-        
         wallet_settings = wait(self.driver, 10).until(
             EC.element_to_be_clickable(SettingsPageSelector.WALLET_SETTINGS))
         wallet_settings.click()
@@ -132,6 +129,6 @@ class WalletSettings(BasePage):
         segwit_type = wait(self.driver, 10).until(
             EC.element_to_be_clickable(SettingsPageSelector.LEGACY))
         segwit_type.click()
-        print("- Choose: Legacy")
+        allure.attach("- Chosen: Legacy", name="Action", attachment_type=allure.attachment_type.TEXT)
 
     

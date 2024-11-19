@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from AutoTests.conftest import driver
 from AutoTests.pages.base_page import BasePage
+import allure
 
 wait = WebDriverWait
 
@@ -21,9 +22,9 @@ class ReceivePage(BasePage):
         receive_address_text = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ReceivePageSelector.WALLET_ADDRESS_TEXT))
         receive_address_text.click()
-        print("- Taking the address from the line")
+        allure.attach("- Taking the address from the line", name="Action", attachment_type=allure.attachment_type.TEXT)
         text_address = receive_address_text.text
-        print("The address from the string:", text_address)
+        allure.attach(f"The address from the string: {text_address}", name="Address", attachment_type=allure.attachment_type.TEXT)
         return text_address
 
     def receive_address_btn(self):
@@ -31,7 +32,7 @@ class ReceivePage(BasePage):
             EC.element_to_be_clickable(ReceivePageSelector.WALLET_ADDRESS_COPY_BTN)
         )
         receive_address_btn.click()
-        print("- Clicked on: Copy Address")
+        allure.attach("- Clicked on: Copy Address", name="Action", attachment_type=allure.attachment_type.TEXT)
 
         address_selector = ".text-xs"
 
@@ -58,10 +59,10 @@ class ReceivePage(BasePage):
         ).strip()
 
         if not btn_address:
-            print("Адрес не найден!")
-            print(self.driver.page_source)  # Output HTML content for diagnostics
+            allure.attach("Адрес не найден!", name="Error", attachment_type=allure.attachment_type.TEXT)
+            allure.attach(self.driver.page_source, name="Page Source", attachment_type=allure.attachment_type.HTML)
         else:
-            print("Address from the button:", btn_address)
+            allure.attach(f"Address from the button: {btn_address}", name="Button Address", attachment_type=allure.attachment_type.TEXT)
 
         return btn_address
 
@@ -69,4 +70,4 @@ class ReceivePage(BasePage):
         receive_address_qr = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ReceivePageSelector.WALLET_ADDRESS_QR))
         receive_address_qr.click()
-        print("- Clicked on: QR copy image")
+        allure.attach("- Clicked on: QR copy image", name="Action", attachment_type=allure.attachment_type.TEXT)

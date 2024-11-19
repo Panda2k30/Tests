@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from AutoTests.conftest import driver
 from AutoTests.pages.base_page import BasePage
 import time
+import allure
 
 wait = WebDriverWait
 
@@ -32,6 +33,12 @@ class ManePageSelector:
     PRIVATE_KEY_BTN = (By.LINK_TEXT, "Restore from private key")
 
 
+import allure
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait as wait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
 class ManePage(BasePage):
     def __init__(self, driver):
         self.driver = driver
@@ -40,110 +47,102 @@ class ManePage(BasePage):
         send_page_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.SEND_PAGE_BTN))
         send_page_btn.click()
-        print("- Go to the page: Send")
+        message = "- Go to the page: Send"
+        allure.attach(message, name="Action", attachment_type=allure.attachment_type.TEXT)
 
     def receive_page_btn(self):
         receive_page_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.RECEIVE_PAGE_BTN))
         receive_page_btn.click()
-        print("- Go to the page: Receive")
+        message = "- Go to the page: Receive"
+        allure.attach(message, name="Action", attachment_type=allure.attachment_type.TEXT)
 
     def wallet_page_btn(self):
         wallet_page_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.WALLET_PAGE_BTN))
         wallet_page_btn.click()
-        print("- Go to: Wallets")
+        message = "- Go to: Wallets"
+        allure.attach(message, name="Action", attachment_type=allure.attachment_type.TEXT)
 
     def settings_page_btn(self):
         settings_page_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.SETTINGS_PAGE_BTN))
         settings_page_btn.click()
-        print("- Go to: Settings")
+        message = "- Go to: Settings"
+        allure.attach(message, name="Action", attachment_type=allure.attachment_type.TEXT)
 
     def account_page_btn(self):
         account_page_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.ACCOUNT_PAGE_BTN))
         account_page_btn.click()
-        print("- Go to: Accounts")
+        message = "- Go to: Accounts"
+        allure.attach(message, name="Action", attachment_type=allure.attachment_type.TEXT)
 
     def nft_page_btn(self):
         nft_page_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.NFT_PAGE_BTN))
         nft_page_btn.click()
-        print("- Go to: NFT")
+        message = "- Go to: NFT"
+        allure.attach(message, name="Action", attachment_type=allure.attachment_type.TEXT)
 
     def add_wallet_btn(self):
         add_wallet_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.ADD_WALLET_BTN))
         add_wallet_btn.click()
-        print("- Clicked: Add Wallet")
+        message = "- Clicked: Add Wallet"
+        allure.attach(message, name="Action", attachment_type=allure.attachment_type.TEXT)
 
     def get_balance(self):
-
         time.sleep(0.4)
-
-        # Gets and returns the user's current balance.
         get_balance_mane = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.BALANCE_WALLET_MANE))
         get_balance_sec = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.BALANCE_WALLET_SECOND))
 
-        # Convert text values to float after removing unnecessary characters
         balance_mane = float(get_balance_mane.text.replace(" ", "").replace("$", ""))
         balance_sec = float(get_balance_sec.text.replace(" ", "").replace("$", ""))
-
-        # Format the values for output
         formatted_balance_mane = f"{balance_mane:g}"
         formatted_balance_sec = f"{balance_sec:.4f}"
-
-        # Combine two values with a dot between them
         total_balance = f"{formatted_balance_mane}{formatted_balance_sec[1:]}"
-
-        # Output the result
-        print("The user's current balance:", total_balance)
+        
+        message = f"The user's current balance: {total_balance}"
+        allure.attach(message, name="Balance", attachment_type=allure.attachment_type.TEXT)
         return total_balance
 
     def change_network(self, ex_id):
-
-        WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located(
-                (By.XPATH, "//p[text()='No transactions']")))
+        wait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//p[text()='No transactions']")))
 
         self.driver.get(f"chrome-extension://{ex_id}/index.html#/pages/network-settings")
-        print("- Go to the page for changing the network type")
+        allure.attach("- Go to the page for changing the network type", name="Navigation", attachment_type=allure.attachment_type.TEXT)
 
-        change_network = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(ManePageSelector.TESTNET_BTN)
-        )
+        change_network = wait(self.driver, 10).until(
+            EC.element_to_be_clickable(ManePageSelector.TESTNET_BTN))
         change_network.click()
-        print("- Changed the network to TESTNET")
+        allure.attach("- Changed the network to TESTNET", name="Action", attachment_type=allure.attachment_type.TEXT)
 
     def verify_transaction(self):
         get_transaction = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.TRANSACTION_LIST))
-
         txid = get_transaction.text
-        print("Last TXID:", txid)
+        allure.attach(f"Last TXID: {txid}", name="Transaction", attachment_type=allure.attachment_type.TEXT)
         return txid
 
     def back_btn(self):
         back_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.BACK_BTN))
         back_btn.click()
-        print("- You clicked on the “Back” button.")
+        allure.attach("- You clicked on the “Back” button.", name="Action", attachment_type=allure.attachment_type.TEXT)
 
     def account_address_btn(self):
         button = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.ACCOUNT_ADDRESS))
-
         account_address = self.driver.execute_script(
-            "return arguments[0].getAttribute('title');", button
-        )
-
-        print("The address of the account is on the home page:", account_address)
+            "return arguments[0].getAttribute('title');", button)
+        allure.attach(f"The address of the account is on the home page: {account_address}", name="Account Address", attachment_type=allure.attachment_type.TEXT)
         return account_address
 
     def trans_cont(self):
-        trans_cont = wait(self.driver, 10).until(
+        wait(self.driver, 10).until(
             EC.element_to_be_clickable(ManePageSelector.TRANSACTION_CONT))
-        print("- Wait for the transaction list to load")
+        allure.attach("- Wait for the transaction list to load", name="Transaction List", attachment_type=allure.attachment_type.TEXT)
