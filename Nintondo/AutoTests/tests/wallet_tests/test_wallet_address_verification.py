@@ -28,8 +28,10 @@ def test_wallet_address_verification(driver):
     screenshot_folder = 'screenshots'
     screenshot_file_path = os.path.join(screenshot_folder, 'screenshot-address.png')
     driver.get_screenshot_as_file(screenshot_file_path)
-    print(f"A screenshot of the address page is saved in the: {screenshot_file_path}")
 
+    with open(screenshot_file_path, 'rb') as screenshot_file:
+        allure.attach(screenshot_file.read(), name="Screenshot of the Address Page", attachment_type=allure.attachment_type.PNG) 
+    
     test_wallet_address_verification.back_btn()
     account_address = test_wallet_address_verification.account_address_btn()
 

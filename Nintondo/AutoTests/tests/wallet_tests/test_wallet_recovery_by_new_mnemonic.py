@@ -25,7 +25,6 @@ def test_valid_create_mnemonic(driver):
     test_create_mnemonic.type_reg_new_mnem() # Select authorization type: New mnemonic
     test_create_mnemonic.conf_save() # Confirm that the mnemonic has been saved
     test_create_mnemonic.conf_create_wallet() # Confirm wallet creation
-    print("// Choose wallet type: Native, by default //")
     test_create_mnemonic.conf_create_wallet() # Confirm wallet creation
     
     element = WebDriverWait(driver, 10).until(
@@ -55,5 +54,8 @@ def test_invalid_create_mnemonic(driver):
     )
     is_disabled_class = "disabled:cursor-not-allowed" in createbtn_mnemonic.get_attribute("class")
 
+    # Assert if the button is disabled
     assert is_disabled_class, "The button was expected to be inactive, but it is available."
-    print("- The button is indeed inactive and has class disabled:cursor-not-allowed") 
+    allure.attach("The button is indeed inactive and has class disabled:cursor-not-allowed", 
+                name="Button Status", 
+                attachment_type=allure.attachment_type.TEXT)

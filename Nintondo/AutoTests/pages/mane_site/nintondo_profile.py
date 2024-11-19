@@ -1,9 +1,9 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from AutoTests.conftest import driver
 from AutoTests.pages.base_page import BasePage
 from selenium.webdriver.common.action_chains import ActionChains
+import allure
 
 wait = WebDriverWait
 
@@ -39,13 +39,13 @@ class ProfilePage(BasePage):
         avatar_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.AVATAR))
         avatar_btn.click()
-        print("- Clicked on: User Photo")
+        allure.attach("Clicked on: User Photo", name="Avatar Button Action", attachment_type=allure.attachment_type.TEXT)
 
     def nickname_btn(self):
         nickname_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.NICKNAME))
         nickname_btn.click()
-        print("- Clicked on: Change nickname")
+        allure.attach("Clicked on: Change nickname", name="Nickname Button Action", attachment_type=allure.attachment_type.TEXT)
 
     def nickname_field(self, nickname):
         nickname_field = wait(self.driver, 10).until(
@@ -54,73 +54,71 @@ class ProfilePage(BasePage):
         nickname_field.clear()
         nickname_field.send_keys(nickname)
 
-        print("- Clicked on: Input field")
+        allure.attach(f"Entered nickname: {nickname}", name="Nickname Field Action", attachment_type=allure.attachment_type.TEXT)
 
     def nickname_save_btn(self):
         nickname_save_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.NICKNAME_SAVE_BTN))
         nickname_save_btn.click()
-        print("- Clicked on: Change nickname")
+        allure.attach("Clicked on: Change nickname", name="Save Nickname Button Action", attachment_type=allure.attachment_type.TEXT)
 
 
 class Inscriptions(BasePage):
 
     def select_inscription(self):
-        # Waiting for the item to be clickable
         select_inscription = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS)
         )
 
-        # Use ActionChains to point and click on an item
         actions = ActionChains(self.driver)
         actions.move_to_element(select_inscription).click(select_inscription).perform()
 
-        print("- Clicked on: The First Inscription")
+        allure.attach("Clicked on: The First Inscription", name="Select Inscription Action", attachment_type=allure.attachment_type.TEXT)
 
     def inscription_list(self):
         inscription_list = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_LIST))
         inscription_list.click()
-        print("- Clicked on: List")
+        allure.attach("Clicked on: List", name="Inscription List Action", attachment_type=allure.attachment_type.TEXT)
 
     def inscription_send(self):
         inscription_send = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_SEND))
         inscription_send.click()
-        print("- Clicked on: Send")
+        allure.attach("Clicked on: Send", name="Send Inscription Action", attachment_type=allure.attachment_type.TEXT)
 
     def inscription_unlist(self):
         inscription_unlist = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_UNLIST))
         inscription_unlist.click()
-        print("- Clicked on: Unlist")
+        allure.attach("Clicked on: Unlist", name="Unlist Inscription Action", attachment_type=allure.attachment_type.TEXT)
 
     def inscription_field_price(self):
         inscription_field_price = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_FIELD_PRICE))
         inscription_field_price.send_keys("1")
-        print("- Entered the cost in the field")
+        allure.attach("Entered the cost in the field", name="Price Field Action", attachment_type=allure.attachment_type.TEXT)
 
     def inscription_field_invalid_price(self, amount):
         inscription_field_invalid_price = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_FIELD_PRICE))
         inscription_field_invalid_price.send_keys(amount)
-        print("- Entered a non-valid value in the field")
+        allure.attach(f"Entered a non-valid value: {amount} in the field", name="Invalid Price Field Action", attachment_type=allure.attachment_type.TEXT)
 
     def inscription_list_btn(self):
         inscription_list_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_LIST_BTN))
         inscription_list_btn.click()
-        print("- Clicked on: List")
+        allure.attach("Clicked on: List", name="List Button Action", attachment_type=allure.attachment_type.TEXT)
 
     def inscription_unlist_btn(self):
         inscription_unlist_btn = wait(self.driver, 10).until(
                 EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_UNLIST_BTN))
         inscription_unlist_btn.click()
-        print("- Clicked on: Unlist")
+        allure.attach("Clicked on: Unlist", name="Unlist Button Action", attachment_type=allure.attachment_type.TEXT)
 
     def sign_btn(self):
         sign_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_SIGN_BTN))
         sign_btn.click()
-        print("- In the second window clicked: Sign")
+        allure.attach("In the second window clicked: Sign", name="Sign Button Action", attachment_type=allure.attachment_type.TEXT)

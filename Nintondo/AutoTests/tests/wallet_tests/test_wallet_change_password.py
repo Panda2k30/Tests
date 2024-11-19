@@ -34,7 +34,7 @@ def test_valid_changing_password(driver):
     )
 
     assert element is not None, "Element with the specified class was not found."
-    print("\nVerification complete. Password successfully changed")
+    allure.attach("Verification complete. Password successfully changed", name="Verification Message", attachment_type=allure.attachment_type.TEXT)
     
 
 @pytest.mark.usefixtures("driver")
@@ -65,15 +65,16 @@ def test_changing_password(driver, new_pass, conf_pass, expected_error):
     change_password.conf_btn()
     
     
-    time.sleep(0.2)
+    time.sleep(0.3)
     if expected_error == "error":
         error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
         assert error_message.is_displayed(), "Expected an error, but no error was displayed."
         error_text = error_message.text
-        print(f"\nError message: {error_text}")
-        
+        allure.attach(error_text, name="Error Message", attachment_type=allure.attachment_type.TEXT)
+
     elif expected_error == "success":
         success_message = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, "//div[text()='Welcome back']"))
         )
         assert success_message is not None, "Element with the text 'Welcome back' was not found."
+        allure.attach("Success: Welcome back message displayed", name="Success Message", attachment_type=allure.attachment_type.TEXT)

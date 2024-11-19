@@ -14,17 +14,19 @@ def driver(request):
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
 
+    # Local
     project_path = os.path.dirname(os.path.abspath(__file__))
+    # extension_path = f"{project_path}/extension/dist/chrome" 
     
-    # extension_path = f"{project_path}/extension/dist/chrome" # Local
-    extension_path = "/app/extension" # CI
+    # CI
+    extension_path = "/app/extension" 
     
     options.add_argument(f"--load-extension={extension_path}")
 
     # Initialize the driver
     driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(4)
-    print("Driver initialized")
+    allure.attach("- Driver initialized", name="Driver", attachment_type=allure.attachment_type.TEXT)
 
     driver.get('chrome://newtab')
 
@@ -41,8 +43,10 @@ def driver(request):
             driver.save_screenshot(screenshot_path)
             allure.attach.file(screenshot_path, name="Screenshot", attachment_type=allure.attachment_type.PNG)
         else:
-            print("Screenshot not saved, as all windows were closed")
+            # Attach for when the window is closed
+            allure.attach("Screenshot not saved, as all windows were closed", name="Screenshot Status", attachment_type=allure.attachment_type.TEXT)
     except NoSuchWindowException:
-        print("Window closed, screenshot not done")
+        # Attach for window error case
+        allure.attach("Window closed, screenshot not done", name="Screenshot Status", attachment_type=allure.attachment_type.TEXT)
     finally:
         driver.quit()

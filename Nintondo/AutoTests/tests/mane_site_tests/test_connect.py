@@ -6,7 +6,6 @@ from AutoTests.pages.mane_site.nintondo_mane import NintondoPage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from AutoTests.conftest import driver
 from AutoTests.pages.wallet.wallet_mane_page import ManePage
 
 
@@ -37,7 +36,11 @@ def test_connect(driver):
     windows = driver.window_handles
     time.sleep(0.3)
     driver.switch_to.window(windows[1])
-    print(driver.title)
+
+    page_title = driver.title
+    allure.attach(page_title, name="Page Title", attachment_type=allure.attachment_type.TEXT)
+
+    allure.attach(f"Switched to the new window. Page title: {page_title}", name="Window Switch Action", attachment_type=allure.attachment_type.TEXT)
 
     connect.sign_btn()
     time.sleep(0.5)

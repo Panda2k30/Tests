@@ -25,9 +25,9 @@ def test_create_valid_password(driver):
     try:
         dashboard_element = WebDriverWait(driver, 2).until(
             EC.visibility_of_element_located((By.LINK_TEXT, "New mnemonic")))
-        assert dashboard_element.is_displayed(), "Элемент на странице не отображается"
+        assert dashboard_element.is_displayed(), "Item is not displayed on the page"
     except TimeoutException:
-        pytest.fail("Время ожидания истекло")
+        pytest.fail("The waiting time has expired")
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Create invalid wallet password")

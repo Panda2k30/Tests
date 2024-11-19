@@ -24,7 +24,6 @@ def test_restore_by_private_key(driver):
     test_restore_by_private_key.type_reg_privacy_key() # Select private key recovery
     test_restore_by_private_key.restore_input(Data.KEY_MONEY_WALLET) # Enter private key
     test_restore_by_private_key.conf_create_wallet() # Confirm wallet creation
-    print("// Choose wallet type: Native, by default //")
     test_restore_by_private_key.conf_recover_wallet()  # Confirm wallet creation
 
     element = WebDriverWait(driver, 10).until(
@@ -55,7 +54,6 @@ def test_restore_by_invalid_private_key(driver, data, expected_error):
     test_restore_by_invalid_private_key.type_reg_privacy_key()
     test_restore_by_invalid_private_key.restore_input(data)
     test_restore_by_invalid_private_key.conf_create_wallet()
-    print("// Choose wallet type: Native, by default //")
     test_restore_by_invalid_private_key.conf_recover_wallet()
 
     try:
@@ -84,7 +82,6 @@ def restore_by_private_key_proc(driver):
     restore_by_private_key_proc.type_reg_privacy_key() # Select private key recovery
     restore_by_private_key_proc.restore_input(Data.KEY_MONEY_WALLET) # Enter private key
     restore_by_private_key_proc.conf_create_wallet() # Confirm wallet creation
-    print("// Choose wallet type: Native, by default //")
     restore_by_private_key_proc.conf_recover_wallet()  # Confirm wallet creation
 
     element = WebDriverWait(driver, 10).until(
@@ -110,7 +107,6 @@ def restore_zero_balance_wallet (driver):
     restore_zero_balance_wallet.type_reg_privacy_key() # Select private key recovery
     restore_zero_balance_wallet.restore_input(Data.ZERO_WALLET_FOR_CHECK) # Enter private key
     restore_zero_balance_wallet.conf_create_wallet() # Confirm wallet creation
-    print("// Choose wallet type: Native, by default //")
     restore_zero_balance_wallet.conf_recover_wallet()  # Confirm wallet creation
 
     element = WebDriverWait(driver, 10).until(

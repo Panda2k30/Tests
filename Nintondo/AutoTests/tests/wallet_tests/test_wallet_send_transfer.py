@@ -46,7 +46,7 @@ def test_valid_sending_transfers(driver):
     
     # Extract and validate success message text
     success_text = success_message.text
-    print(f"\nSuccess message: {success_text}")
+    allure.attach(f"Success message: {success_text}", name="Success Message", attachment_type=allure.attachment_type.TEXT)
     
     expected_success = "Successfully sended transfer(s)" 
     assert expected_success in success_text, (
@@ -96,7 +96,7 @@ def test_valid_sending_transfers_zero_wallet(driver):
     
     error_text = error_message.text
     
-    print(f"\nError message: {error_text}")
+    allure.attach(f"Error message: {error_text}", name="Error Message", attachment_type=allure.attachment_type.TEXT)
     
     expected_error = "Balance not enough to pay network fee." 
     assert expected_error in error_text, f"Expected error message '{expected_error}', but got '{error_text}'"

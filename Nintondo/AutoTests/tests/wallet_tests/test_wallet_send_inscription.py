@@ -43,17 +43,17 @@ def test_valid_sending_inscriptions(driver):
     from_address_tabl = nft_page.return_from_address_tabl()
     id_tabl = nft_page.return_id_tabl()
 
-    print("\nData collation ...")
+    allure.attach("Data collation ...", name="Data Collation", attachment_type=allure.attachment_type.TEXT)
 
     # compare all the data
     assert account_address == from_address_tabl, f"Address mismatch: {account_address} != {from_address_tabl}"
     assert valid_address == to_address_tabl, f"Address mismatch: {valid_address} != {to_address_tabl}"
     assert id_card == id_tabl, f"ID mismatch: {id_card} != {id_tabl}"
 
-    print("\nSuccessfully !")
+    allure.attach("Successfully!", name="Success", attachment_type=allure.attachment_type.TEXT)
 
     nft_page.confirm_btn()
-    print("\nSent the transcript to a different address !\n")
+    allure.attach("Sent the transcript to a different address!", name="Transaction Sent", attachment_type=allure.attachment_type.TEXT)
 
     nft_page.back_btn()
 
@@ -72,13 +72,14 @@ def test_valid_sending_inscriptions(driver):
 
     second_wallet_txid = change_network.verify_transaction()
 
-    print("\nCheck that the TXIDs are the same ...")
+    allure.attach("Check that the TXIDs are the same...", name="TXID Check", attachment_type=allure.attachment_type.TEXT)
+    
     # Check that the TXIDs are the same
     assert are_txids_same(second_wallet_txid, first_wallet_txid), (
         f"TXID has changed! Old value: {first_wallet_txid}, "
         f"New value: {second_wallet_txid}"
     )
-    print("\nSuccessfully !")
+    allure.attach("Successfully!", name="Success", attachment_type=allure.attachment_type.TEXT)
 
 
 # incorrect address
@@ -111,7 +112,7 @@ def test_invalid_sending_inscriptions(driver):
     error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
     assert error_message.is_displayed(), "Expected an error, but no error was displayed."
     error_text = error_message.text
-    print(f"\nError message: {error_text}")
+    allure.attach(f"Error message: {error_text}", name="Error Message", attachment_type=allure.attachment_type.TEXT)
     
     
 # insufficient balance
@@ -146,7 +147,7 @@ def test_valid_sending_inscriptions_zero_wallet(driver):
     
     error_text = error_message.text
     
-    print(f"\nError message: {error_text}")
+    allure.attach(f"Error message: {error_text}", name="Error Message", attachment_type=allure.attachment_type.TEXT)
     
     expected_error = "Balance not enough to pay network fee." 
     assert expected_error in error_text, f"Expected error message '{expected_error}', but got '{error_text}'"

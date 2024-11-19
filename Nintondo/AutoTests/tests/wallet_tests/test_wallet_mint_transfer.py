@@ -41,11 +41,11 @@ def test_valid_minting_transfers(driver):
     # Locate success message
     success_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
     assert success_message.is_displayed(), "Expected a success message, but it was not displayed."
-    
+
     # Extract and validate success message text
     success_text = success_message.text
-    print(f"\nSuccess message: {success_text}")
-    
+    allure.attach(success_text, name="Success Message", attachment_type=allure.attachment_type.TEXT)
+
     expected_success = "Transfer inscribed successfully" 
     assert expected_success in success_text, (
         f"Expected success message '{expected_success}', but got '{success_text}'"
@@ -86,16 +86,18 @@ def test_mint_transfer_zero_wallet(driver):
     bel_page.inscribe_btn()
     
     time.sleep(0.5)
+    # Locate error message
     error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
     assert error_message.is_displayed(), "Expected an error, but no error was displayed."
-    
+
+    # Extract and validate error message text
     error_text = error_message.text
-    
-    print(f"\nError message: {error_text}")
-    
+    allure.attach(error_text, name="Error Message", attachment_type=allure.attachment_type.TEXT)
+
     expected_error = "Insufficient balance. Non-Inscription balance" 
     assert expected_error in error_text, f"Expected error message '{expected_error}', but got '{error_text}'"
-    
+
+    # Second check
     second_check = bel_page.check_transfer_balance()
 
     

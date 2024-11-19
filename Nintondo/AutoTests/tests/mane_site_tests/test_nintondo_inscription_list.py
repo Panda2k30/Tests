@@ -106,6 +106,7 @@ def test_invalid_inscription_list(driver, amount, expected_error, check_type):
     inscription.inscription_field_invalid_price(amount)
 
     try:
+        # Check for the first group of parameters
         if check_type == "group1":
             inscription.inscription_list_btn()
             error_message = WebDriverWait(driver, 5).until(
@@ -114,14 +115,15 @@ def test_invalid_inscription_list(driver, amount, expected_error, check_type):
             assert error_message.is_displayed(), "No error message is displayed"
             assert error_message.text == expected_error, f"An error message was expected: '{expected_error}', but received: '{error_message.text}'"
 
-        # Проверка для второй группы параметров
         elif check_type == "group2":
             error_message_under_field = WebDriverWait(driver, 5).until(
                 EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'styles_errorText__')]"))
             )
-            print(error_message_under_field)
+            error_text = error_message_under_field.text
+            allure.attach(error_text, name="Error Message Under Field", attachment_type=allure.attachment_type.TEXT)
+
             assert error_message_under_field.is_displayed(), "The error message below the input field is not displayed"
-            assert error_message_under_field.text == expected_error, f"An error message was expected: '{expected_error}', but received: '{error_message_under_field.text}'"
+            assert error_text == expected_error, f"An error message was expected: '{expected_error}', but received: '{error_text}'"
 
     except Exception as e:
         pytest.fail(f"Message validation error: {e}")
