@@ -8,7 +8,7 @@ __pycache__/
 git push origin mainreport
 allure-report/
 allure-results/
-/Nintondo/AutoTests/extension/
 screenshots/
 path/
 .vscode/
+/nintondo/autotests/extension/

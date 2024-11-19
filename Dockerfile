@@ -45,7 +45,7 @@ RUN npm install -g allure-commandline --save-dev
 ENV PATH="/usr/local/bin:${PATH}"
 
 # Set PYTHONPATH
-ENV PYTHONPATH=/usr/workspace/Nintondo
+ENV PYTHONPATH=/usr/workspace/nintondo
 
 # Copy requirements and install them
 COPY requirements.txt /app/
@@ -71,11 +71,11 @@ ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome-stable"
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH=${JAVA_HOME}/bin:${PATH}
 
-WORKDIR /usr/workspace/Nintondo/AutoTests/tests
+WORKDIR /usr/workspace/nintondo/autotests/tests
 
 # Ensure the tests and allure report generation runs correctly
 CMD mkdir -p /app/allure-results /app/allure-report && \
     chmod -R 777 /app/allure-results /app/allure-report && \
     echo "Running tests..." && \
-    pytest -s /usr/workspace/Nintondo/AutoTests/tests/ && \
+    pytest -s /usr/workspace/nintondo/autotests/tests/ && \
     allure generate /app/allure-results --clean -o /app/allure-report
