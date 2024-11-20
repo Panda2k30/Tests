@@ -50,10 +50,10 @@ class Image(BasePage):
         allure.attach("Clicked on: User Photo", name="Avatar Button Action", attachment_type=allure.attachment_type.TEXT)
     
     def image_url(self):
+        time.sleep(0.5)
         image_url = wait(self.driver, 10).until(
                  EC.element_to_be_clickable(ProfilePageSelector.IMAGE_URL))
         image_url = image_url.get_attribute("src")
-        print(image_url)
         allure.attach(f"Copy Image URL: {image_url}", name="Copy Image URL", attachment_type=allure.attachment_type.TEXT)
         return image_url
                 
@@ -78,7 +78,7 @@ class Image(BasePage):
 class Nickname(BasePage):
 
     def nickname_btn(self):
-        time.sleep(0.3)
+        time.sleep(0.4)
         nickname_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ProfilePageSelector.NICKNAME))
         nickname_btn.click()
@@ -99,6 +99,7 @@ class Nickname(BasePage):
         nickname_save_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(ProfilePageSelector.NICKNAME_SAVE_BTN))
         nickname_save_btn.click()
+        time.sleep(0.3)
         allure.attach("Clicked on: Change nickname", name="Save Nickname Button Action", attachment_type=allure.attachment_type.TEXT)
         
     def get_current_name(self):

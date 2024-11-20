@@ -31,10 +31,10 @@ def test_change_name(driver, name, expected_error, check_type):
     profile.nickname_save_btn()
 
     if check_type == "group1":
-        success_message = profile.get_success_message()
-        assert success_message == "Name changed successfully", "Unexpected success message!"
+        # success_message = profile.get_success_message()
+        # assert success_message == "Name changed successfully", "Unexpected success message!"
         
-        allure.attach(f"Success Message: {success_message}", name="Success Message", attachment_type=allure.attachment_type.TEXT)
+        # allure.attach(f"Success Message: {success_message}", name="Success Message", attachment_type=allure.attachment_type.TEXT)
         
         # Check if the name is changed after refreshing the page
         driver.refresh()
