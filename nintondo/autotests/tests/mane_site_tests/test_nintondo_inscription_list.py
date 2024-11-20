@@ -22,7 +22,7 @@ def test_valid_inscription_list(driver):
 
     menu.open_menu()
     menu.menu_profile_btn()
-    time.sleep(0.3)
+
     inscription.select_inscription()
     time.sleep(0.3)
     inscription.inscription_list()

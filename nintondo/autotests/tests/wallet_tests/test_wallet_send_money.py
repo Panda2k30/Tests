@@ -39,7 +39,7 @@ def test_valid_sendmoney(driver):
     sendmoney.cont_send_money()
     sendmoney.conf_send_money()
     sendmoney.back_to_home()
-    time.sleep(4)
+    time.sleep(2)
 
     # Receive new balance and TXID
     change_network.get_balance()

@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from autotests.pages.base_page import BasePage
 import allure
+import time
 
 wait = WebDriverWait
 
@@ -53,4 +54,5 @@ class NintondoUserMenu(BasePage):
         menu_profile_btn = wait(self.driver, 10).until(
             EC.element_to_be_clickable(NintondoPageSelector.PROFILE_BNT))
         menu_profile_btn.click()
+        time.sleep(0.3)
         allure.attach("Clicked on: Profile", name="Profile Button Action", attachment_type=allure.attachment_type.TEXT)
