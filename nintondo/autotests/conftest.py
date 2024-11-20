@@ -8,14 +8,14 @@ import allure
 def driver(request):
 
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1280,720")
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
 
     # Local
-    # project_path = os.path.dirname(os.path.abspath(__file__))
+    project_path = os.path.dirname(os.path.abspath(__file__))
     # extension_path = f"{project_path}/extension/dist/chrome" 
     
     # CI
