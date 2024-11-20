@@ -36,7 +36,7 @@ def test_valid_minting_transfers(driver):
     bel_page.inscribe_btn()
     
     # Check for success message
-    time.sleep(0.35)
+    time.sleep(0.6)
     
     # Locate success message
     success_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
@@ -60,8 +60,7 @@ def test_valid_minting_transfers(driver):
     #     f"Amount added: 2"
     # )
 
-    
-# insufficient balance   
+     
 @pytest.mark.usefixtures("driver")
 @allure.feature("Verification of transfer mint from a wallet without balance")
 def test_mint_transfer_zero_wallet(driver):
@@ -99,5 +98,3 @@ def test_mint_transfer_zero_wallet(driver):
 
     # Second check
     second_check = bel_page.check_transfer_balance()
-
-    

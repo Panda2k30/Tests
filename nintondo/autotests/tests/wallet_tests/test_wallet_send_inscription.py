@@ -82,7 +82,6 @@ def test_valid_sending_inscriptions(driver):
     allure.attach("Successfully!", name="Success", attachment_type=allure.attachment_type.TEXT)
 
 
-# incorrect address
 @pytest.mark.usefixtures("driver")
 @allure.feature("Verification of sending an inscription with an incorrectly specified address")
 def test_invalid_sending_inscriptions(driver):
@@ -115,7 +114,6 @@ def test_invalid_sending_inscriptions(driver):
     allure.attach(f"Error message: {error_text}", name="Error Message", attachment_type=allure.attachment_type.TEXT)
     
     
-# insufficient balance
 @pytest.mark.usefixtures("driver")
 @allure.feature("Verification of sending inscription from a wallet without a balance")
 def test_valid_sending_inscriptions_zero_wallet(driver):
