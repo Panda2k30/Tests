@@ -1,13 +1,13 @@
 import time
 import allure
 import pytest
-from autotests.tests.mane_site_tests.test_connect import test_connect
+from autotests.tests.mane_site_tests.test_connect import connect_valid_wallet
 from autotests.pages.mane_site.nintondo_mane import NintondoUserMenu
 from autotests.pages.mane_site.nintondo_profile import Nickname
 
 
 @pytest.mark.usefixtures("driver")
-@allure.feature("Test changing user name")
+@allure.feature("Testing changing user name")
 @pytest.mark.parametrize("name, expected_error, check_type", [
     # ("B0b", "The username must be between 4 and 20 characters long", "group2"), # 3 characters
     ("", "Name can't be empty", "group2"), # 0 characters
@@ -17,7 +17,7 @@ from autotests.pages.mane_site.nintondo_profile import Nickname
 
 def test_change_name(driver, name, expected_error, check_type):
 
-    test_connect(driver)
+    connect_valid_wallet(driver)
     time.sleep(0.5)
 
     menu = NintondoUserMenu(driver)

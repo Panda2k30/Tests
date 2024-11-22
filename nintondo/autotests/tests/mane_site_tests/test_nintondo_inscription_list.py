@@ -1,7 +1,7 @@
 import time
 import allure
 import pytest
-from autotests.tests.mane_site_tests.test_connect import test_connect
+from autotests.tests.mane_site_tests.test_connect import connect_valid_wallet
 from autotests.pages.mane_site.nintondo_mane import NintondoUserMenu
 from autotests.pages.mane_site.nintondo_profile import Inscriptions
 from selenium.webdriver.support import expected_conditions as EC
@@ -10,11 +10,11 @@ from selenium.webdriver.common.by import By
 
 
 @pytest.mark.usefixtures("driver")
-@allure.feature("Test valid inscription listing")
+@allure.feature("Testing valid inscription listing")
 # Checking the publication and withdrawal of inscriptions from sale
 def test_valid_inscription_list(driver):
 
-    test_connect(driver)
+    connect_valid_wallet(driver)
     time.sleep(0.5)
 
     menu = NintondoUserMenu(driver)
@@ -25,8 +25,7 @@ def test_valid_inscription_list(driver):
 
     inscription.select_inscription()
     time.sleep(0.3)
-    inscription.inscription_list()
-    time.sleep(0.3)
+    
     inscription.inscription_field_price()
     inscription.inscription_list_btn()
 
@@ -34,30 +33,31 @@ def test_valid_inscription_list(driver):
     windows = driver.window_handles
     time.sleep(0.3)
     driver.switch_to.window(windows[1])
+    driver.set_window_size(1280, 1280)
 
     inscription.sign_btn()
     time.sleep(0.3)
 
     driver.switch_to.window(windows[0])
 
-    # Checking for an error message after publishing an inscription
-    expected_sign_error = "Inscription(s) listed successfully"
+    expected_success_message = "Inscription(s) listed successfully"
     try:
-        error_message = WebDriverWait(driver, 5).until(
-            EC.visibility_of_element_located((By.CLASS_NAME, "go3958317564"))
-        )
-        assert error_message.is_displayed(), "The error message is not displayed"
-        assert error_message.text == expected_sign_error, f"An error message was expected: '{expected_sign_error}', но получено: '{error_message.text}'"
+        success_message = WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located((By.CLASS_NAME, "go3958317564")))
+        
+        assert success_message.is_displayed(), "The success message is not displayed"
+        assert success_message.text == expected_success_message, \
+            f"Expected success message: '{expected_success_message}', but got: '{success_message.text}'"
     except Exception as e:
-        pytest.fail(f"Error when checking error message after publication: {e}")
-
+        pytest.fail(f"Error when checking success message after publication: {e}")
+        
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Test valid inscription unlisting")
 
 def test_valid_inscription_unlist(driver):
 
-    test_connect(driver)
+    connect_valid_wallet(driver)
     time.sleep(0.5)
 
     menu = NintondoUserMenu(driver)
@@ -83,7 +83,7 @@ def test_valid_inscription_unlist(driver):
 
 
 @pytest.mark.usefixtures("driver")
-@allure.feature("Test invalid inscription listing")
+@allure.feature("Testing invalid inscription listing")
 @pytest.mark.parametrize("amount, expected_error, check_type", [
     ("21000001", "Price should be less than 21,000,000 BEL", "group2"),
     ("0", "Invalid price", "group1"),
@@ -92,7 +92,7 @@ def test_valid_inscription_unlist(driver):
 
 def test_invalid_inscription_list(driver, amount, expected_error, check_type):
 
-    test_connect(driver)
+    connect_valid_wallet(driver)
     time.sleep(0.5)
 
     menu = NintondoUserMenu(driver)

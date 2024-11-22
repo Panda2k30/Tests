@@ -6,6 +6,8 @@ from autotests.pages.wallet.wallet_mane_page import ManePage
 from autotests.pages.wallet.wallet_settings_page import WalletSettings
 from autotests.pages.wallet.wallet_nft_page import TransfersPage
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 @pytest.mark.usefixtures("driver")
@@ -35,14 +37,11 @@ def test_valid_minting_transfers(driver):
     bel_page.amount(2)
     bel_page.inscribe_btn()
     
-    # Check for success message
-    time.sleep(0.6)
-    
-    # Locate success message
-    success_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
+    success_message = WebDriverWait(driver, 10).until(
+    EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'toast ')]"))
+    )
     assert success_message.is_displayed(), "Expected a success message, but it was not displayed."
 
-    # Extract and validate success message text
     success_text = success_message.text
     allure.attach(success_text, name="Success Message", attachment_type=allure.attachment_type.TEXT)
 
@@ -84,11 +83,12 @@ def test_mint_transfer_zero_wallet(driver):
     bel_page.amount(2)
     bel_page.inscribe_btn()
     
-    time.sleep(0.4)
     # Locate error message
-    error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
+    error_message = WebDriverWait(driver, 10).until(
+    EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'toast ')]"))
+    )
     assert error_message.is_displayed(), "Expected an error, but no error was displayed."
-
+    
     # Extract and validate error message text
     error_text = error_message.text
     allure.attach(error_text, name="Error Message", attachment_type=allure.attachment_type.TEXT)

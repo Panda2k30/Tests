@@ -4,19 +4,19 @@ import pytest
 import random
 from autotests.data import Data
 from selenium.webdriver.common.by import By
-from autotests.tests.mane_site_tests.test_connect import test_connect
+from autotests.tests.mane_site_tests.test_connect import connect_valid_wallet
 from autotests.pages.mane_site.nintondo_mane import NintondoUserMenu
 from autotests.pages.mane_site.nintondo_profile import Image
 
 
 @pytest.mark.usefixtures("driver")
-@allure.feature("Test valid change user profile image")
+@allure.feature("Testing valid change user profile image")
 
 def test_valid_change_image(driver):
     
     random_id = random.choice(Data.ID)
 
-    test_connect(driver)
+    connect_valid_wallet(driver)
     time.sleep(0.5)
 
     menu = NintondoUserMenu(driver)
@@ -33,9 +33,9 @@ def test_valid_change_image(driver):
     driver.refresh
     
     profile.image_btn()
-    new_url = profile.image_url()
     
-    # time.sleep(5)
+    time.sleep(0.3)
+    new_url = profile.image_url()
     
     assert old_url != new_url, f"Avatar URL did not change! Old URL: {old_url}, New URL: {new_url}"
 
@@ -44,13 +44,13 @@ def test_valid_change_image(driver):
     
     
 @pytest.mark.usefixtures("driver")
-@allure.feature("Test invalid change user profile image")
+@allure.feature("Testing invalid change user profile image")
 
 def test_invalid_change_image(driver):
     
     random_id = random.choice(Data.INVALID_ID)
 
-    test_connect(driver)
+    connect_valid_wallet(driver)
     time.sleep(0.5)
 
     menu = NintondoUserMenu(driver)
