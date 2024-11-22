@@ -1,0 +1,1 @@
+{"total":2,"items":[{"uid":"21ba590b408d064b0992f783efc0f607","name":"tests.wallet_tests","statistic":{"failed":6,"broken":0,"skipped":0,"passed":30,"unknown":0,"total":36}},{"uid":"556aa09eb640c7a2132ff547004c5b3b","name":"tests.mane_site_tests","statistic":{"failed":0,"broken":3,"skipped":0,"passed":11,"unknown":0,"total":14}}]}
