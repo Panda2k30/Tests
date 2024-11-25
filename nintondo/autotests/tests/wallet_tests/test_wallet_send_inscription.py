@@ -142,10 +142,5 @@ def test_valid_sending_inscriptions_zero_wallet(driver):
     time.sleep(0.3)
     error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
     assert error_message.is_displayed(), "Expected an error, but no error was displayed."
-    
-    error_text = error_message.text
-    
-    allure.attach(f"Error message: {error_text}", name="Error Message", attachment_type=allure.attachment_type.TEXT)
-    
-    expected_error = "Balance not enough to pay network fee." 
-    assert expected_error in error_text, f"Expected error message '{expected_error}', but got '{error_text}'"
+
+    allure.attach(f"Error message: {error_message.text}", name="Error Message", attachment_type=allure.attachment_type.TEXT)

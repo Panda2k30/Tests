@@ -20,7 +20,8 @@ def driver(request):
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
 
-    # project_path = os.path.dirname(os.path.abspath(__file__))
+    # Local
+    project_path = os.path.dirname(os.path.abspath(__file__))
     # extension_path = f"{project_path}/extension/dist/chrome"
     
     # CI
