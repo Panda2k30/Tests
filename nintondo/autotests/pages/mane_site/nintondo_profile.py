@@ -197,26 +197,32 @@ class Inscriptions(BasePage):
         inscription_unlist_btn.click()
         allure.attach("Clicked on: Unlist", name="Unlist Button Action", attachment_type=allure.attachment_type.TEXT)
 
-    def sign_btn(self):
-        attempts = 0
-        while attempts < 3:
-            try:
-                sign_btn = wait(self.driver, 10).until(
-                    EC.element_to_be_clickable(ProfilePageSelector.INSCRIPTIONS_SIGN_BTN)
-                )
-                actions = ActionChains(self.driver)
-                actions.move_to_element(sign_btn).click(sign_btn).perform()
-                allure.attach(
-                    "In the second window clicked: Sign",
-                    name="Sign Button Action",
-                    attachment_type=allure.attachment_type.TEXT
-                )
-                break  # Успешно выполнено, выходим из цикла
-            except StaleElementReferenceException:
-                attempts += 1
-                print(f"Attempt {attempts}: Retrying to locate the element")
-        
-        allure.attach("In the second window clicked: Sign", name="Sign Button Action", attachment_type=allure.attachment_type.TEXT)
+def sign_btn(self):
+    attempts = 0
+    while attempts < 3:
+        try:
+            sign_btn = wait.until(
+                EC.element_to_be_clickable((By.ID, "sign_button"))
+            )
+            sign_btn.click()
+
+            error_message = 'Insufficient balance. Non-Inscription balance (0 BEL) is lower than 0.0000522 BEL'
+            expected_message = 'Balance not enough to pay network fee.'
+            assert expected_message in error_message, (
+                f"Expected error message '{expected_message}', but got '{error_message}'"
+            )
+
+            allure.attach(
+                error_message,
+                name="Error Message Details",
+                attachment_type=allure.attachment_type.TEXT
+            )
+            break
+        except StaleElementReferenceException:
+            attempts += 1
+            print(f"Attempt {attempts}: Retrying to locate the element")
+    
+    allure.attach("In the second window clicked: Sign", name="Sign Button Action", attachment_type=allure.attachment_type.TEXT)
         
     def inscription_view_btn(self):
         
