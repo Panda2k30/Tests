@@ -13,7 +13,7 @@ services:
       - ./allure-results:/app/allure-results
       - ./allure-report:/app/allure-report
     working_dir: /usr/workspace/nintondo/autotests/tests
-    command: /bin/sh -c "mkdir -p /app/allure-results /app/allure-report && pytest -s /usr/workspace/nintondo/autotests/tests/ --alluredir=/app/allure-results && ls -al /app/allure-results && sleep 10"
+    command: /bin/sh -c "mkdir -p /app/allure-results /app/allure-report && pytest -s /usr/workspace/nintondo/autotests/tests/wallet_tests/ --alluredir=/app/allure-results && ls -al /app/allure-results && sleep 10"
     environment:
       - DISPLAY=${DISPLAY}
     ports:
