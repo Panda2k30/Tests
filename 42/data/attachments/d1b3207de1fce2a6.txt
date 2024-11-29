@@ -1,1 +1,0 @@
-The button is indeed inactive and has class disabled:cursor-not-allowed
