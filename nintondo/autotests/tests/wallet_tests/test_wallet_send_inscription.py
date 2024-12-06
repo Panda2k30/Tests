@@ -56,10 +56,10 @@ def test_valid_sending_inscriptions(driver):
     nft_page.confirm_btn()
     allure.attach("Sent the transcript to a different address!", name="Transaction Sent", attachment_type=allure.attachment_type.TEXT)
     
-    expected_success_message = "Successfully send"
+    expected_success_message = "Success"
     try:
         success_message = WebDriverWait(driver, 5).until(
-            EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'toast ')]")))
+            EC.visibility_of_element_located((By.XPATH, "//h3[text()='Success']")))
         
         assert success_message.is_displayed(), "The success message is not displayed"
         assert success_message.text == expected_success_message, \
