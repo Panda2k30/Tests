@@ -1,13 +1,14 @@
 import allure
 import pytest
 import time
-from selenium.webdriver.chrome.webdriver import WebDriver
 from autotests.data import Data
 from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc, restore_zero_balance_wallet
 from autotests.pages.wallet.wallet_registration_page import CreateMnemonic
 from autotests.pages.wallet.wallet_mane_page import ManePage
 from autotests.pages.wallet.wallet_nft_page import SendInscription
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 @pytest.mark.usefixtures("driver")
@@ -54,6 +55,17 @@ def test_valid_sending_inscriptions(driver):
 
     nft_page.confirm_btn()
     allure.attach("Sent the transcript to a different address!", name="Transaction Sent", attachment_type=allure.attachment_type.TEXT)
+    
+    expected_success_message = "Successfully send"
+    try:
+        success_message = WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'toast ')]")))
+        
+        assert success_message.is_displayed(), "The success message is not displayed"
+        assert success_message.text == expected_success_message, \
+            f"Expected success message: '{expected_success_message}', but got: '{success_message.text}'"
+    except Exception as e:
+        pytest.fail(f"Error when checking success message after publication: {e}")
 
     nft_page.back_btn()
 
@@ -139,8 +151,9 @@ def test_valid_sending_inscriptions_zero_wallet(driver):
     nft_page.enter_address(Data.VALID_ADDRESS_FOR_CHECK)
     nft_page.continue_btn()
     
-    time.sleep(0.3)
-    error_message = driver.find_element(By.XPATH, "//div[contains(@class, 'toast ')]")
+    # time.sleep(0.3)
+    error_message = WebDriverWait(driver, 5).until(
+         EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'toast ')]")))
     assert error_message.is_displayed(), "Expected an error, but no error was displayed."
 
     allure.attach(f"Error message: {error_message.text}", name="Error Message", attachment_type=allure.attachment_type.TEXT)

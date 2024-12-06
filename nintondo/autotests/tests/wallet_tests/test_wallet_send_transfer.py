@@ -1,6 +1,5 @@
 import allure
 import pytest
-import time
 from autotests.data import Data
 from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc, restore_zero_balance_wallet
 from autotests.pages.wallet.wallet_mane_page import ManePage

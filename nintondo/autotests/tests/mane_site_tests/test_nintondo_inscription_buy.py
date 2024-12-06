@@ -55,7 +55,7 @@ def test_valid_purchase_inscription(driver):
 
     driver.switch_to.window(windows[0])
 
-    # # Проверка сообщения об ошибке после публикации
+
     # expected_sign_error = "Inscription(s) listed successfully"
     # try:
     #     error_message = WebDriverWait(driver, 10).until(

@@ -1,4 +1,3 @@
-import time
 import allure
 import pytest
 from autotests.conftest import driver

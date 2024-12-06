@@ -2,7 +2,6 @@ import time
 import allure
 import pytest
 from autotests.data import Data
-from autotests.conftest import driver
 from autotests.tests.wallet_tests.test_wallet_recovery_by_private_key import restore_by_private_key_proc
 from autotests.pages.wallet.wallet_mane_page import ManePage
 from autotests.pages.wallet.wallet_send_page import SendPage
@@ -12,7 +11,11 @@ from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Send money and verify balance")
-def test_valid_sendmoney(driver):
+@pytest.mark.parametrize("amount, address, allure", [
+    ("0.777", f"{Data.VALID_ADDRESS_FOR_CHECK}", allure.attach("- Enter valid value", name="Action", attachment_type=allure.attachment_type.TEXT)),
+    ("0.00001", f"{Data.VALID_ADDRESS_FOR_CHECK}", allure.attach("- Enter minimal value", name="Action", attachment_type=allure.attachment_type.TEXT)),
+    ])
+def test_valid_sendmoney(driver, amount, address, allure):
 
     # Function to check for differences in TXID
     def are_txids_different(txid1, txid2):
@@ -32,12 +35,12 @@ def test_valid_sendmoney(driver):
     # Sending funds
     sendmoney = SendPage(driver)
 
-    sendmoney.enter_address(Data.VALID_ADDRESS_FOR_CHECK)
-    sendmoney.enter_amount(valid_amount=0.1)
-    sendmoney.include_fee()
-    sendmoney.save_address()
+    sendmoney.enter_address(address)
+    sendmoney.enter_amount(amount)
+    allure
     sendmoney.cont_send_money()
     sendmoney.conf_send_money()
+    
     sendmoney.back_to_home()
     time.sleep(2)
 
@@ -56,11 +59,12 @@ def test_valid_sendmoney(driver):
 @allure.feature("Sending money with an invalid balance")
 @pytest.mark.parametrize("amount, blank, expected_error", [
     ("555555555", f"{Data.VALID_ADDRESS_FOR_CHECK}", "There's not enough money in your account"),
-    ("", f"{Data.VALID_ADDRESS_FOR_CHECK}", "Minimum amount is 0.00000001 BEL"),
+    ("", f"{Data.VALID_ADDRESS_FOR_CHECK}", "Minimum amount is 0.00001 BEL"),
     ("0.1", "", "Invalid receiver's address"),
     ("", "", "Invalid receiver's address"),
     ("", f"{Data.NOT_VALID_ADDRESS}", "Invalid receiver's address"),
-    ("0.00000001", f"{Data.VALID_ADDRESS_FOR_CHECK}", "Fee exceeds amount")
+    ("0.00001", f"{Data.VALID_ADDRESS_FOR_CHECK}", "Fee exceeds amount"),
+    ("0.00001", f"{Data.VALID_ADDRESS_FOR_CHECK}", "Fee exceeds amount")
     ])
 
 def test_invalid_sendmoney(driver, amount, blank, expected_error):

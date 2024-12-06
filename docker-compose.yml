@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: selenium-tests
-    user: root  # Запуск контейнера от имени root
+    user: root  
     volumes:
       - ./nintondo:/usr/workspace/nintondo
       - /tmp/.X11-unix:/tmp/.X11-unix
@@ -29,7 +29,7 @@ services:
       - ./allure-report:/app/allure-report
     ports:
       - "4040:4040"
-    entrypoint: /bin/sh -c "while true; do sleep 60; done"  # Ожидание работы Allure, чтобы не завершался раньше времени
+    entrypoint: /bin/sh -c "while true; do sleep 60; done" 
 
 networks:
   selenium_network:
