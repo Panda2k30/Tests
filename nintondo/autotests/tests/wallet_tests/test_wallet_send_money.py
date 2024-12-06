@@ -11,11 +11,11 @@ from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("driver")
 @allure.feature("Send money and verify balance")
-@pytest.mark.parametrize("amount, address, allure", [
-    ("0.777", f"{Data.VALID_ADDRESS_FOR_CHECK}", allure.attach("- Enter valid value", name="Action", attachment_type=allure.attachment_type.TEXT)),
-    ("0.00001", f"{Data.VALID_ADDRESS_FOR_CHECK}", allure.attach("- Enter minimal value", name="Action", attachment_type=allure.attachment_type.TEXT)),
+@pytest.mark.parametrize("amount, address", [
+    ("0.777", f"{Data.VALID_ADDRESS_FOR_CHECK}"),
+    ("0.00001", f"{Data.VALID_ADDRESS_FOR_CHECK}"),
     ])
-def test_valid_sendmoney(driver, amount, address, allure):
+def test_valid_sendmoney(driver, amount, address, ):
 
     # Function to check for differences in TXID
     def are_txids_different(txid1, txid2):
@@ -37,7 +37,6 @@ def test_valid_sendmoney(driver, amount, address, allure):
 
     sendmoney.enter_address(address)
     sendmoney.enter_amount(amount)
-    allure
     sendmoney.cont_send_money()
     sendmoney.conf_send_money()
     
