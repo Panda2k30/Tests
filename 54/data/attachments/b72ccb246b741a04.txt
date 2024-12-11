@@ -1,0 +1,1 @@
+Entered a password of length 10: $5n$P(t8$%
