@@ -1,0 +1,1 @@
+Error message: Insufficient balance. Non-Inscription balance (0.00001 BEL) is lower than 0.0000522 BEL
